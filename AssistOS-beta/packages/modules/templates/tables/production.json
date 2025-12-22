@@ -1,0 +1,208 @@
+{
+  "moduleId": "production",
+  "displayName": "Production",
+  "tables": {
+    "production_work_orders": {
+      "tableName": "production_work_orders",
+      "description": "Production work orders and manufacturing jobs",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "root_id", "type": "uuid", "nullable": true },
+        { "name": "wo_number", "type": "text", "nullable": false },
+        { "name": "wo_type", "type": "text", "nullable": false },
+        { "name": "status", "type": "text", "nullable": false, "default": "'draft'" },
+        { "name": "priority", "type": "text", "nullable": false, "default": "'normal'" },
+        { "name": "specification_id", "type": "uuid", "nullable": true },
+        { "name": "quote_id", "type": "uuid", "nullable": true },
+        { "name": "project_id", "type": "uuid", "nullable": true },
+        { "name": "sales_order_id", "type": "uuid", "nullable": true },
+        { "name": "output_product", "type": "text", "nullable": true },
+        { "name": "target_quantity", "type": "decimal(15,4)", "nullable": true },
+        { "name": "target_unit", "type": "text", "nullable": true },
+        { "name": "actual_quantity", "type": "decimal(15,4)", "nullable": true },
+        { "name": "scrap_quantity", "type": "decimal(15,4)", "nullable": true },
+        { "name": "planned_start_date", "type": "timestamp", "nullable": true },
+        { "name": "planned_end_date", "type": "timestamp", "nullable": true },
+        { "name": "actual_start_date", "type": "timestamp", "nullable": true },
+        { "name": "actual_end_date", "type": "timestamp", "nullable": true },
+        { "name": "assigned_team", "type": "text", "nullable": true },
+        { "name": "assigned_line", "type": "text", "nullable": true },
+        { "name": "assigned_resources", "type": "jsonb", "nullable": true },
+        { "name": "planned_cost", "type": "decimal(15,2)", "nullable": true },
+        { "name": "actual_cost", "type": "decimal(15,2)", "nullable": true },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": false, "foreignKey": { "table": "users", "column": "id" } },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "production_work_orders_status_idx", "columns": ["status"] },
+        { "name": "production_work_orders_project_idx", "columns": ["project_id"] }
+      ]
+    },
+    "production_work_order_materials": {
+      "tableName": "production_work_order_materials",
+      "description": "Materials required for production work orders",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "work_order_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "production_work_orders", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "material_type", "type": "text", "nullable": false },
+        { "name": "material_id", "type": "uuid", "nullable": true },
+        { "name": "material_name", "type": "text", "nullable": false },
+        { "name": "planned_quantity", "type": "decimal(15,4)", "nullable": false },
+        { "name": "actual_quantity", "type": "decimal(15,4)", "nullable": true },
+        { "name": "unit", "type": "text", "nullable": false },
+        { "name": "planned_cost", "type": "decimal(15,2)", "nullable": true },
+        { "name": "actual_cost", "type": "decimal(15,2)", "nullable": true },
+        { "name": "issued_from", "type": "text", "nullable": true },
+        { "name": "issued_at", "type": "timestamp", "nullable": true },
+        { "name": "issued_by", "type": "uuid", "nullable": true, "foreignKey": { "table": "users", "column": "id" } },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "production_wo_materials_wo_idx", "columns": ["work_order_id"] }
+      ]
+    },
+    "production_operations": {
+      "tableName": "production_operations",
+      "description": "Production operation steps and routing",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "work_order_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "production_work_orders", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "operation_number", "type": "integer", "nullable": false },
+        { "name": "operation_name", "type": "text", "nullable": false },
+        { "name": "operation_type", "type": "text", "nullable": true },
+        { "name": "description", "type": "text", "nullable": true },
+        { "name": "status", "type": "text", "nullable": false, "default": "'pending'" },
+        { "name": "sequence_type", "type": "text", "nullable": false, "default": "'sequential'" },
+        { "name": "depends_on", "type": "jsonb", "nullable": true },
+        { "name": "planned_duration_minutes", "type": "integer", "nullable": true },
+        { "name": "actual_duration_minutes", "type": "integer", "nullable": true },
+        { "name": "assigned_resource", "type": "text", "nullable": true },
+        { "name": "assigned_machine", "type": "text", "nullable": true },
+        { "name": "assigned_team", "type": "text", "nullable": true },
+        { "name": "started_at", "type": "timestamp", "nullable": true },
+        { "name": "completed_at", "type": "timestamp", "nullable": true },
+        { "name": "started_by", "type": "uuid", "nullable": true, "foreignKey": { "table": "users", "column": "id" } },
+        { "name": "completed_by", "type": "uuid", "nullable": true, "foreignKey": { "table": "users", "column": "id" } },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "production_operations_wo_idx", "columns": ["work_order_id"] },
+        { "name": "production_operations_status_idx", "columns": ["status"] }
+      ]
+    },
+    "production_quality_checks": {
+      "tableName": "production_quality_checks",
+      "description": "Quality control checks and inspections",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "work_order_id", "type": "uuid", "nullable": true, "foreignKey": { "table": "production_work_orders", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "operation_id", "type": "uuid", "nullable": true, "foreignKey": { "table": "production_operations", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "batch_id", "type": "uuid", "nullable": true, "foreignKey": { "table": "production_batches", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "check_type", "type": "text", "nullable": false },
+        { "name": "check_name", "type": "text", "nullable": false },
+        { "name": "check_category", "type": "text", "nullable": true },
+        { "name": "required_value", "type": "text", "nullable": true },
+        { "name": "actual_value", "type": "text", "nullable": true },
+        { "name": "unit", "type": "text", "nullable": true },
+        { "name": "status", "type": "text", "nullable": false, "default": "'pending'" },
+        { "name": "is_passed", "type": "boolean", "nullable": true },
+        { "name": "is_quality_hold", "type": "boolean", "nullable": false, "default": "false" },
+        { "name": "measurements", "type": "jsonb", "nullable": true },
+        { "name": "photos", "type": "jsonb", "nullable": true },
+        { "name": "certifications", "type": "jsonb", "nullable": true },
+        { "name": "performed_by", "type": "uuid", "nullable": true, "foreignKey": { "table": "users", "column": "id" } },
+        { "name": "performed_at", "type": "timestamp", "nullable": true },
+        { "name": "validated_by", "type": "uuid", "nullable": true, "foreignKey": { "table": "users", "column": "id" } },
+        { "name": "validated_at", "type": "timestamp", "nullable": true },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "production_quality_checks_wo_idx", "columns": ["work_order_id"] },
+        { "name": "production_quality_checks_status_idx", "columns": ["status"] },
+        { "name": "production_quality_checks_hold_idx", "columns": ["is_quality_hold"] }
+      ]
+    },
+    "production_batches": {
+      "tableName": "production_batches",
+      "description": "Production batch tracking and traceability",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "work_order_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "production_work_orders", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "batch_number", "type": "text", "nullable": false },
+        { "name": "batch_type", "type": "text", "nullable": true },
+        { "name": "product_name", "type": "text", "nullable": false },
+        { "name": "quantity", "type": "decimal(15,4)", "nullable": false },
+        { "name": "unit", "type": "text", "nullable": false },
+        { "name": "expiry_date", "type": "timestamp", "nullable": true },
+        { "name": "destination", "type": "text", "nullable": true },
+        { "name": "destination_location", "type": "text", "nullable": true },
+        { "name": "status", "type": "text", "nullable": false, "default": "'in_production'" },
+        { "name": "is_quality_approved", "type": "boolean", "nullable": false, "default": "false" },
+        { "name": "produced_by", "type": "uuid", "nullable": true, "foreignKey": { "table": "users", "column": "id" } },
+        { "name": "produced_at", "type": "timestamp", "nullable": true },
+        { "name": "approved_by", "type": "uuid", "nullable": true, "foreignKey": { "table": "users", "column": "id" } },
+        { "name": "approved_at", "type": "timestamp", "nullable": true },
+        { "name": "traceability", "type": "jsonb", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "production_batches_wo_idx", "columns": ["work_order_id"] },
+        { "name": "production_batches_batch_num_idx", "columns": ["batch_number"] },
+        { "name": "production_batches_status_idx", "columns": ["status"] }
+      ]
+    },
+    "production_integrations": {
+      "tableName": "production_integrations",
+      "description": "External system integrations for production",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "integration_type", "type": "text", "nullable": false },
+        { "name": "integration_name", "type": "text", "nullable": false },
+        { "name": "description", "type": "text", "nullable": true },
+        { "name": "endpoint", "type": "text", "nullable": true },
+        { "name": "auth_method", "type": "text", "nullable": true },
+        { "name": "credentials", "type": "jsonb", "nullable": true },
+        { "name": "mapping", "type": "jsonb", "nullable": true },
+        { "name": "is_active", "type": "boolean", "nullable": false, "default": "true" },
+        { "name": "last_sync_at", "type": "timestamp", "nullable": true },
+        { "name": "last_sync_status", "type": "text", "nullable": true },
+        { "name": "sync_logs", "type": "jsonb", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": false, "foreignKey": { "table": "users", "column": "id" } },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "production_integrations_type_idx", "columns": ["integration_type"] }
+      ]
+    },
+    "production_execution_logs": {
+      "tableName": "production_execution_logs",
+      "description": "Production execution audit logs",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "module_name", "type": "text", "nullable": false },
+        { "name": "execution_tier", "type": "text", "nullable": true },
+        { "name": "success", "type": "boolean", "nullable": false },
+        { "name": "error_message", "type": "text", "nullable": true },
+        { "name": "latency_ms", "type": "integer", "nullable": true },
+        { "name": "executed_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "blueprint_version_id", "type": "uuid", "nullable": true }
+      ],
+      "indexes": [
+        { "name": "production_execution_logs_executed_at_idx", "columns": ["executed_at"] },
+        { "name": "production_execution_logs_blueprint_idx", "columns": ["blueprint_version_id"] }
+      ]
+    }
+  }
+}

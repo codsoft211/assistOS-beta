@@ -1,0 +1,63 @@
+{
+  "module": {
+    "name": "Compras",
+    "title": "Gestão de Compras"
+  },
+  "invoices": {
+    "title": "Faturas",
+    "pendingValidation": "Pendente Validação",
+    "validate": "Validar Fatura",
+    "validation": {
+      "title": "Validar Fatura",
+      "confidence": "Confiança",
+      "originalDocument": "Documento Original",
+      "pdfNotAvailable": "PDF não disponível",
+      "sections": {
+        "basicInfo": "Informação Básica",
+        "supplier": "Fornecedor",
+        "amounts": "Valores",
+        "payment": "Condições de Pagamento"
+      },
+      "fields": {
+        "invoiceNumber": "Número da Fatura",
+        "invoiceType": "Tipo de Documento",
+        "invoiceDate": "Data Emissão",
+        "dueDate": "Data Vencimento",
+        "supplierName": "Nome do Fornecedor",
+        "nif": "NIF",
+        "total": "Total",
+        "tax": "IVA",
+        "net": "Líquido",
+        "currency": "Moeda",
+        "paymentTerms": "Condições de Pagamento",
+        "paymentMethod": "Método de Pagamento",
+        "paymentStatus": "Estado do Pagamento"
+      },
+      "types": {
+        "invoice": "Fatura",
+        "creditNote": "Nota de Crédito",
+        "receipt": "Recibo"
+      },
+      "paymentStatus": {
+        "pending": "Pendente",
+        "paid": "Pago",
+        "overdue": "Vencido",
+        "cancelled": "Cancelado"
+      },
+      "actions": {
+        "approveAndCreate": "Aprovar e Criar Fatura",
+        "rejectInvoice": "Confirmar Rejeição",
+        "editFirst": "Editar antes de aprovar",
+        "rejectionReason": "Motivo da Rejeição",
+        "rejectionPlaceholder": "Descreva o motivo da rejeição..."
+      },
+      "messages": {
+        "approveSuccess": "Fatura aprovada com sucesso!",
+        "approveError": "Erro ao aprovar fatura",
+        "rejectSuccess": "Fatura rejeitada",
+        "rejectError": "Erro ao rejeitar fatura",
+        "rejectionReasonRequired": "Por favor, indique o motivo da rejeição"
+      }
+    }
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "app": {
+    "name": "AssistOS",
+    "tagline": "Gestão Empresarial Inteligente"
+  },
+  "navigation": {
+    "personal": "Pessoal",
+    "modules": "Módulos",
+    "dashboard": "Dashboard",
+    "chat": "Chat",
+    "communications": "Comunicações",
+    "tasks": "Tarefas"
+  },
+  "modules": {
+    "crm": "CRM",
+    "financeiro": "Financeiro",
+    "financial": "Financeiro",
+    "purchasing": "Compras",
+    "sales": "Comercial",
+    "logistics": "Logística",
+    "projects": "Projetos",
+    "lead-generation": "Angariação",
+    "hr": "Recursos Humanos",
+    "production": "Produção",
+    "accounting": "Contabilidade"
+  },
+  "pages": {
+    "dashboard": "Dashboard",
+    "accountsReceivable": "Contas a Receber",
+    "accountsPayable": "Contas a Pagar",
+    "treasury": "Tesouraria"
+  },
+  "actions": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Criar",
+    "search": "Pesquisar",
+    "filter": "Filtrar",
+    "export": "Exportar",
+    "import": "Importar",
+    "download": "Download",
+    "upload": "Upload",
+    "approve": "Aprovar",
+    "reject": "Rejeitar",
+    "close": "Fechar",
+    "back": "Voltar",
+    "next": "Seguinte",
+    "previous": "Anterior",
+    "submit": "Submeter",
+    "confirm": "Confirmar"
+  },
+  "common": {
+    "loading": "A carregar...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "warning": "Aviso",
+    "info": "Informação",
+    "noData": "Sem dados disponíveis",
+    "required": "Campo obrigatório",
+    "optional": "Opcional",
+    "name": "Nome",
+    "description": "Descrição",
+    "date": "Data",
+    "status": "Estado",
+    "total": "Total",
+    "actions": "Ações"
+  },
+  "confidence": {
+    "label": "Confiança",
+    "high": "Alta",
+    "medium": "Média",
+    "low": "Baixa"
+  },
+  "language": {
+    "portuguese": "Português",
+    "english": "English"
+  },
+  "toast": {
+    "tenantSwitched": "Organização alterada",
+    "tenantSwitchedDesc": "Organização alterada com sucesso.",
+    "loggedOut": "Sessão terminada",
+    "loggedOutDesc": "Sessão terminada com sucesso."
+  },
+  "userMenu": {
+    "myAccount": "Minha Conta",
+    "switchOrganization": "Mudar Organização",
+    "profile": "Perfil",
+    "settings": "Definições",
+    "logOut": "Terminar Sessão",
+    "loggingOut": "A terminar sessão..."
+  },
+  "workflows": {
+    "leadGeneration": {
+      "autoScoring": "Scoring automático novos leads",
+      "autoAssignment": "Atribuição automática de leads",
+      "nurturing": "Nutrição leads não qualificados",
+      "cleanup": "Limpeza de leads inativos"
+    },
+    "sales": {
+      "leadPipeline": "Lead Pipeline",
+      "orderFulfillment": "Order Fulfillment",
+      "quoteWorkflow": "Quote Workflow"
+    },
+    "purchasing": {
+      "expenseApproval": "Aprovação de Despesas",
+      "invoiceMatching": "Conferência de Faturas",
+      "poLifecycle": "Ciclo de Vida de PO",
+      "quickPurchase": "Compra Rápida Automática",
+      "rfqEvaluation": "Avaliação de RFQ",
+      "receiptValidation": "Validação de Receção",
+      "requisitionApproval": "Aprovação de Requisições",
+      "supplierReturn": "Devolução a Fornecedor"
+    },
+    "financial": {
+      "invoiceLifecycle": "Ciclo de Vida de Fatura",
+      "paymentReconciliation": "Reconciliação de Pagamentos",
+      "monthEndClose": "Fecho Mensal"
+    },
+    "logistics": {
+      "equipmentAllocation": "Alocação de Equipamento",
+      "conflictResolution": "Resolução de Conflitos",
+      "preventiveMaintenance": "Manutenção Preventiva",
+      "threeStepReceipt": "Receção em 3 Etapas",
+      "twoStepDelivery": "Expedição em 2 Etapas",
+      "cycleCount": "Contagem Cíclica Automatizada"
+    }
+  }
+}

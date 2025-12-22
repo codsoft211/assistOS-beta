@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .header {
+      background-color: #3B82F6;
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 32px;
+    }
+    .company-info {
+      padding: 20px 40px;
+      background-color: #f8f9fa;
+    }
+    .content {
+      padding: 40px;
+    }
+    .quote-header {
+      margin-bottom: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 30px 0;
+    }
+    th {
+      background-color: #3B82F6;
+      color: white;
+      padding: 12px;
+      text-align: left;
+    }
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #ddd;
+    }
+    .totals {
+      margin-top: 30px;
+      text-align: right;
+    }
+    .totals .row {
+      margin: 8px 0;
+    }
+    .totals .final {
+      font-size: 24px;
+      font-weight: bold;
+      color: #3B82F6;
+    }
+    .footer {
+      margin-top: 60px;
+      text-align: center;
+      color: #666;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>PROPOSTA COMERCIAL</h1>
+    <p>{{quote.number}}</p>
+  </div>
+  
+  <div class="company-info">
+    <h2>{{tenant.name}}</h2>
+    <p>{{tenant.address}}</p>
+    <p>Tel: {{tenant.phone}} | Email: {{tenant.email}}</p>
+  </div>
+  
+  <div class="content">
+    <div class="quote-header">
+      <h2>{{quote.title}}</h2>
+      <p>{{quote.description}}</p>
+      <p><strong>Data:</strong> {{quote.date}} | <strong>Válido até:</strong> {{quote.validUntil}}</p>
+    </div>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Descrição</th>
+          <th>Qtd</th>
+          <th>Unidade</th>
+          <th>Preço Unit.</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each lines}}
+        <tr>
+          <td>{{number}}</td>
+          <td>{{description}}</td>
+          <td>{{quantity}}</td>
+          <td>{{unit}}</td>
+          <td>€{{unitPrice}}</td>
+          <td>€{{totalPrice}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    
+    <div class="totals">
+      <div class="row">Subtotal: <strong>€{{totals.totalPrice}}</strong></div>
+      <div class="row final">Total: <strong>€{{totals.totalPrice}}</strong></div>
+      <div class="row" style="font-size: 14px; color: #666;">
+        Margem: {{totals.marginPercentage}}%
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer">
+    <p>Gerado em {{quote.date}} | Proposta {{quote.number}}</p>
+    <p>{{tenant.name}} - Todos os direitos reservados</p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+{
+  "module": {
+    "name": "Purchasing",
+    "title": "Purchase Management"
+  },
+  "invoices": {
+    "title": "Invoices",
+    "pendingValidation": "Pending Validation",
+    "validate": "Validate Invoice",
+    "validation": {
+      "title": "Validate Invoice",
+      "confidence": "Confidence",
+      "originalDocument": "Original Document",
+      "pdfNotAvailable": "PDF not available",
+      "sections": {
+        "basicInfo": "Basic Information",
+        "supplier": "Supplier",
+        "amounts": "Amounts",
+        "payment": "Payment Terms"
+      },
+      "fields": {
+        "invoiceNumber": "Invoice Number",
+        "invoiceType": "Document Type",
+        "invoiceDate": "Issue Date",
+        "dueDate": "Due Date",
+        "supplierName": "Supplier Name",
+        "nif": "Tax ID",
+        "total": "Total",
+        "tax": "VAT",
+        "net": "Net",
+        "currency": "Currency",
+        "paymentTerms": "Payment Terms",
+        "paymentMethod": "Payment Method",
+        "paymentStatus": "Payment Status"
+      },
+      "types": {
+        "invoice": "Invoice",
+        "creditNote": "Credit Note",
+        "receipt": "Receipt"
+      },
+      "paymentStatus": {
+        "pending": "Pending",
+        "paid": "Paid",
+        "overdue": "Overdue",
+        "cancelled": "Cancelled"
+      },
+      "actions": {
+        "approveAndCreate": "Approve and Create Invoice",
+        "rejectInvoice": "Confirm Rejection",
+        "editFirst": "Edit before approving",
+        "rejectionReason": "Rejection Reason",
+        "rejectionPlaceholder": "Describe the reason for rejection..."
+      },
+      "messages": {
+        "approveSuccess": "Invoice approved successfully!",
+        "approveError": "Error approving invoice",
+        "rejectSuccess": "Invoice rejected",
+        "rejectError": "Error rejecting invoice",
+        "rejectionReasonRequired": "Please provide a reason for rejection"
+      }
+    }
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "moduleId": "projects",
+  "displayName": "Projects",
+  "tables": {
+    "projects": {
+      "tableName": "projects",
+      "description": "Project records",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "project_number", "type": "text", "nullable": false },
+        { "name": "name", "type": "text", "nullable": false },
+        { "name": "description", "type": "text", "nullable": true },
+        { "name": "client_id", "type": "uuid", "nullable": true },
+        { "name": "project_type", "type": "text", "nullable": true },
+        { "name": "status", "type": "text", "nullable": false, "default": "'planning'" },
+        { "name": "priority", "type": "text", "nullable": false, "default": "'normal'" },
+        { "name": "start_date", "type": "date", "nullable": true },
+        { "name": "end_date", "type": "date", "nullable": true },
+        { "name": "actual_start_date", "type": "date", "nullable": true },
+        { "name": "actual_end_date", "type": "date", "nullable": true },
+        { "name": "budget", "type": "decimal(15,2)", "nullable": true },
+        { "name": "actual_cost", "type": "decimal(15,2)", "nullable": true, "default": "'0'" },
+        { "name": "progress_percent", "type": "integer", "nullable": true, "default": "0" },
+        { "name": "manager_id", "type": "uuid", "nullable": true },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "projects_client_idx", "columns": ["client_id"] },
+        { "name": "projects_status_idx", "columns": ["status"] },
+        { "name": "projects_manager_idx", "columns": ["manager_id"] }
+      ]
+    },
+    "project_tasks": {
+      "tableName": "project_tasks",
+      "description": "Project tasks and milestones",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "project_id", "type": "uuid", "nullable": false },
+        { "name": "parent_task_id", "type": "uuid", "nullable": true },
+        { "name": "task_number", "type": "text", "nullable": true },
+        { "name": "name", "type": "text", "nullable": false },
+        { "name": "description", "type": "text", "nullable": true },
+        { "name": "task_type", "type": "text", "nullable": false, "default": "'task'" },
+        { "name": "status", "type": "text", "nullable": false, "default": "'todo'" },
+        { "name": "priority", "type": "text", "nullable": false, "default": "'normal'" },
+        { "name": "start_date", "type": "date", "nullable": true },
+        { "name": "due_date", "type": "date", "nullable": true },
+        { "name": "completed_at", "type": "timestamp", "nullable": true },
+        { "name": "estimated_hours", "type": "decimal(8,2)", "nullable": true },
+        { "name": "actual_hours", "type": "decimal(8,2)", "nullable": true, "default": "'0'" },
+        { "name": "progress_percent", "type": "integer", "nullable": true, "default": "0" },
+        { "name": "assignee_id", "type": "uuid", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "tasks_project_idx", "columns": ["project_id"] },
+        { "name": "tasks_status_idx", "columns": ["status"] },
+        { "name": "tasks_assignee_idx", "columns": ["assignee_id"] }
+      ]
+    },
+    "project_members": {
+      "tableName": "project_members",
+      "description": "Project team members",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "project_id", "type": "uuid", "nullable": false },
+        { "name": "user_id", "type": "uuid", "nullable": false },
+        { "name": "role", "type": "text", "nullable": false, "default": "'member'" },
+        { "name": "joined_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "left_at", "type": "timestamp", "nullable": true }
+      ],
+      "indexes": [
+        { "name": "project_members_project_idx", "columns": ["project_id"] },
+        { "name": "project_members_user_idx", "columns": ["user_id"] }
+      ]
+    },
+    "project_time_entries": {
+      "tableName": "project_time_entries",
+      "description": "Time tracking entries",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "project_id", "type": "uuid", "nullable": false },
+        { "name": "task_id", "type": "uuid", "nullable": true },
+        { "name": "user_id", "type": "uuid", "nullable": false },
+        { "name": "date", "type": "date", "nullable": false },
+        { "name": "hours", "type": "decimal(5,2)", "nullable": false },
+        { "name": "description", "type": "text", "nullable": true },
+        { "name": "billable", "type": "boolean", "nullable": false, "default": "true" },
+        { "name": "hourly_rate", "type": "decimal(10,2)", "nullable": true },
+        { "name": "invoiced", "type": "boolean", "nullable": false, "default": "false" },
+        { "name": "invoice_id", "type": "uuid", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "time_entries_project_idx", "columns": ["project_id"] },
+        { "name": "time_entries_user_idx", "columns": ["user_id"] },
+        { "name": "time_entries_date_idx", "columns": ["date"] }
+      ]
+    },
+    "project_expenses": {
+      "tableName": "project_expenses",
+      "description": "Project-related expenses",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "project_id", "type": "uuid", "nullable": false },
+        { "name": "category", "type": "text", "nullable": false },
+        { "name": "description", "type": "text", "nullable": false },
+        { "name": "amount", "type": "decimal(12,2)", "nullable": false },
+        { "name": "currency", "type": "text", "nullable": false, "default": "'EUR'" },
+        { "name": "expense_date", "type": "date", "nullable": false },
+        { "name": "billable", "type": "boolean", "nullable": false, "default": "true" },
+        { "name": "invoiced", "type": "boolean", "nullable": false, "default": "false" },
+        { "name": "invoice_id", "type": "uuid", "nullable": true },
+        { "name": "receipt_url", "type": "text", "nullable": true },
+        { "name": "approved_by", "type": "uuid", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "project_expenses_project_idx", "columns": ["project_id"] }
+      ]
+    }
+  }
+}

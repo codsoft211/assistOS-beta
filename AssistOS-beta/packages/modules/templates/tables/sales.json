@@ -1,0 +1,156 @@
+{
+  "moduleId": "sales",
+  "displayName": "Sales",
+  "tables": {
+    "quotes": {
+      "tableName": "quotes",
+      "description": "Sales quotes and estimates",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "quote_number", "type": "text", "nullable": false },
+        { "name": "client_id", "type": "uuid", "nullable": true },
+        { "name": "client_name", "type": "text", "nullable": true },
+        { "name": "title", "type": "text", "nullable": false },
+        { "name": "description", "type": "text", "nullable": true },
+        { "name": "issue_date", "type": "date", "nullable": false },
+        { "name": "valid_until", "type": "date", "nullable": true },
+        { "name": "status", "type": "text", "nullable": false, "default": "'draft'" },
+        { "name": "currency", "type": "text", "nullable": false, "default": "'EUR'" },
+        { "name": "subtotal", "type": "decimal(12,2)", "nullable": false, "default": "'0'" },
+        { "name": "discount_amount", "type": "decimal(12,2)", "nullable": true, "default": "'0'" },
+        { "name": "tax_amount", "type": "decimal(12,2)", "nullable": false, "default": "'0'" },
+        { "name": "total_amount", "type": "decimal(12,2)", "nullable": false, "default": "'0'" },
+        { "name": "terms", "type": "text", "nullable": true },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "quotes_client_idx", "columns": ["client_id"] },
+        { "name": "quotes_status_idx", "columns": ["status"] }
+      ]
+    },
+    "quote_lines": {
+      "tableName": "quote_lines",
+      "description": "Quote line items",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "quote_id", "type": "uuid", "nullable": false },
+        { "name": "line_number", "type": "integer", "nullable": false },
+        { "name": "product_id", "type": "uuid", "nullable": true },
+        { "name": "description", "type": "text", "nullable": false },
+        { "name": "quantity", "type": "decimal(10,3)", "nullable": false },
+        { "name": "unit", "type": "text", "nullable": false, "default": "'un'" },
+        { "name": "unit_price", "type": "decimal(12,4)", "nullable": false },
+        { "name": "discount_percent", "type": "decimal(5,2)", "nullable": true, "default": "'0'" },
+        { "name": "tax_rate", "type": "decimal(5,2)", "nullable": false },
+        { "name": "total_amount", "type": "decimal(12,2)", "nullable": false },
+        { "name": "metadata", "type": "jsonb", "nullable": true }
+      ],
+      "indexes": [
+        { "name": "quote_lines_quote_idx", "columns": ["quote_id"] }
+      ]
+    },
+    "sales_orders": {
+      "tableName": "sales_orders",
+      "description": "Sales orders",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "order_number", "type": "text", "nullable": false },
+        { "name": "client_id", "type": "uuid", "nullable": true },
+        { "name": "client_name", "type": "text", "nullable": true },
+        { "name": "quote_id", "type": "uuid", "nullable": true },
+        { "name": "order_date", "type": "date", "nullable": false },
+        { "name": "delivery_date", "type": "date", "nullable": true },
+        { "name": "status", "type": "text", "nullable": false, "default": "'pending'" },
+        { "name": "payment_status", "type": "text", "nullable": false, "default": "'pending'" },
+        { "name": "shipping_address", "type": "text", "nullable": true },
+        { "name": "currency", "type": "text", "nullable": false, "default": "'EUR'" },
+        { "name": "subtotal", "type": "decimal(12,2)", "nullable": false, "default": "'0'" },
+        { "name": "discount_amount", "type": "decimal(12,2)", "nullable": true, "default": "'0'" },
+        { "name": "tax_amount", "type": "decimal(12,2)", "nullable": false, "default": "'0'" },
+        { "name": "shipping_amount", "type": "decimal(12,2)", "nullable": true, "default": "'0'" },
+        { "name": "total_amount", "type": "decimal(12,2)", "nullable": false, "default": "'0'" },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "sales_orders_client_idx", "columns": ["client_id"] },
+        { "name": "sales_orders_status_idx", "columns": ["status"] }
+      ]
+    },
+    "sales_order_lines": {
+      "tableName": "sales_order_lines",
+      "description": "Sales order line items",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "order_id", "type": "uuid", "nullable": false },
+        { "name": "line_number", "type": "integer", "nullable": false },
+        { "name": "product_id", "type": "uuid", "nullable": true },
+        { "name": "description", "type": "text", "nullable": false },
+        { "name": "quantity", "type": "decimal(10,3)", "nullable": false },
+        { "name": "unit", "type": "text", "nullable": false, "default": "'un'" },
+        { "name": "unit_price", "type": "decimal(12,4)", "nullable": false },
+        { "name": "discount_percent", "type": "decimal(5,2)", "nullable": true, "default": "'0'" },
+        { "name": "tax_rate", "type": "decimal(5,2)", "nullable": false },
+        { "name": "total_amount", "type": "decimal(12,2)", "nullable": false },
+        { "name": "fulfilled_quantity", "type": "decimal(10,3)", "nullable": true, "default": "'0'" },
+        { "name": "metadata", "type": "jsonb", "nullable": true }
+      ],
+      "indexes": [
+        { "name": "sales_order_lines_order_idx", "columns": ["order_id"] }
+      ]
+    },
+    "pricing_catalogs": {
+      "tableName": "pricing_catalogs",
+      "description": "Product pricing catalogs",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "name", "type": "text", "nullable": false },
+        { "name": "description", "type": "text", "nullable": true },
+        { "name": "valid_from", "type": "date", "nullable": true },
+        { "name": "valid_until", "type": "date", "nullable": true },
+        { "name": "currency", "type": "text", "nullable": false, "default": "'EUR'" },
+        { "name": "is_default", "type": "boolean", "nullable": false, "default": "false" },
+        { "name": "is_active", "type": "boolean", "nullable": false, "default": "true" },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "pricing_catalogs_name_idx", "columns": ["name"] }
+      ]
+    },
+    "budget_quotes": {
+      "tableName": "budget_quotes",
+      "description": "Budget quotations",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "quote_number", "type": "text", "nullable": false },
+        { "name": "title", "type": "text", "nullable": false },
+        { "name": "client_id", "type": "uuid", "nullable": true },
+        { "name": "project_id", "type": "uuid", "nullable": true },
+        { "name": "status", "type": "text", "nullable": false, "default": "'draft'" },
+        { "name": "version", "type": "integer", "nullable": false, "default": "1" },
+        { "name": "currency", "type": "text", "nullable": false, "default": "'EUR'" },
+        { "name": "total_amount", "type": "decimal(15,2)", "nullable": false, "default": "'0'" },
+        { "name": "margin_percent", "type": "decimal(5,2)", "nullable": true },
+        { "name": "valid_until", "type": "date", "nullable": true },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "budget_quotes_client_idx", "columns": ["client_id"] },
+        { "name": "budget_quotes_status_idx", "columns": ["status"] }
+      ]
+    }
+  }
+}

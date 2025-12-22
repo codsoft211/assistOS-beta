@@ -1,0 +1,122 @@
+{
+  "moduleId": "lead-generation",
+  "displayName": "Lead Generation",
+  "tables": {
+    "angariacao_leads": {
+      "tableName": "angariacao_leads",
+      "description": "Lead capture and management",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "lead_number", "type": "text", "nullable": true },
+        { "name": "source_type", "type": "text", "nullable": false },
+        { "name": "source_id", "type": "text", "nullable": true },
+        { "name": "campaign_id", "type": "uuid", "nullable": true },
+        { "name": "name", "type": "text", "nullable": true },
+        { "name": "email", "type": "text", "nullable": true },
+        { "name": "phone", "type": "text", "nullable": true },
+        { "name": "company", "type": "text", "nullable": true },
+        { "name": "job_title", "type": "text", "nullable": true },
+        { "name": "status", "type": "text", "nullable": false, "default": "'new'" },
+        { "name": "score", "type": "integer", "nullable": true, "default": "0" },
+        { "name": "qualified", "type": "boolean", "nullable": false, "default": "false" },
+        { "name": "assigned_to", "type": "uuid", "nullable": true },
+        { "name": "converted_at", "type": "timestamp", "nullable": true },
+        { "name": "converted_to", "type": "text", "nullable": true },
+        { "name": "converted_entity_id", "type": "uuid", "nullable": true },
+        { "name": "tags", "type": "jsonb", "nullable": true },
+        { "name": "custom_fields", "type": "jsonb", "nullable": true },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "leads_status_idx", "columns": ["status"] },
+        { "name": "leads_source_idx", "columns": ["source_type"] },
+        { "name": "leads_assigned_idx", "columns": ["assigned_to"] },
+        { "name": "leads_email_idx", "columns": ["email"] }
+      ]
+    },
+    "lead_scoring_rules": {
+      "tableName": "lead_scoring_rules",
+      "description": "Lead scoring configuration",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "name", "type": "text", "nullable": false },
+        { "name": "description", "type": "text", "nullable": true },
+        { "name": "rule_type", "type": "text", "nullable": false },
+        { "name": "conditions", "type": "jsonb", "nullable": false },
+        { "name": "score_adjustment", "type": "integer", "nullable": false },
+        { "name": "priority", "type": "integer", "nullable": false, "default": "0" },
+        { "name": "is_active", "type": "boolean", "nullable": false, "default": "true" },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "scoring_rules_type_idx", "columns": ["rule_type"] }
+      ]
+    },
+    "lead_activities": {
+      "tableName": "lead_activities",
+      "description": "Lead activity tracking",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "lead_id", "type": "uuid", "nullable": false },
+        { "name": "activity_type", "type": "text", "nullable": false },
+        { "name": "description", "type": "text", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "user_id", "type": "uuid", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "lead_activities_lead_idx", "columns": ["lead_id"] },
+        { "name": "lead_activities_type_idx", "columns": ["activity_type"] }
+      ]
+    },
+    "ad_campaigns": {
+      "tableName": "ad_campaigns",
+      "description": "Advertising campaigns",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "google_campaign_id", "type": "text", "nullable": false },
+        { "name": "google_account_id", "type": "text", "nullable": false },
+        { "name": "campaign_name", "type": "text", "nullable": false },
+        { "name": "campaign_type", "type": "text", "nullable": true },
+        { "name": "campaign_status", "type": "text", "nullable": true },
+        { "name": "budget_amount", "type": "decimal(15,2)", "nullable": true },
+        { "name": "budget_currency", "type": "text", "nullable": true, "default": "'EUR'" },
+        { "name": "start_date", "type": "date", "nullable": true },
+        { "name": "end_date", "type": "date", "nullable": true },
+        { "name": "total_impressions", "type": "integer", "nullable": true, "default": "0" },
+        { "name": "total_clicks", "type": "integer", "nullable": true, "default": "0" },
+        { "name": "total_conversions", "type": "integer", "nullable": true, "default": "0" },
+        { "name": "total_cost", "type": "decimal(15,2)", "nullable": true, "default": "'0'" },
+        { "name": "total_leads", "type": "integer", "nullable": true, "default": "0" },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "last_synced_at", "type": "timestamp", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "ad_campaigns_google_idx", "columns": ["google_campaign_id"] },
+        { "name": "ad_campaigns_status_idx", "columns": ["campaign_status"] }
+      ]
+    },
+    "lead_conversion_funnel": {
+      "tableName": "lead_conversion_funnel",
+      "description": "Lead funnel analytics",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "period_start", "type": "timestamp", "nullable": false },
+        { "name": "period_end", "type": "timestamp", "nullable": false },
+        { "name": "source_type", "type": "text", "nullable": true },
+        { "name": "metrics", "type": "jsonb", "nullable": false },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "funnel_period_idx", "columns": ["period_start", "period_end"] }
+      ]
+    }
+  }
+}

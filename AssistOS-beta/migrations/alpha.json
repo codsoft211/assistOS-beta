@@ -1,0 +1,1010 @@
+[
+    {
+      "table_name": "activities"
+    },
+    {
+      "table_name": "activity_feed"
+    },
+    {
+      "table_name": "ad_campaign_performance"
+    },
+    {
+      "table_name": "ad_campaigns"
+    },
+    {
+      "table_name": "agent_budgets"
+    },
+    {
+      "table_name": "agent_executions"
+    },
+    {
+      "table_name": "agent_feedback"
+    },
+    {
+      "table_name": "agent_handoffs"
+    },
+    {
+      "table_name": "agent_interactions"
+    },
+    {
+      "table_name": "agent_learnings"
+    },
+    {
+      "table_name": "agent_role_assignments"
+    },
+    {
+      "table_name": "agent_runs"
+    },
+    {
+      "table_name": "agent_schedules"
+    },
+    {
+      "table_name": "agent_secrets"
+    },
+    {
+      "table_name": "agent_state"
+    },
+    {
+      "table_name": "agent_tags"
+    },
+    {
+      "table_name": "agent_versions"
+    },
+    {
+      "table_name": "agent_workflows"
+    },
+    {
+      "table_name": "agents_library"
+    },
+    {
+      "table_name": "angariacao_leads"
+    },
+    {
+      "table_name": "api_integrations"
+    },
+    {
+      "table_name": "approval_workflows"
+    },
+    {
+      "table_name": "assistbuild_conversations"
+    },
+    {
+      "table_name": "assistbuild_jobs"
+    },
+    {
+      "table_name": "assistbuild_messages"
+    },
+    {
+      "table_name": "assistsettings_conversations"
+    },
+    {
+      "table_name": "assistsettings_messages"
+    },
+    {
+      "table_name": "audit_log"
+    },
+    {
+      "table_name": "automation_executions"
+    },
+    {
+      "table_name": "bank_accounts"
+    },
+    {
+      "table_name": "bank_reconciliations"
+    },
+    {
+      "table_name": "bank_statement_transactions"
+    },
+    {
+      "table_name": "blueprint_health"
+    },
+    {
+      "table_name": "blueprint_improvements"
+    },
+    {
+      "table_name": "blueprint_signatures"
+    },
+    {
+      "table_name": "blueprint_templates"
+    },
+    {
+      "table_name": "blueprint_usage_stats"
+    },
+    {
+      "table_name": "blueprint_versions"
+    },
+    {
+      "table_name": "blueprints"
+    },
+    {
+      "table_name": "budget_alerts"
+    },
+    {
+      "table_name": "budget_menu_items"
+    },
+    {
+      "table_name": "budget_package_items"
+    },
+    {
+      "table_name": "budget_packages"
+    },
+    {
+      "table_name": "budget_quote_items"
+    },
+    {
+      "table_name": "budget_quote_versions"
+    },
+    {
+      "table_name": "budget_quotes"
+    },
+    {
+      "table_name": "budget_staff_roles"
+    },
+    {
+      "table_name": "budget_transport_rules"
+    },
+    {
+      "table_name": "business_blueprints"
+    },
+    {
+      "table_name": "cashflow_snapshots"
+    },
+    {
+      "table_name": "catering_kitchen_workflows"
+    },
+    {
+      "table_name": "catering_logistics"
+    },
+    {
+      "table_name": "catering_prep_lists"
+    },
+    {
+      "table_name": "chart_of_accounts"
+    },
+    {
+      "table_name": "client_contacts"
+    },
+    {
+      "table_name": "client_embeddings"
+    },
+    {
+      "table_name": "clients"
+    },
+    {
+      "table_name": "code_generation_audit"
+    },
+    {
+      "table_name": "code_validation_results"
+    },
+    {
+      "table_name": "commercial_activities"
+    },
+    {
+      "table_name": "commercial_agent_configs"
+    },
+    {
+      "table_name": "commercial_agent_executions"
+    },
+    {
+      "table_name": "commercial_ai_suggestions"
+    },
+    {
+      "table_name": "commercial_automation_rules"
+    },
+    {
+      "table_name": "commercial_budget_alerts"
+    },
+    {
+      "table_name": "commercial_conversion_metrics"
+    },
+    {
+      "table_name": "commercial_email_events"
+    },
+    {
+      "table_name": "commercial_email_sequences"
+    },
+    {
+      "table_name": "commercial_email_templates"
+    },
+    {
+      "table_name": "commercial_forecasts"
+    },
+    {
+      "table_name": "commercial_lead_scoring"
+    },
+    {
+      "table_name": "commercial_lead_sources"
+    },
+    {
+      "table_name": "commercial_leads"
+    },
+    {
+      "table_name": "commercial_leads_backup_20251125"
+    },
+    {
+      "table_name": "commercial_pipeline"
+    },
+    {
+      "table_name": "commercial_quote_versions"
+    },
+    {
+      "table_name": "commercial_tasks"
+    },
+    {
+      "table_name": "company_info"
+    },
+    {
+      "table_name": "config_requests"
+    },
+    {
+      "table_name": "configuration_checkpoints"
+    },
+    {
+      "table_name": "configuration_patterns"
+    },
+    {
+      "table_name": "connector_change_events"
+    },
+    {
+      "table_name": "connector_sync_state"
+    },
+    {
+      "table_name": "connectors"
+    },
+    {
+      "table_name": "contract_submissions"
+    },
+    {
+      "table_name": "conversation_insights"
+    },
+    {
+      "table_name": "conversations"
+    },
+    {
+      "table_name": "conversion_agents"
+    },
+    {
+      "table_name": "core_asset_versions"
+    },
+    {
+      "table_name": "core_assets"
+    },
+    {
+      "table_name": "cost_components"
+    },
+    {
+      "table_name": "cost_templates"
+    },
+    {
+      "table_name": "credit_package_purchases"
+    },
+    {
+      "table_name": "credit_packages"
+    },
+    {
+      "table_name": "credit_pricing_rules"
+    },
+    {
+      "table_name": "credit_transactions"
+    },
+    {
+      "table_name": "crm_activities"
+    },
+    {
+      "table_name": "crm_contracts"
+    },
+    {
+      "table_name": "crm_renewals"
+    },
+    {
+      "table_name": "cross_tenant_patterns"
+    },
+    {
+      "table_name": "custom_agents"
+    },
+    {
+      "table_name": "custom_entities"
+    },
+    {
+      "table_name": "custom_entity_records"
+    },
+    {
+      "table_name": "custom_fields"
+    },
+    {
+      "table_name": "departments"
+    },
+    {
+      "table_name": "detected_gaps"
+    },
+    {
+      "table_name": "detected_patterns"
+    },
+    {
+      "table_name": "development_requests"
+    },
+    {
+      "table_name": "document_analyses"
+    },
+    {
+      "table_name": "document_classifications"
+    },
+    {
+      "table_name": "document_email_links"
+    },
+    {
+      "table_name": "document_embeddings"
+    },
+    {
+      "table_name": "document_entity_links"
+    },
+    {
+      "table_name": "document_folder_links"
+    },
+    {
+      "table_name": "document_folders"
+    },
+    {
+      "table_name": "document_insights"
+    },
+    {
+      "table_name": "document_integrations"
+    },
+    {
+      "table_name": "document_links"
+    },
+    {
+      "table_name": "document_permissions"
+    },
+    {
+      "table_name": "document_quality_checks"
+    },
+    {
+      "table_name": "document_templates"
+    },
+    {
+      "table_name": "document_versions"
+    },
+    {
+      "table_name": "documents"
+    },
+    {
+      "table_name": "dunning_runs"
+    },
+    {
+      "table_name": "email_alerts"
+    },
+    {
+      "table_name": "email_inbox"
+    },
+    {
+      "table_name": "email_response_learnings"
+    },
+    {
+      "table_name": "employee_expenses"
+    },
+    {
+      "table_name": "entities"
+    },
+    {
+      "table_name": "entity_menu_items"
+    },
+    {
+      "table_name": "entity_views"
+    },
+    {
+      "table_name": "entity_workflow_states"
+    },
+    {
+      "table_name": "erp_field_mappings"
+    },
+    {
+      "table_name": "execution_plans"
+    },
+    {
+      "table_name": "execution_tier_policies"
+    },
+    {
+      "table_name": "execution_traces"
+    },
+    {
+      "table_name": "field_mappings"
+    },
+    {
+      "table_name": "field_patterns"
+    },
+    {
+      "table_name": "file_attachments"
+    },
+    {
+      "table_name": "financial_calculations"
+    },
+    {
+      "table_name": "financial_models"
+    },
+    {
+      "table_name": "financial_patterns"
+    },
+    {
+      "table_name": "financial_scenarios"
+    },
+    {
+      "table_name": "fiscal_periods"
+    },
+    {
+      "table_name": "format_adjustments"
+    },
+    {
+      "table_name": "global_custom_fields"
+    },
+    {
+      "table_name": "gold_labels"
+    },
+    {
+      "table_name": "governance_policies"
+    },
+    {
+      "table_name": "import_items"
+    },
+    {
+      "table_name": "import_runs"
+    },
+    {
+      "table_name": "inventory_batches"
+    },
+    {
+      "table_name": "inventory_counts"
+    },
+    {
+      "table_name": "inventory_levels"
+    },
+    {
+      "table_name": "inventory_transactions"
+    },
+    {
+      "table_name": "invite_billing_events"
+    },
+    {
+      "table_name": "invoice_embeddings"
+    },
+    {
+      "table_name": "invoice_items"
+    },
+    {
+      "table_name": "invoice_lines"
+    },
+    {
+      "table_name": "invoice_taxes"
+    },
+    {
+      "table_name": "invoice_validations"
+    },
+    {
+      "table_name": "invoices"
+    },
+    {
+      "table_name": "job_sites"
+    },
+    {
+      "table_name": "journal_entries"
+    },
+    {
+      "table_name": "journal_entry_lines"
+    },
+    {
+      "table_name": "lead_activities"
+    },
+    {
+      "table_name": "learned_preferences"
+    },
+    {
+      "table_name": "legacy_document_mappings"
+    },
+    {
+      "table_name": "messages"
+    },
+    {
+      "table_name": "migrations"
+    },
+    {
+      "table_name": "model_adjustments"
+    },
+    {
+      "table_name": "module_agents"
+    },
+    {
+      "table_name": "module_custom_fields"
+    },
+    {
+      "table_name": "module_features"
+    },
+    {
+      "table_name": "module_interface_config"
+    },
+    {
+      "table_name": "module_pages"
+    },
+    {
+      "table_name": "module_templates"
+    },
+    {
+      "table_name": "modules"
+    },
+    {
+      "table_name": "notification_rules"
+    },
+    {
+      "table_name": "notifications"
+    },
+    {
+      "table_name": "oauth_states"
+    },
+    {
+      "table_name": "onboarding_cache"
+    },
+    {
+      "table_name": "open_banking_accounts"
+    },
+    {
+      "table_name": "open_banking_connections"
+    },
+    {
+      "table_name": "open_banking_transactions"
+    },
+    {
+      "table_name": "opportunities"
+    },
+    {
+      "table_name": "opportunity_rules"
+    },
+    {
+      "table_name": "payables"
+    },
+    {
+      "table_name": "payment_allocations"
+    },
+    {
+      "table_name": "payment_plans"
+    },
+    {
+      "table_name": "payment_reminders"
+    },
+    {
+      "table_name": "payments"
+    },
+    {
+      "table_name": "platform_settings"
+    },
+    {
+      "table_name": "presentation_patterns"
+    },
+    {
+      "table_name": "pricing_addons"
+    },
+    {
+      "table_name": "pricing_catalog_categories"
+    },
+    {
+      "table_name": "pricing_catalogs"
+    },
+    {
+      "table_name": "pricing_discounts"
+    },
+    {
+      "table_name": "pricing_input_schemas"
+    },
+    {
+      "table_name": "pricing_line_items"
+    },
+    {
+      "table_name": "pricing_project_modules"
+    },
+    {
+      "table_name": "pricing_projects"
+    },
+    {
+      "table_name": "pricing_rule_entries"
+    },
+    {
+      "table_name": "pricing_rule_sets"
+    },
+    {
+      "table_name": "pricing_taxes"
+    },
+    {
+      "table_name": "process_optimizations"
+    },
+    {
+      "table_name": "product_embeddings"
+    },
+    {
+      "table_name": "product_specifications"
+    },
+    {
+      "table_name": "product_suppliers"
+    },
+    {
+      "table_name": "production_batches"
+    },
+    {
+      "table_name": "production_execution_logs"
+    },
+    {
+      "table_name": "production_integrations"
+    },
+    {
+      "table_name": "production_operations"
+    },
+    {
+      "table_name": "production_quality_checks"
+    },
+    {
+      "table_name": "production_work_order_materials"
+    },
+    {
+      "table_name": "production_work_orders"
+    },
+    {
+      "table_name": "products"
+    },
+    {
+      "table_name": "project_activity_logs"
+    },
+    {
+      "table_name": "project_approvals"
+    },
+    {
+      "table_name": "project_change_requests"
+    },
+    {
+      "table_name": "project_contracts"
+    },
+    {
+      "table_name": "project_decisions"
+    },
+    {
+      "table_name": "project_deliverables"
+    },
+    {
+      "table_name": "project_documents"
+    },
+    {
+      "table_name": "project_embeddings"
+    },
+    {
+      "table_name": "project_expenses"
+    },
+    {
+      "table_name": "project_external_mappings"
+    },
+    {
+      "table_name": "project_issues"
+    },
+    {
+      "table_name": "project_menu_items"
+    },
+    {
+      "table_name": "project_milestones"
+    },
+    {
+      "table_name": "project_phases"
+    },
+    {
+      "table_name": "project_purchases"
+    },
+    {
+      "table_name": "project_resource_allocations"
+    },
+    {
+      "table_name": "project_risks"
+    },
+    {
+      "table_name": "project_states"
+    },
+    {
+      "table_name": "project_tasks"
+    },
+    {
+      "table_name": "project_team_members"
+    },
+    {
+      "table_name": "project_templates"
+    },
+    {
+      "table_name": "project_time_entries"
+    },
+    {
+      "table_name": "projects"
+    },
+    {
+      "table_name": "projects_config"
+    },
+    {
+      "table_name": "promotion_logs"
+    },
+    {
+      "table_name": "proposals"
+    },
+    {
+      "table_name": "provider_credentials"
+    },
+    {
+      "table_name": "provider_sync_jobs"
+    },
+    {
+      "table_name": "public_forms"
+    },
+    {
+      "table_name": "purchase_order_lines"
+    },
+    {
+      "table_name": "purchase_orders"
+    },
+    {
+      "table_name": "purchase_requisition_lines"
+    },
+    {
+      "table_name": "purchase_requisitions"
+    },
+    {
+      "table_name": "purchasing_invoice_lines"
+    },
+    {
+      "table_name": "purchasing_invoices"
+    },
+    {
+      "table_name": "purchasing_payment_allocations"
+    },
+    {
+      "table_name": "purchasing_payments"
+    },
+    {
+      "table_name": "quote_lines"
+    },
+    {
+      "table_name": "quote_pricing_rules"
+    },
+    {
+      "table_name": "quotes"
+    },
+    {
+      "table_name": "rate_cards"
+    },
+    {
+      "table_name": "receipt_lines"
+    },
+    {
+      "table_name": "receipts"
+    },
+    {
+      "table_name": "recipe_lines"
+    },
+    {
+      "table_name": "recipes"
+    },
+    {
+      "table_name": "rfq_lines"
+    },
+    {
+      "table_name": "rfq_quote_lines"
+    },
+    {
+      "table_name": "rfq_quotes"
+    },
+    {
+      "table_name": "rfqs"
+    },
+    {
+      "table_name": "rollback_executions"
+    },
+    {
+      "table_name": "rollback_points"
+    },
+    {
+      "table_name": "sales_order_lines"
+    },
+    {
+      "table_name": "sales_orders"
+    },
+    {
+      "table_name": "sandbox_executions"
+    },
+    {
+      "table_name": "schema_versions"
+    },
+    {
+      "table_name": "sequence_counters"
+    },
+    {
+      "table_name": "service_line_components"
+    },
+    {
+      "table_name": "service_lines"
+    },
+    {
+      "table_name": "specialized_agents"
+    },
+    {
+      "table_name": "stock_alerts"
+    },
+    {
+      "table_name": "studio_audit_log"
+    },
+    {
+      "table_name": "subscription_plans"
+    },
+    {
+      "table_name": "subscriptions"
+    },
+    {
+      "table_name": "supplier_embeddings"
+    },
+    {
+      "table_name": "supplier_invoices"
+    },
+    {
+      "table_name": "supplier_price_history"
+    },
+    {
+      "table_name": "supplier_return_lines"
+    },
+    {
+      "table_name": "supplier_returns"
+    },
+    {
+      "table_name": "suppliers"
+    },
+    {
+      "table_name": "tasks"
+    },
+    {
+      "table_name": "tax_categories"
+    },
+    {
+      "table_name": "tax_jurisdictions"
+    },
+    {
+      "table_name": "tax_obligations"
+    },
+    {
+      "table_name": "tax_rates"
+    },
+    {
+      "table_name": "team_members"
+    },
+    {
+      "table_name": "teams"
+    },
+    {
+      "table_name": "tenant_automations"
+    },
+    {
+      "table_name": "tenant_blueprints"
+    },
+    {
+      "table_name": "tenant_code_artifacts"
+    },
+    {
+      "table_name": "tenant_code_files"
+    },
+    {
+      "table_name": "tenant_code_modules"
+    },
+    {
+      "table_name": "tenant_code_releases"
+    },
+    {
+      "table_name": "tenant_code_tests"
+    },
+    {
+      "table_name": "tenant_connector_configs"
+    },
+    {
+      "table_name": "tenant_context"
+    },
+    {
+      "table_name": "tenant_credits"
+    },
+    {
+      "table_name": "tenant_invitations"
+    },
+    {
+      "table_name": "tenant_memory_facts"
+    },
+    {
+      "table_name": "tenant_modules"
+    },
+    {
+      "table_name": "tenant_secrets"
+    },
+    {
+      "table_name": "tenant_storage_providers"
+    },
+    {
+      "table_name": "tenant_subscriptions"
+    },
+    {
+      "table_name": "tenant_workflows"
+    },
+    {
+      "table_name": "tenants"
+    },
+    {
+      "table_name": "tool_embeddings"
+    },
+    {
+      "table_name": "uoms"
+    },
+    {
+      "table_name": "usage_events"
+    },
+    {
+      "table_name": "user_actions"
+    },
+    {
+      "table_name": "user_agent_interactions"
+    },
+    {
+      "table_name": "user_connector_credentials"
+    },
+    {
+      "table_name": "user_gmail_accounts"
+    },
+    {
+      "table_name": "user_module_preferences"
+    },
+    {
+      "table_name": "user_oauth_tokens"
+    },
+    {
+      "table_name": "user_profiles"
+    },
+    {
+      "table_name": "user_sessions"
+    },
+    {
+      "table_name": "user_tenants"
+    },
+    {
+      "table_name": "users"
+    },
+    {
+      "table_name": "vat_returns"
+    },
+    {
+      "table_name": "venues"
+    },
+    {
+      "table_name": "warehouses"
+    },
+    {
+      "table_name": "webhooks"
+    },
+    {
+      "table_name": "whatsapp_accounts"
+    },
+    {
+      "table_name": "whatsapp_automation_clients"
+    },
+    {
+      "table_name": "whatsapp_contacts"
+    },
+    {
+      "table_name": "whatsapp_conversations"
+    },
+    {
+      "table_name": "whatsapp_messages"
+    },
+    {
+      "table_name": "whatsapp_templates"
+    },
+    {
+      "table_name": "whatsapp_web_sessions"
+    },
+    {
+      "table_name": "workflow_executions"
+    },
+    {
+      "table_name": "workflow_templates"
+    }
+  ]

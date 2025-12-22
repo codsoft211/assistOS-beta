@@ -1,0 +1,229 @@
+{
+  "id": "construction",
+  "name": "Gestão de Obras (Construção)",
+  "description": "Template completo para gestão de projetos de construção civil com medições, subempreiteiros, e diário de obra",
+  "icon": "HardHat",
+  "version": "1.0.0",
+  "suggestedFor": ["construção", "obras", "engenharia civil", "empreiteiro", "contractor"],
+  "configuration": {
+    "customEntities": [
+      {
+        "name": "obras",
+        "schema": {
+          "fields": [
+            { "name": "projectId", "type": "relation", "ref": "projects", "required": true },
+            { "name": "obraCode", "type": "text", "required": true, "unique": true },
+            { "name": "location", "type": "text", "required": true },
+            { "name": "constructionType", "type": "enum", "options": ["Residential", "Commercial", "Infrastructure", "Industrial"], "required": true },
+            { "name": "totalArea", "type": "decimal" },
+            { "name": "buildingPermitNumber", "type": "text" },
+            { "name": "permitIssueDate", "type": "date" },
+            { "name": "estimatedStartDate", "type": "date" },
+            { "name": "estimatedCompletionDate", "type": "date" },
+            { "name": "actualStartDate", "type": "date" },
+            { "name": "actualCompletionDate", "type": "date" },
+            { "name": "safetyCoordinator", "type": "text" },
+            { "name": "siteManager", "type": "text" },
+            { "name": "status", "type": "enum", "options": ["Planning", "Approved", "In Progress", "On Hold", "Completed", "Cancelled"], "required": true, "default": "Planning" }
+          ],
+          "timestamps": true,
+          "tenantIsolation": true
+        },
+        "relationships": [
+          { "type": "belongsTo", "target": "projects", "foreignKey": "projectId" },
+          { "type": "hasMany", "target": "medicoes", "foreignKey": "obraId" },
+          { "type": "hasMany", "target": "diario_obra", "foreignKey": "obraId" }
+        ],
+        "indexes": [
+          { "fields": ["obraCode"], "unique": true },
+          { "fields": ["status"] },
+          { "fields": ["projectId"] }
+        ]
+      },
+      {
+        "name": "medicoes",
+        "schema": {
+          "fields": [
+            { "name": "obraId", "type": "relation", "ref": "obras", "required": true },
+            { "name": "medicaoNumber", "type": "text", "required": true },
+            { "name": "period", "type": "text", "required": true },
+            { "name": "startDate", "type": "date", "required": true },
+            { "name": "endDate", "type": "date", "required": true },
+            { "name": "submissionDate", "type": "date" },
+            { "name": "approvalDate", "type": "date" },
+            { "name": "totalValue", "type": "decimal", "required": true },
+            { "name": "accumulatedValue", "type": "decimal" },
+            { "name": "percentComplete", "type": "decimal" },
+            { "name": "status", "type": "enum", "options": ["Draft", "Submitted", "Under Review", "Approved", "Rejected", "Paid"], "required": true, "default": "Draft" },
+            { "name": "notes", "type": "text" },
+            { "name": "approvedBy", "type": "text" }
+          ],
+          "timestamps": true,
+          "tenantIsolation": true
+        },
+        "relationships": [
+          { "type": "belongsTo", "target": "obras", "foreignKey": "obraId" },
+          { "type": "hasMany", "target": "autos_medicao", "foreignKey": "medicaoId" }
+        ],
+        "indexes": [
+          { "fields": ["obraId"] },
+          { "fields": ["status"] },
+          { "fields": ["medicaoNumber"] }
+        ]
+      },
+      {
+        "name": "autos_medicao",
+        "schema": {
+          "fields": [
+            { "name": "medicaoId", "type": "relation", "ref": "medicoes", "required": true },
+            { "name": "itemDescription", "type": "text", "required": true },
+            { "name": "unit", "type": "text", "required": true },
+            { "name": "quantity", "type": "decimal", "required": true },
+            { "name": "unitPrice", "type": "decimal", "required": true },
+            { "name": "totalPrice", "type": "decimal", "required": true },
+            { "name": "workCategory", "type": "enum", "options": ["Earthwork", "Foundation", "Structure", "Masonry", "Roofing", "Finishing", "MEP", "Other"] },
+            { "name": "executionPercentage", "type": "decimal" }
+          ],
+          "timestamps": true,
+          "tenantIsolation": true
+        },
+        "relationships": [
+          { "type": "belongsTo", "target": "medicoes", "foreignKey": "medicaoId" }
+        ],
+        "indexes": [
+          { "fields": ["medicaoId"] }
+        ]
+      },
+      {
+        "name": "subempreiteiros",
+        "schema": {
+          "fields": [
+            { "name": "projectId", "type": "relation", "ref": "projects", "required": true },
+            { "name": "companyName", "type": "text", "required": true },
+            { "name": "nif", "type": "text", "unique": true },
+            { "name": "contactPerson", "type": "text" },
+            { "name": "phone", "type": "phone" },
+            { "name": "email", "type": "email" },
+            { "name": "specialty", "type": "enum", "options": ["Electrical", "Plumbing", "HVAC", "Carpentry", "Concrete", "Painting", "Roofing", "Other"], "required": true },
+            { "name": "contractValue", "type": "decimal" },
+            { "name": "contractStartDate", "type": "date" },
+            { "name": "contractEndDate", "type": "date" },
+            { "name": "status", "type": "enum", "options": ["Active", "Completed", "Suspended", "Cancelled"], "required": true, "default": "Active" },
+            { "name": "insurancePolicy", "type": "text" },
+            { "name": "insuranceExpiry", "type": "date" },
+            { "name": "performanceRating", "type": "number", "min": 1, "max": 5 }
+          ],
+          "timestamps": true,
+          "tenantIsolation": true
+        },
+        "relationships": [
+          { "type": "belongsTo", "target": "projects", "foreignKey": "projectId" }
+        ],
+        "indexes": [
+          { "fields": ["nif"], "unique": true },
+          { "fields": ["projectId"] },
+          { "fields": ["specialty"] }
+        ]
+      },
+      {
+        "name": "diario_obra",
+        "schema": {
+          "fields": [
+            { "name": "obraId", "type": "relation", "ref": "obras", "required": true },
+            { "name": "date", "type": "date", "required": true },
+            { "name": "weather", "type": "enum", "options": ["Sunny", "Cloudy", "Rainy", "Windy", "Stormy"] },
+            { "name": "temperature", "type": "number" },
+            { "name": "workersOnSite", "type": "number" },
+            { "name": "subcontractorsOnSite", "type": "number" },
+            { "name": "activitiesPerformed", "type": "text", "required": true },
+            { "name": "materialDeliveries", "type": "text" },
+            { "name": "equipmentUsed", "type": "text" },
+            { "name": "safetyIssues", "type": "text" },
+            { "name": "qualityIssues", "type": "text" },
+            { "name": "delays", "type": "text" },
+            { "name": "visitorsOnSite", "type": "text" },
+            { "name": "photos", "type": "json" },
+            { "name": "reportedBy", "type": "text", "required": true }
+          ],
+          "timestamps": true,
+          "tenantIsolation": true
+        },
+        "relationships": [
+          { "type": "belongsTo", "target": "obras", "foreignKey": "obraId" }
+        ],
+        "indexes": [
+          { "fields": ["obraId"] },
+          { "fields": ["date"] }
+        ]
+      },
+      {
+        "name": "equipamentos_obra",
+        "schema": {
+          "fields": [
+            { "name": "obraId", "type": "relation", "ref": "obras", "required": true },
+            { "name": "equipmentName", "type": "text", "required": true },
+            { "name": "equipmentType", "type": "enum", "options": ["Crane", "Excavator", "Bulldozer", "Mixer", "Generator", "Scaffold", "Formwork", "Other"], "required": true },
+            { "name": "quantity", "type": "number", "required": true, "default": 1 },
+            { "name": "allocationDate", "type": "date", "required": true },
+            { "name": "releaseDate", "type": "date" },
+            { "name": "status", "type": "enum", "options": ["Allocated", "In Use", "Released", "Under Maintenance"], "required": true, "default": "Allocated" },
+            { "name": "operator", "type": "text" },
+            { "name": "maintenanceNotes", "type": "text" }
+          ],
+          "timestamps": true,
+          "tenantIsolation": true
+        },
+        "relationships": [
+          { "type": "belongsTo", "target": "obras", "foreignKey": "obraId" }
+        ],
+        "indexes": [
+          { "fields": ["obraId"] },
+          { "fields": ["status"] }
+        ]
+      }
+    ],
+    "customWorkflows": [
+      {
+        "name": "Obra Lifecycle",
+        "entity": "obras",
+        "states": [
+          { "key": "planning", "label": "Planeamento", "color": "#94A3B8", "isInitial": true },
+          { "key": "approved", "label": "Aprovada", "color": "#3B82F6" },
+          { "key": "in_progress", "label": "Em Execução", "color": "#F59E0B" },
+          { "key": "on_hold", "label": "Suspensa", "color": "#EF4444" },
+          { "key": "completed", "label": "Concluída", "color": "#10B981", "isFinal": true },
+          { "key": "cancelled", "label": "Cancelada", "color": "#6B7280", "isFinal": true }
+        ],
+        "transitions": [
+          { "from": "planning", "to": "approved", "action": "approve", "label": "Aprovar Obra" },
+          { "from": "approved", "to": "in_progress", "action": "start", "label": "Iniciar Obra" },
+          { "from": "in_progress", "to": "on_hold", "action": "suspend", "label": "Suspender" },
+          { "from": "on_hold", "to": "in_progress", "action": "resume", "label": "Retomar" },
+          { "from": "in_progress", "to": "completed", "action": "complete", "label": "Concluir Obra" },
+          { "from": "*", "to": "cancelled", "action": "cancel", "label": "Cancelar" }
+        ]
+      },
+      {
+        "name": "Medição Workflow",
+        "entity": "medicoes",
+        "states": [
+          { "key": "draft", "label": "Rascunho", "color": "#94A3B8", "isInitial": true },
+          { "key": "submitted", "label": "Submetida", "color": "#3B82F6" },
+          { "key": "under_review", "label": "Em Análise", "color": "#F59E0B" },
+          { "key": "approved", "label": "Aprovada", "color": "#10B981" },
+          { "key": "rejected", "label": "Rejeitada", "color": "#EF4444" },
+          { "key": "paid", "label": "Paga", "color": "#059669", "isFinal": true }
+        ],
+        "transitions": [
+          { "from": "draft", "to": "submitted", "action": "submit", "label": "Submeter" },
+          { "from": "submitted", "to": "under_review", "action": "review", "label": "Analisar" },
+          { "from": "under_review", "to": "approved", "action": "approve", "label": "Aprovar" },
+          { "from": "under_review", "to": "rejected", "action": "reject", "label": "Rejeitar" },
+          { "from": "rejected", "to": "draft", "action": "revise", "label": "Rever" },
+          { "from": "approved", "to": "paid", "action": "pay", "label": "Pagar" }
+        ]
+      }
+    ],
+    "enabledFeatures": ["budget_tracking", "progress_photos", "safety_reports", "quality_control"]
+  }
+}

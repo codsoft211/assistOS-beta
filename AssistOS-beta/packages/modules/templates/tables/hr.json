@@ -1,0 +1,108 @@
+{
+  "moduleId": "hr",
+  "displayName": "Human Resources",
+  "tables": {
+    "employees": {
+      "tableName": "employees",
+      "description": "Employee records and basic information",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "full_name", "type": "text", "nullable": false },
+        { "name": "email", "type": "text", "nullable": false },
+        { "name": "phone", "type": "text", "nullable": true },
+        { "name": "position", "type": "text", "nullable": false },
+        { "name": "department", "type": "text", "nullable": false },
+        { "name": "salary", "type": "text", "nullable": true },
+        { "name": "start_date", "type": "date", "nullable": false },
+        { "name": "end_date", "type": "date", "nullable": true },
+        { "name": "status", "type": "text", "nullable": false, "default": "'Ativo'" },
+        { "name": "employee_number", "type": "text", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": true, "foreignKey": { "table": "users", "column": "id" } },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "employees_status_idx", "columns": ["status"] },
+        { "name": "employees_email_idx", "columns": ["email"] }
+      ]
+    },
+    "departments": {
+      "tableName": "departments",
+      "description": "Organization departments and hierarchy",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "name", "type": "text", "nullable": false },
+        { "name": "description", "type": "text", "nullable": true },
+        { "name": "parent_department_id", "type": "uuid", "nullable": true, "foreignKey": { "table": "departments", "column": "id", "onDelete": "SET NULL" } },
+        { "name": "manager_id", "type": "uuid", "nullable": true, "foreignKey": { "table": "users", "column": "id", "onDelete": "SET NULL" } },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "departments_parent_idx", "columns": ["parent_department_id"] },
+        { "name": "departments_manager_idx", "columns": ["manager_id"] }
+      ]
+    },
+    "attendance": {
+      "tableName": "attendance",
+      "description": "Employee attendance tracking",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "employee_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "employees", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "date", "type": "date", "nullable": false },
+        { "name": "check_in", "type": "timestamp", "nullable": true },
+        { "name": "check_out", "type": "timestamp", "nullable": true },
+        { "name": "status", "type": "text", "nullable": false },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "attendance_employee_idx", "columns": ["employee_id"] },
+        { "name": "attendance_date_idx", "columns": ["date"] }
+      ]
+    },
+    "performance_reviews": {
+      "tableName": "performance_reviews",
+      "description": "Employee performance evaluations",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "employee_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "employees", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "review_period", "type": "text", "nullable": false },
+        { "name": "rating", "type": "integer", "nullable": false },
+        { "name": "feedback", "type": "text", "nullable": false },
+        { "name": "goals", "type": "jsonb", "nullable": true },
+        { "name": "reviewed_by", "type": "uuid", "nullable": false, "foreignKey": { "table": "users", "column": "id" } },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "performance_reviews_employee_idx", "columns": ["employee_id"] }
+      ]
+    },
+    "payroll": {
+      "tableName": "payroll",
+      "description": "Monthly payroll records",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "month", "type": "text", "nullable": false },
+        { "name": "year", "type": "integer", "nullable": false },
+        { "name": "employee_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "employees", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "base_salary", "type": "decimal(10,2)", "nullable": false },
+        { "name": "bonuses", "type": "decimal(10,2)", "nullable": true, "default": "'0'" },
+        { "name": "deductions", "type": "decimal(10,2)", "nullable": true, "default": "'0'" },
+        { "name": "net_salary", "type": "decimal(10,2)", "nullable": false },
+        { "name": "status", "type": "text", "nullable": false, "default": "'Pendente'" },
+        { "name": "paid_at", "type": "timestamp", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": true, "foreignKey": { "table": "users", "column": "id" } },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "payroll_employee_idx", "columns": ["employee_id"] },
+        { "name": "payroll_month_year_idx", "columns": ["month", "year"] },
+        { "name": "payroll_status_idx", "columns": ["status"] }
+      ]
+    }
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "app": {
+    "name": "AssistOS",
+    "tagline": "Intelligent Business Management"
+  },
+  "navigation": {
+    "personal": "Personal",
+    "modules": "Modules",
+    "dashboard": "Dashboard",
+    "chat": "Chat",
+    "communications": "Communications",
+    "tasks": "Tasks"
+  },
+  "modules": {
+    "crm": "CRM",
+    "financeiro": "Financial",
+    "financial": "Financial",
+    "purchasing": "Purchasing",
+    "sales": "Sales",
+    "logistics": "Logistics",
+    "projects": "Projects",
+    "lead-generation": "Lead Generation",
+    "hr": "Human Resources",
+    "production": "Production",
+    "accounting": "Accounting"
+  },
+  "pages": {
+    "dashboard": "Dashboard",
+    "accountsReceivable": "Accounts Receivable",
+    "accountsPayable": "Accounts Payable",
+    "treasury": "Treasury"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import",
+    "download": "Download",
+    "upload": "Upload",
+    "approve": "Approve",
+    "reject": "Reject",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "confirm": "Confirm"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Information",
+    "noData": "No data available",
+    "required": "Required field",
+    "optional": "Optional",
+    "name": "Name",
+    "description": "Description",
+    "date": "Date",
+    "status": "Status",
+    "total": "Total",
+    "actions": "Actions"
+  },
+  "confidence": {
+    "label": "Confidence",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  },
+  "language": {
+    "portuguese": "Português",
+    "english": "English"
+  },
+  "toast": {
+    "tenantSwitched": "Tenant switched",
+    "tenantSwitchedDesc": "Successfully switched organization.",
+    "loggedOut": "Logged out",
+    "loggedOutDesc": "You have been successfully logged out."
+  },
+  "userMenu": {
+    "myAccount": "My Account",
+    "switchOrganization": "Switch Organization",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logOut": "Log out",
+    "loggingOut": "Logging out..."
+  },
+  "workflows": {
+    "leadGeneration": {
+      "autoScoring": "Automatic new leads scoring",
+      "autoAssignment": "Automatic lead assignment",
+      "nurturing": "Unqualified leads nurturing",
+      "cleanup": "Inactive leads cleanup"
+    },
+    "sales": {
+      "leadPipeline": "Lead Pipeline",
+      "orderFulfillment": "Order Fulfillment",
+      "quoteWorkflow": "Quote Workflow"
+    },
+    "purchasing": {
+      "expenseApproval": "Expense Approval Workflow",
+      "invoiceMatching": "Invoice Matching Workflow",
+      "poLifecycle": "PO Lifecycle",
+      "quickPurchase": "Quick Purchase Automation",
+      "rfqEvaluation": "RFQ Evaluation Workflow",
+      "receiptValidation": "Receipt Validation Workflow",
+      "requisitionApproval": "Requisition Approval Workflow",
+      "supplierReturn": "Supplier Return Workflow"
+    },
+    "financial": {
+      "invoiceLifecycle": "Invoice Lifecycle",
+      "paymentReconciliation": "Payment Reconciliation",
+      "monthEndClose": "Month-End Close"
+    },
+    "logistics": {
+      "equipmentAllocation": "Equipment Allocation",
+      "conflictResolution": "Conflict Resolution",
+      "preventiveMaintenance": "Preventive Maintenance",
+      "threeStepReceipt": "3-Step Receipt",
+      "twoStepDelivery": "2-Step Delivery",
+      "cycleCount": "Automated Cycle Count"
+    }
+  }
+}

@@ -1,0 +1,92 @@
+[
+  {
+    "id": "faq-001",
+    "question": "O que é o AssistOS?",
+    "answer": "O AssistOS é uma plataforma empresarial nativa de IA que permite criar agentes inteligentes, automações e módulos configuráveis para gerir toda a operação da sua empresa - desde vendas e compras até financeiro e logística.",
+    "patterns": ["o que é assistos", "what is assistos", "que é assistos", "o que faz assistos", "como funciona assistos"],
+    "category": "platform",
+    "locale": "pt-PT",
+    "confidence_threshold": 0.7
+  },
+  {
+    "id": "faq-002",
+    "question": "Que módulos estão disponíveis?",
+    "answer": "Temos 6 módulos principais:\n\n✅ **Compras** - Procurement com 3-way matching e OCR de faturas\n✅ **Vendas/Comercial** - CRM, orçamentos e propostas\n✅ **Financeiro** - Contabilidade, contas a pagar/receber, fluxo de caixa\n✅ **Logística** - Gestão de inventário e rastreabilidade\n✅ **Projetos** - Gestão de tarefas, timetracking e budgets\n✅ **Angariação** - Leads e prospeção\n\nTodos configuráveis e integráveis!",
+    "patterns": ["que módulos", "quais módulos", "módulos disponíveis", "available modules", "what modules"],
+    "category": "modules",
+    "locale": "pt-PT",
+    "confidence_threshold": 0.75
+  },
+  {
+    "id": "faq-003",
+    "question": "Como ativo um módulo?",
+    "answer": "Para ativar um módulo, basta dizer:\n\n\"Ativa o módulo de **[nome]**\" (ex: compras, vendas, financeiro)\n\nOu se preferir configuração personalizada:\n\"Quero configurar o módulo de **[nome]**\"\n\nVou guiá-lo no processo passo a passo!",
+    "patterns": ["como ativo", "ativar módulo", "activate module", "como configurar módulo", "setup module"],
+    "category": "configuration",
+    "locale": "pt-PT",
+    "confidence_threshold": 0.8
+  },
+  {
+    "id": "faq-004",
+    "question": "O AssistOS integra com o meu ERP?",
+    "answer": "Sim! Temos conectores para os principais ERPs portugueses:\n\n✅ Jasmin (Primavera)\n✅ PHC\n✅ SAP Business One\n✅ Sage\n✅ E qualquer API REST/SOAP via conector genérico\n\nPosso ajudá-lo a configurar a integração que precisa!",
+    "patterns": ["integra com", "integration", "conector", "connector", "jasmin", "phc", "sap", "erp"],
+    "category": "integrations",
+    "locale": "pt-PT",
+    "confidence_threshold": 0.75
+  },
+  {
+    "id": "faq-005",
+    "question": "Quanto custa o AssistOS?",
+    "answer": "O AssistOS tem planos flexíveis:\n\n💡 **Starter**: €49/mês - 1 utilizador, 2 módulos\n🚀 **Professional**: €149/mês - 5 utilizadores, módulos ilimitados\n🏢 **Enterprise**: Personalizado - utilizadores ilimitados, SLA dedicado\n\nTodos os planos incluem:\n✅ Agentes IA ilimitados\n✅ Automações configuráveis\n✅ Suporte técnico\n✅ Atualizações contínuas\n\nQuer experimentar gratuitamente por 14 dias?",
+    "patterns": ["quanto custa", "preço", "pricing", "how much", "planos", "plans"],
+    "category": "pricing",
+    "locale": "pt-PT",
+    "confidence_threshold": 0.8
+  },
+  {
+    "id": "faq-006",
+    "question": "Como posso ver as minhas faturas?",
+    "answer": "Pode ver as suas faturas de várias formas:\n\n1️⃣ **Direto**: \"Mostra as minhas faturas\" ou \"list my invoices\"\n2️⃣ **Filtrado**: \"Faturas em atraso\" / \"Faturas de Outubro\"\n3️⃣ **Específico**: \"Qual o estado da fatura INV-12345?\"\n\nTambém posso criar faturas, enviar por email ou gerar relatórios!",
+    "patterns": ["ver faturas", "mostrar faturas", "list invoices", "show invoices", "minhas faturas", "my invoices"],
+    "category": "operations",
+    "locale": "pt-PT",
+    "confidence_threshold": 0.85
+  },
+  {
+    "id": "faq-007",
+    "question": "Posso criar automações personalizadas?",
+    "answer": "Absolutamente! Pode criar automações como:\n\n🔄 **Exemplo 1**: Quando fatura vence em 3 dias → Enviar email de lembrete\n🔄 **Exemplo 2**: Quando encomenda é aprovada → Criar nota de entrega automaticamente\n🔄 **Exemplo 3**: Quando stock < mínimo → Criar requisição de compra\n\nDiga-me que processo quer automatizar e eu configuro!",
+    "patterns": ["criar automação", "automation", "automatizar", "workflow", "trigger", "quando acontece"],
+    "category": "automation",
+    "locale": "pt-PT",
+    "confidence_threshold": 0.75
+  },
+  {
+    "id": "faq-008",
+    "question": "Os meus dados estão seguros?",
+    "answer": "Sim! Segurança é a nossa prioridade:\n\n🔒 **Encriptação**: AES-256 em repouso, TLS 1.3 em trânsito\n🔐 **Isolamento**: Multi-tenant com isolamento total entre empresas\n✅ **Compliance**: RGPD completo, backups diários\n🛡️ **Acesso**: Role-based access control (RBAC)\n📍 **Hosting**: Servidores na EU (Frankfurt)\n\nAuditoria completa de todas as ações!",
+    "patterns": ["dados seguros", "segurança", "security", "safe", "rgpd", "gdpr", "compliance"],
+    "category": "security",
+    "locale": "pt-PT",
+    "confidence_threshold": 0.8
+  },
+  {
+    "id": "faq-009",
+    "question": "Como funciona o suporte?",
+    "answer": "Temos vários canais de suporte:\n\n💬 **Chat IA** (este!): 24/7, resposta instantânea\n📧 **Email**: suporte@assistos.com - resposta em <2h\n📞 **Telefone**: +351 xxx xxx xxx (horário comercial)\n🎥 **Videochamada**: Agendamento para onboarding/formação\n📚 **Documentação**: docs.assistos.com\n\nPlanos Enterprise têm suporte prioritário e gestor dedicado!",
+    "patterns": ["suporte", "support", "ajuda", "help", "contacto", "contact"],
+    "category": "support",
+    "locale": "pt-PT",
+    "confidence_threshold": 0.75
+  },
+  {
+    "id": "faq-010",
+    "question": "Posso importar dados do meu sistema anterior?",
+    "answer": "Sim! Facilitamos a migração:\n\n📊 **Formatos suportados**: Excel, CSV, JSON, SQL dumps\n🔄 **Importação automática**: Mapeamento inteligente de campos\n✅ **Validação**: Verificação de dados antes de importar\n🧹 **Limpeza**: Remoção de duplicados e inconsistências\n\nPosso guiá-lo no processo ou fazê-lo automaticamente!\n\nQue sistema usa atualmente?",
+    "patterns": ["importar dados", "import data", "migração", "migration", "transferir", "transfer"],
+    "category": "data_migration",
+    "locale": "pt-PT",
+    "confidence_threshold": 0.8
+  }
+]

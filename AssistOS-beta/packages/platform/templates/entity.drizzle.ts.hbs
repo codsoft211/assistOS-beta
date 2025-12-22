@@ -1,0 +1,22 @@
+import { pgTable, varchar, text, integer, real, timestamp, boolean, decimal, index } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
+import { createInsertSchema } from 'drizzle-zod';
+import { z } from 'zod';
+import { tenants } from './tenants';
+
+// Auto-generated entity: {{entityName}}
+export const {{tableName}} = pgTable("{{tableName}}", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").notNull().references(() => tenants.id),
+  {{#each fields}}
+  {{fieldKey}}: {{fieldType}}("{{fieldKey}}"){{#if required}}.notNull(){{/if}},
+  {{/each}}
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow()
+}, (table) => ({
+  tenantIdx: index("{{tableName}}_tenant_idx").on(table.tenantId)
+}));
+
+export const insert{{pascalEntityName}}Schema = createInsertSchema({{tableName}}).omit({ id: true, createdAt: true, updatedAt: true });
+export type Insert{{pascalEntityName}} = z.infer<typeof insert{{pascalEntityName}}Schema>;
+export type Select{{pascalEntityName}} = typeof {{tableName}}.$inferSelect;

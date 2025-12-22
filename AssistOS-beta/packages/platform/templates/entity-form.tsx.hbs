@@ -1,0 +1,57 @@
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { apiRequest } from '@/lib/queryClient';
+import { Button } from '@/components/ui/button';
+import { Form, FormField, FormItem, FormLabel, FormControl } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useLocation } from 'wouter';
+
+export default function {{pascalEntityName}}Form() {
+  const [, setLocation] = useLocation();
+  const queryClient = useQueryClient();
+
+  const form = useForm({
+    defaultValues: {
+      {{#each fields}}
+      {{fieldKey}}: '',
+      {{/each}}
+    }
+  });
+
+  const createMutation = useMutation({
+    mutationFn: (data: any) => apiRequest('/api/{{routePath}}', 'POST', data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/{{routePath}}'] });
+      setLocation('/{{routePath}}');
+    }
+  });
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6">Criar {{entityLabel}}</h1>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit((data) => createMutation.mutate(data))} className="space-y-4">
+          {{#each fields}}
+          <FormField
+            control={form.control}
+            name="{{fieldKey}}"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{{fieldLabel}}</FormLabel>
+                <FormControl>
+                  <Input {...field} data-testid="input-{{fieldKey}}" />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          {{/each}}
+
+          <Button type="submit" data-testid="button-submit-{{entityName}}" disabled={createMutation.isPending}>
+            {createMutation.isPending ? 'Criando...' : 'Criar {{entityLabel}}'}
+          </Button>
+        </form>
+      </Form>
+    </div>
+  );
+}
