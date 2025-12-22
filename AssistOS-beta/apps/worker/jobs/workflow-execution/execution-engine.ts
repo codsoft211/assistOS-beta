@@ -11,14 +11,14 @@
  */
 
 import { db } from '../../db.js';
-import { 
+import {
   assistbuildWorkflows,
   assistbuildExecutions,
   assistbuildExecutionLogs,
 } from '../../../../shared/schema.js';
 import { eq } from 'drizzle-orm';
-import type { 
-  AssistBuildWorkflowDefinition, 
+import type {
+  AssistBuildWorkflowDefinition,
   AssistBuildNode,
   AssistBuildEdge,
 } from '../../../../shared/schema.js';
@@ -28,6 +28,18 @@ import { CrudRecordExecutor } from './executors/crud-record.js';
 import { ScheduleTriggerExecutor } from './executors/schedule-trigger.js';
 import { FetchInvoiceExecutor } from './executors/fetch-invoice.js';
 import { SendEmailExecutor } from './executors/send-email.js';
+import { SetVariableExecutor } from './executors/set-variable.js';
+import { WaitExecutor } from './executors/wait.js';
+import { ConditionExecutor } from './executors/condition.js';
+import { CodeExecutionExecutor } from './executors/code-execution.js';
+import { JsonOperationExecutor } from './executors/json-operation.js';
+import { HttpRequestExecutor } from './executors/http-request.js';
+import { AiChatExecutor } from './executors/ai-chat.js';
+import { MergeExecutor } from './executors/merge.js';
+import { SocialExecutor } from './executors/social-executor.js';
+import { WebhookTriggerExecutor } from './executors/webhook-trigger.js';
+import { RssTriggerExecutor } from './executors/rss-trigger.js';
+import { PostgresExecutor } from './executors/postgres.js';
 
 interface ExecutionContext {
   workflowId: string;
@@ -53,12 +65,45 @@ export class ExecutionEngine {
     // Register node executors for Phase 1
     this.executors.set('manual_trigger', new ManualTriggerExecutor());
     this.executors.set('crud_record', new CrudRecordExecutor());
-    
+
     // Register Invoice Workflow node executors
     this.executors.set('schedule_trigger', new ScheduleTriggerExecutor());
     this.executors.set('fetch_invoice', new FetchInvoiceExecutor());
     this.executors.set('send_email', new SendEmailExecutor());
+
+    // Register Utility node executors
+    this.executors.set('set_variable', new SetVariableExecutor());
+    this.executors.set('wait', new WaitExecutor());
+    this.executors.set('condition', new ConditionExecutor());
+    this.executors.set('code_execution', new CodeExecutionExecutor());
+    this.executors.set('json_operation', new JsonOperationExecutor());
+    this.executors.set('http_request', new HttpRequestExecutor());
+    this.executors.set('ai_chat', new AiChatExecutor());
+    this.executors.set('merge', new MergeExecutor());
+
+    // Register Social/Integration executors
+    const socialExecutor = new SocialExecutor();
+    this.executors.set('slack', socialExecutor);
+    this.executors.set('discord', socialExecutor);
+    this.executors.set('telegram', socialExecutor);
+    this.executors.set('whatsapp_cloud', socialExecutor);
+    this.executors.set('twitter', socialExecutor);
+    this.executors.set('linkedin', socialExecutor);
+    this.executors.set('youtube', socialExecutor);
+    this.executors.set('facebook', socialExecutor);
+    this.executors.set('instagram', socialExecutor);
+    this.executors.set('twilio', socialExecutor);
+    this.executors.set('reddit', socialExecutor);
+    this.executors.set('pinterest', socialExecutor);
+    this.executors.set('tiktok', socialExecutor);
+    this.executors.set('mattermost', socialExecutor);
+    this.executors.set('rocket_chat', socialExecutor);
+
+    this.executors.set('webhook_trigger', new WebhookTriggerExecutor());
+    this.executors.set('rss_trigger', new RssTriggerExecutor());
+    this.executors.set('postgres', new PostgresExecutor());
   }
+
 
   /**
    * Main execution entry point
@@ -105,7 +150,7 @@ export class ExecutionEngine {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       const errorStack = error instanceof Error ? error.stack : undefined;
-      
+
       logger.error(
         { error: { message: errorMessage, stack: errorStack }, workflowId, executionId },
         '[ExecutionEngine] ❌ Workflow execution failed'
@@ -138,59 +183,59 @@ export class ExecutionEngine {
    */
   private getExecutionOrder(definition: AssistBuildWorkflowDefinition): AssistBuildNode[] {
     const { nodes, edges } = definition;
-    
+
     // Build adjacency list and in-degree map
     const adjacencyList = new Map<string, string[]>();
     const inDegree = new Map<string, number>();
-    
+
     // Initialize all nodes
     nodes.forEach((node: AssistBuildNode) => {
       adjacencyList.set(node.id, []);
       inDegree.set(node.id, 0);
     });
-    
+
     // Build graph from edges
     edges.forEach((edge: AssistBuildEdge) => {
       adjacencyList.get(edge.source)?.push(edge.target);
       inDegree.set(edge.target, (inDegree.get(edge.target) || 0) + 1);
     });
-    
+
     // Kahn's algorithm for topological sort
     const queue: string[] = [];
     const executionOrder: AssistBuildNode[] = [];
-    
+
     // Start with nodes that have no dependencies
     inDegree.forEach((degree, nodeId) => {
       if (degree === 0) {
         queue.push(nodeId);
       }
     });
-    
+
     while (queue.length > 0) {
       const nodeId = queue.shift()!;
       const node = nodes.find((n: AssistBuildNode) => n.id === nodeId);
-      
+
       if (node) {
         executionOrder.push(node);
       }
-      
+
       // Reduce in-degree for all neighbors
       const neighbors = adjacencyList.get(nodeId) || [];
       neighbors.forEach(neighborId => {
         const newDegree = (inDegree.get(neighborId) || 0) - 1;
         inDegree.set(neighborId, newDegree);
-        
+
         if (newDegree === 0) {
           queue.push(neighborId);
         }
       });
     }
-    
+
     // Check for cycles (should have been caught in validation)
     if (executionOrder.length !== nodes.length) {
       throw new Error('Cycle detected in workflow graph');
     }
-    
+
     return executionOrder;
   }
 
@@ -212,7 +257,7 @@ export class ExecutionEngine {
       { executionId, nodeId: node.id, nodeType: node.type },
       '[ExecutionEngine] Executing node'
     );
-    
+
     logger.info(
       { executionId, nodeId: node.id, nodeType: node.type, step: 'START_EXECUTE_NODE' },
       '[ExecutionEngine] DEBUG: Starting executeNode'
@@ -242,8 +287,8 @@ export class ExecutionEngine {
       // Substitute variables in node config before execution
       console.log('VARIABLE RESOLUTION CHECKPOINT 1 - About to resolve variables');
       logger.info(
-        { 
-          executionId, 
+        {
+          executionId,
           nodeId: node.id,
           originalConfig: node.config,
           contextVariables: context.variables,
@@ -252,19 +297,19 @@ export class ExecutionEngine {
         '[ExecutionEngine] BEFORE variable resolution'
       );
       console.log('VARIABLE RESOLUTION CHECKPOINT 2 - Logged BEFORE info');
-      
+
       const resolvedNode = this.resolveNodeVariables(node, context);
-      
+
       logger.info(
-        { 
-          executionId, 
+        {
+          executionId,
           nodeId: node.id,
           resolvedConfig: resolvedNode.config,
           contextVariables: context.variables
         },
         '[ExecutionEngine] AFTER variable resolution'
       );
-      
+
       // Additional debug for CRUD nodes
       if (node.type === 'crud_record') {
         logger.info(
@@ -283,6 +328,22 @@ export class ExecutionEngine {
       // Execute node with resolved config
       const result = await executor.execute(resolvedNode, context);
 
+      // Store output in context variables for downstream nodes
+      // This allows using {{nodeId.property}} or {{node_name.property}} in following nodes
+      if (result.success && result.output !== undefined) {
+        context.variables[node.id] = result.output;
+
+        // Also store under a sanitized version of the node name for easier access
+        if (node.name) {
+          const sanitizedName = node.name.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+          context.variables[sanitizedName] = result.output;
+        }
+
+        // Always maintain compatibility with existing nodes that might expect 'data'
+        context.variables['data'] = result.output;
+      }
+
+
       // Update log with result
       await db
         .update(assistbuildExecutionLogs)
@@ -296,9 +357,9 @@ export class ExecutionEngine {
         .where(eq(assistbuildExecutionLogs.id, logEntry.id));
 
       logger.info(
-        { 
-          executionId, 
-          nodeId: node.id, 
+        {
+          executionId,
+          nodeId: node.id,
           success: result.success,
           duration: Date.now() - startTime.getTime(),
         },
@@ -309,7 +370,7 @@ export class ExecutionEngine {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       const errorStack = error instanceof Error ? error.stack : undefined;
-      
+
       // Update log with error
       await db
         .update(assistbuildExecutionLogs)
@@ -337,13 +398,13 @@ export class ExecutionEngine {
    */
   private resolveNodeVariables(node: AssistBuildNode, context: ExecutionContext): AssistBuildNode {
     const resolvedNode = { ...node };
-    
+
     // Skip resolution for send_email node - it has its own template system
     // that works with invoice data in the loop
     if (node.type === 'send_email') {
       return resolvedNode;
     }
-    
+
     resolvedNode.config = this.resolveObject(node.config, context);
     return resolvedNode;
   }
@@ -396,7 +457,7 @@ export class ExecutionEngine {
    */
   private getValueByPath(path: string, context: ExecutionContext): any {
     const parts = path.split('.');
-    
+
     // Start with context variables (which includes 'trigger' set by ManualTriggerExecutor)
     let value: any = context.variables;
 
