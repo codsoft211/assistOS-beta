@@ -1,0 +1,192 @@
+{
+  "id": "events",
+  "name": "Gestão de Eventos",
+  "description": "Template completo para gestão de projetos de eventos com fornecedores, timeline, e checklists",
+  "icon": "Calendar",
+  "version": "1.0.0",
+  "suggestedFor": ["eventos", "event planning", "weddings", "conferences", "catering", "entertainment"],
+  "configuration": {
+    "customEntities": [
+      {
+        "name": "eventos",
+        "schema": {
+          "fields": [
+            { "name": "projectId", "type": "relation", "ref": "projects", "required": true },
+            { "name": "eventCode", "type": "text", "required": true, "unique": true },
+            { "name": "eventType", "type": "enum", "options": ["Wedding", "Corporate", "Conference", "Birthday", "Concert", "Festival", "Other"], "required": true },
+            { "name": "eventDate", "type": "datetime", "required": true },
+            { "name": "venue", "type": "text", "required": true },
+            { "name": "venueAddress", "type": "text" },
+            { "name": "expectedAttendees", "type": "number", "required": true },
+            { "name": "actualAttendees", "type": "number" },
+            { "name": "setupTime", "type": "datetime" },
+            { "name": "eventStartTime", "type": "datetime", "required": true },
+            { "name": "eventEndTime", "type": "datetime", "required": true },
+            { "name": "teardownTime", "type": "datetime" },
+            { "name": "theme", "type": "text" },
+            { "name": "dressCode", "type": "text" },
+            { "name": "specialRequirements", "type": "text" },
+            { "name": "status", "type": "enum", "options": ["Planning", "Confirmed", "In Progress", "Completed", "Cancelled"], "required": true, "default": "Planning" }
+          ],
+          "timestamps": true,
+          "tenantIsolation": true
+        },
+        "relationships": [
+          { "type": "belongsTo", "target": "projects", "foreignKey": "projectId" },
+          { "type": "hasMany", "target": "fornecedores_evento", "foreignKey": "eventoId" },
+          { "type": "hasMany", "target": "timeline_evento", "foreignKey": "eventoId" },
+          { "type": "hasMany", "target": "checklists", "foreignKey": "eventoId" }
+        ],
+        "indexes": [
+          { "fields": ["eventCode"], "unique": true },
+          { "fields": ["eventDate"] },
+          { "fields": ["status"] },
+          { "fields": ["projectId"] }
+        ]
+      },
+      {
+        "name": "fornecedores_evento",
+        "schema": {
+          "fields": [
+            { "name": "eventoId", "type": "relation", "ref": "eventos", "required": true },
+            { "name": "companyName", "type": "text", "required": true },
+            { "name": "serviceType", "type": "enum", "options": ["Catering", "Photography", "Videography", "Music/DJ", "Decoration", "Floristry", "Transportation", "Security", "Equipment Rental", "Other"], "required": true },
+            { "name": "contactPerson", "type": "text", "required": true },
+            { "name": "phone", "type": "phone", "required": true },
+            { "name": "email", "type": "email" },
+            { "name": "contractValue", "type": "decimal" },
+            { "name": "depositPaid", "type": "decimal" },
+            { "name": "depositDate", "type": "date" },
+            { "name": "finalPaymentDue", "type": "date" },
+            { "name": "finalPaymentStatus", "type": "enum", "options": ["Pending", "Partial", "Paid"], "default": "Pending" },
+            { "name": "arrivalTime", "type": "datetime" },
+            { "name": "setupDuration", "type": "number" },
+            { "name": "notes", "type": "text" },
+            { "name": "status", "type": "enum", "options": ["Pending", "Confirmed", "Arrived", "Setup Complete", "Service Complete", "Invoiced"], "required": true, "default": "Pending" }
+          ],
+          "timestamps": true,
+          "tenantIsolation": true
+        },
+        "relationships": [
+          { "type": "belongsTo", "target": "eventos", "foreignKey": "eventoId" }
+        ],
+        "indexes": [
+          { "fields": ["eventoId"] },
+          { "fields": ["serviceType"] },
+          { "fields": ["status"] }
+        ]
+      },
+      {
+        "name": "timeline_evento",
+        "schema": {
+          "fields": [
+            { "name": "eventoId", "type": "relation", "ref": "eventos", "required": true },
+            { "name": "activityName", "type": "text", "required": true },
+            { "name": "scheduledTime", "type": "datetime", "required": true },
+            { "name": "duration", "type": "number", "required": true },
+            { "name": "responsiblePerson", "type": "text" },
+            { "name": "location", "type": "text" },
+            { "name": "description", "type": "text" },
+            { "name": "category", "type": "enum", "options": ["Setup", "Guest Arrival", "Ceremony", "Reception", "Entertainment", "Meal Service", "Speech", "Teardown", "Other"] },
+            { "name": "isCompleted", "type": "boolean", "default": false },
+            { "name": "actualStartTime", "type": "datetime" },
+            { "name": "actualEndTime", "type": "datetime" },
+            { "name": "notes", "type": "text" }
+          ],
+          "timestamps": true,
+          "tenantIsolation": true
+        },
+        "relationships": [
+          { "type": "belongsTo", "target": "eventos", "foreignKey": "eventoId" }
+        ],
+        "indexes": [
+          { "fields": ["eventoId"] },
+          { "fields": ["scheduledTime"] },
+          { "fields": ["category"] }
+        ]
+      },
+      {
+        "name": "checklists",
+        "schema": {
+          "fields": [
+            { "name": "eventoId", "type": "relation", "ref": "eventos", "required": true },
+            { "name": "checklistName", "type": "text", "required": true },
+            { "name": "category", "type": "enum", "options": ["Pre-Event", "Day-Of", "Post-Event"], "required": true },
+            { "name": "priority", "type": "enum", "options": ["Low", "Medium", "High", "Critical"], "required": true, "default": "Medium" },
+            { "name": "dueDate", "type": "date" },
+            { "name": "assignedTo", "type": "text" },
+            { "name": "description", "type": "text" },
+            { "name": "isCompleted", "type": "boolean", "default": false },
+            { "name": "completedDate", "type": "datetime" },
+            { "name": "completedBy", "type": "text" },
+            { "name": "notes", "type": "text" }
+          ],
+          "timestamps": true,
+          "tenantIsolation": true
+        },
+        "relationships": [
+          { "type": "belongsTo", "target": "eventos", "foreignKey": "eventoId" }
+        ],
+        "indexes": [
+          { "fields": ["eventoId"] },
+          { "fields": ["category"] },
+          { "fields": ["priority"] },
+          { "fields": ["isCompleted"] }
+        ]
+      }
+    ],
+    "customWorkflows": [
+      {
+        "name": "Event Lifecycle",
+        "entity": "eventos",
+        "states": [
+          { "key": "planning", "label": "Planeamento", "color": "#94A3B8", "isInitial": true },
+          { "key": "confirmed", "label": "Confirmado", "color": "#3B82F6" },
+          { "key": "in_progress", "label": "Em Decorrer", "color": "#F59E0B" },
+          { "key": "completed", "label": "Concluído", "color": "#10B981", "isFinal": true },
+          { "key": "cancelled", "label": "Cancelado", "color": "#EF4444", "isFinal": true }
+        ],
+        "transitions": [
+          { "from": "planning", "to": "confirmed", "action": "confirm", "label": "Confirmar Evento" },
+          { "from": "confirmed", "to": "in_progress", "action": "start", "label": "Iniciar Evento" },
+          { "from": "in_progress", "to": "completed", "action": "complete", "label": "Concluir Evento" },
+          { "from": "*", "to": "cancelled", "action": "cancel", "label": "Cancelar" }
+        ],
+        "automations": [
+          {
+            "trigger": "state_change",
+            "condition": { "to": "confirmed" },
+            "action": "send_confirmation_emails",
+            "params": { "template": "event_confirmation" }
+          },
+          {
+            "trigger": "state_change",
+            "condition": { "to": "completed" },
+            "action": "create_invoice",
+            "params": {}
+          }
+        ]
+      },
+      {
+        "name": "Supplier Workflow",
+        "entity": "fornecedores_evento",
+        "states": [
+          { "key": "pending", "label": "Pendente", "color": "#94A3B8", "isInitial": true },
+          { "key": "confirmed", "label": "Confirmado", "color": "#3B82F6" },
+          { "key": "arrived", "label": "Chegou", "color": "#8B5CF6" },
+          { "key": "setup_complete", "label": "Setup Completo", "color": "#F59E0B" },
+          { "key": "service_complete", "label": "Serviço Completo", "color": "#10B981" },
+          { "key": "invoiced", "label": "Faturado", "color": "#059669", "isFinal": true }
+        ],
+        "transitions": [
+          { "from": "pending", "to": "confirmed", "action": "confirm", "label": "Confirmar" },
+          { "from": "confirmed", "to": "arrived", "action": "mark_arrived", "label": "Marcar Chegada" },
+          { "from": "arrived", "to": "setup_complete", "action": "complete_setup", "label": "Setup Completo" },
+          { "from": "setup_complete", "to": "service_complete", "action": "complete_service", "label": "Serviço Completo" },
+          { "from": "service_complete", "to": "invoiced", "action": "invoice", "label": "Faturar" }
+        ]
+      }
+    ],
+    "enabledFeatures": ["guest_management", "seating_plans", "menu_planning", "budget_tracking"]
+  }
+}

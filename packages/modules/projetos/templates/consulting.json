@@ -1,0 +1,218 @@
+{
+  "id": "consulting",
+  "name": "Consultoria Profissional",
+  "description": "Template completo para projetos de consultoria com deliverables, timesheets, e milestones",
+  "icon": "Briefcase",
+  "version": "1.0.0",
+  "suggestedFor": ["consultoria", "consulting", "advisory", "professional services", "strategy"],
+  "configuration": {
+    "customEntities": [
+      {
+        "name": "deliverables",
+        "schema": {
+          "fields": [
+            { "name": "projectId", "type": "relation", "ref": "projects", "required": true },
+            { "name": "deliverableCode", "type": "text", "required": true, "unique": true },
+            { "name": "title", "type": "text", "required": true },
+            { "name": "description", "type": "text", "required": true },
+            { "name": "deliverableType", "type": "enum", "options": ["Report", "Presentation", "Analysis", "Strategy Document", "Implementation Plan", "Training", "Workshop", "Other"], "required": true },
+            { "name": "dueDate", "type": "date", "required": true },
+            { "name": "submissionDate", "type": "date" },
+            { "name": "approvalDate", "type": "date" },
+            { "name": "estimatedHours", "type": "decimal" },
+            { "name": "actualHours", "type": "decimal" },
+            { "name": "assignedTo", "type": "text" },
+            { "name": "reviewedBy", "type": "text" },
+            { "name": "status", "type": "enum", "options": ["Not Started", "In Progress", "Under Review", "Revision Required", "Approved", "Delivered"], "required": true, "default": "Not Started" },
+            { "name": "priority", "type": "enum", "options": ["Low", "Medium", "High", "Critical"], "required": true, "default": "Medium" },
+            { "name": "notes", "type": "text" },
+            { "name": "clientFeedback", "type": "text" }
+          ],
+          "timestamps": true,
+          "tenantIsolation": true
+        },
+        "relationships": [
+          { "type": "belongsTo", "target": "projects", "foreignKey": "projectId" },
+          { "type": "hasMany", "target": "milestones", "foreignKey": "deliverableId" }
+        ],
+        "indexes": [
+          { "fields": ["deliverableCode"], "unique": true },
+          { "fields": ["projectId"] },
+          { "fields": ["status"] },
+          { "fields": ["dueDate"] }
+        ]
+      },
+      {
+        "name": "timesheets",
+        "schema": {
+          "fields": [
+            { "name": "projectId", "type": "relation", "ref": "projects", "required": true },
+            { "name": "userId", "type": "text", "required": true },
+            { "name": "date", "type": "date", "required": true },
+            { "name": "hours", "type": "decimal", "required": true },
+            { "name": "activityType", "type": "enum", "options": ["Research", "Analysis", "Client Meeting", "Documentation", "Presentation Prep", "Training", "Travel", "Internal Meeting", "Other"], "required": true },
+            { "name": "taskDescription", "type": "text", "required": true },
+            { "name": "billable", "type": "boolean", "default": true },
+            { "name": "hourlyRate", "type": "decimal" },
+            { "name": "totalValue", "type": "decimal" },
+            { "name": "deliverableId", "type": "relation", "ref": "deliverables" },
+            { "name": "status", "type": "enum", "options": ["Draft", "Submitted", "Approved", "Rejected", "Invoiced"], "required": true, "default": "Draft" },
+            { "name": "approvedBy", "type": "text" },
+            { "name": "approvalDate", "type": "date" },
+            { "name": "rejectionReason", "type": "text" },
+            { "name": "notes", "type": "text" }
+          ],
+          "timestamps": true,
+          "tenantIsolation": true
+        },
+        "relationships": [
+          { "type": "belongsTo", "target": "projects", "foreignKey": "projectId" },
+          { "type": "belongsTo", "target": "deliverables", "foreignKey": "deliverableId" }
+        ],
+        "indexes": [
+          { "fields": ["projectId"] },
+          { "fields": ["userId"] },
+          { "fields": ["date"] },
+          { "fields": ["status"] }
+        ]
+      },
+      {
+        "name": "milestones",
+        "schema": {
+          "fields": [
+            { "name": "projectId", "type": "relation", "ref": "projects", "required": true },
+            { "name": "deliverableId", "type": "relation", "ref": "deliverables" },
+            { "name": "milestoneName", "type": "text", "required": true },
+            { "name": "description", "type": "text" },
+            { "name": "targetDate", "type": "date", "required": true },
+            { "name": "completionDate", "type": "date" },
+            { "name": "paymentPercentage", "type": "decimal" },
+            { "name": "paymentAmount", "type": "decimal" },
+            { "name": "status", "type": "enum", "options": ["Pending", "In Progress", "Completed", "Delayed", "Cancelled"], "required": true, "default": "Pending" },
+            { "name": "successCriteria", "type": "text" },
+            { "name": "dependencies", "type": "text" },
+            { "name": "responsibleParty", "type": "text" },
+            { "name": "notes", "type": "text" }
+          ],
+          "timestamps": true,
+          "tenantIsolation": true
+        },
+        "relationships": [
+          { "type": "belongsTo", "target": "projects", "foreignKey": "projectId" },
+          { "type": "belongsTo", "target": "deliverables", "foreignKey": "deliverableId" }
+        ],
+        "indexes": [
+          { "fields": ["projectId"] },
+          { "fields": ["deliverableId"] },
+          { "fields": ["status"] },
+          { "fields": ["targetDate"] }
+        ]
+      },
+      {
+        "name": "expertise_areas",
+        "schema": {
+          "fields": [
+            { "name": "projectId", "type": "relation", "ref": "projects", "required": true },
+            { "name": "expertiseName", "type": "text", "required": true },
+            { "name": "category", "type": "enum", "options": ["Strategy", "Operations", "Finance", "Technology", "HR", "Marketing", "Sales", "Legal", "Other"], "required": true },
+            { "name": "expertUserId", "type": "text" },
+            { "name": "hoursAllocated", "type": "decimal" },
+            { "name": "hoursConsumed", "type": "decimal", "default": 0 },
+            { "name": "status", "type": "enum", "options": ["Available", "Allocated", "Completed"], "required": true, "default": "Available" }
+          ],
+          "timestamps": true,
+          "tenantIsolation": true
+        },
+        "relationships": [
+          { "type": "belongsTo", "target": "projects", "foreignKey": "projectId" }
+        ],
+        "indexes": [
+          { "fields": ["projectId"] },
+          { "fields": ["category"] },
+          { "fields": ["status"] }
+        ]
+      }
+    ],
+    "customWorkflows": [
+      {
+        "name": "Deliverable Workflow",
+        "entity": "deliverables",
+        "states": [
+          { "key": "not_started", "label": "Não Iniciado", "color": "#94A3B8", "isInitial": true },
+          { "key": "in_progress", "label": "Em Progresso", "color": "#3B82F6" },
+          { "key": "under_review", "label": "Em Revisão", "color": "#F59E0B" },
+          { "key": "revision_required", "label": "Necessita Revisão", "color": "#EF4444" },
+          { "key": "approved", "label": "Aprovado", "color": "#10B981" },
+          { "key": "delivered", "label": "Entregue", "color": "#059669", "isFinal": true }
+        ],
+        "transitions": [
+          { "from": "not_started", "to": "in_progress", "action": "start", "label": "Iniciar" },
+          { "from": "in_progress", "to": "under_review", "action": "submit_review", "label": "Submeter para Revisão" },
+          { "from": "under_review", "to": "approved", "action": "approve", "label": "Aprovar" },
+          { "from": "under_review", "to": "revision_required", "action": "request_revision", "label": "Solicitar Revisão" },
+          { "from": "revision_required", "to": "in_progress", "action": "revise", "label": "Rever" },
+          { "from": "approved", "to": "delivered", "action": "deliver", "label": "Entregar" }
+        ],
+        "automations": [
+          {
+            "trigger": "state_change",
+            "condition": { "to": "under_review" },
+            "action": "notify_reviewer",
+            "params": {}
+          },
+          {
+            "trigger": "state_change",
+            "condition": { "to": "delivered" },
+            "action": "trigger_milestone_check",
+            "params": {}
+          }
+        ]
+      },
+      {
+        "name": "Timesheet Approval",
+        "entity": "timesheets",
+        "states": [
+          { "key": "draft", "label": "Rascunho", "color": "#94A3B8", "isInitial": true },
+          { "key": "submitted", "label": "Submetido", "color": "#3B82F6" },
+          { "key": "approved", "label": "Aprovado", "color": "#10B981" },
+          { "key": "rejected", "label": "Rejeitado", "color": "#EF4444" },
+          { "key": "invoiced", "label": "Faturado", "color": "#059669", "isFinal": true }
+        ],
+        "transitions": [
+          { "from": "draft", "to": "submitted", "action": "submit", "label": "Submeter" },
+          { "from": "submitted", "to": "approved", "action": "approve", "label": "Aprovar" },
+          { "from": "submitted", "to": "rejected", "action": "reject", "label": "Rejeitar" },
+          { "from": "rejected", "to": "draft", "action": "revise", "label": "Rever" },
+          { "from": "approved", "to": "invoiced", "action": "invoice", "label": "Faturar" }
+        ]
+      },
+      {
+        "name": "Milestone Tracking",
+        "entity": "milestones",
+        "states": [
+          { "key": "pending", "label": "Pendente", "color": "#94A3B8", "isInitial": true },
+          { "key": "in_progress", "label": "Em Progresso", "color": "#3B82F6" },
+          { "key": "completed", "label": "Concluído", "color": "#10B981", "isFinal": true },
+          { "key": "delayed", "label": "Atrasado", "color": "#F59E0B" },
+          { "key": "cancelled", "label": "Cancelado", "color": "#EF4444", "isFinal": true }
+        ],
+        "transitions": [
+          { "from": "pending", "to": "in_progress", "action": "start", "label": "Iniciar" },
+          { "from": "in_progress", "to": "completed", "action": "complete", "label": "Concluir" },
+          { "from": "in_progress", "to": "delayed", "action": "mark_delayed", "label": "Marcar Atrasado" },
+          { "from": "delayed", "to": "in_progress", "action": "resume", "label": "Retomar" },
+          { "from": "*", "to": "cancelled", "action": "cancel", "label": "Cancelar" }
+        ],
+        "automations": [
+          {
+            "trigger": "state_change",
+            "condition": { "to": "completed" },
+            "action": "trigger_payment",
+            "params": {}
+          }
+        ]
+      }
+    ],
+    "enabledFeatures": ["time_tracking", "profitability_analysis", "resource_planning", "client_portal"]
+  }
+}

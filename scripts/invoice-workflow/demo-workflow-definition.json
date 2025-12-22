@@ -1,0 +1,70 @@
+{
+  "name": "Scheduled Invoice Email Reminder",
+  "description": "Automatically fetch overdue invoices and send email reminders on a schedule",
+  "version": "1.0.0",
+  "nodes": [
+    {
+      "id": "schedule_1",
+      "type": "schedule_trigger",
+      "position": { "x": 100, "y": 200 },
+      "data": {
+        "label": "Daily 9 AM",
+        "config": {
+          "scheduleType": "cron",
+          "cronExpression": "0 9 * * *",
+          "timezone": "UTC",
+          "label": "Daily Invoice Check"
+        }
+      }
+    },
+    {
+      "id": "fetch_1",
+      "type": "fetch_invoice",
+      "position": { "x": 400, "y": 200 },
+      "data": {
+        "label": "Fetch Overdue Invoices",
+        "config": {
+          "status": "overdue",
+          "dueDateRange": "past",
+          "limit": 100
+        }
+      }
+    },
+    {
+      "id": "email_1",
+      "type": "send_email",
+      "position": { "x": 700, "y": 200 },
+      "data": {
+        "label": "Send Reminder Emails",
+        "config": {
+          "mode": "batch",
+          "toField": "{{customer_email}}",
+          "subject": "Invoice Reminder - {{invoice_number}}",
+          "bodyTemplate": "Dear {{customer_name}},\n\nThis is a friendly reminder that invoice {{invoice_number}} for ${{amount}} is overdue.\n\nDue Date: {{due_date}}\nAmount: ${{amount}}\n\nPlease arrange payment at your earliest convenience.\n\nBest regards,\nAccounts Team",
+          "fromName": "Accounts Team"
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_schedule_fetch",
+      "source": "schedule_1",
+      "target": "fetch_1",
+      "sourceHandle": "trigger",
+      "targetHandle": "trigger"
+    },
+    {
+      "id": "e_fetch_email",
+      "source": "fetch_1",
+      "target": "email_1",
+      "sourceHandle": "invoices",
+      "targetHandle": "data"
+    }
+  ],
+  "metadata": {
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "category": "finance",
+    "tags": ["invoice", "email", "automation", "scheduled"]
+  }
+}

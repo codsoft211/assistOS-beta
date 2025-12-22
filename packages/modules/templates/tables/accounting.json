@@ -1,0 +1,125 @@
+{
+  "moduleId": "accounting",
+  "displayName": "Accounting",
+  "tables": {
+    "chart_of_accounts": {
+      "tableName": "chart_of_accounts",
+      "description": "Chart of accounts for financial reporting",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "code", "type": "text", "nullable": false },
+        { "name": "name", "type": "text", "nullable": false },
+        { "name": "account_type", "type": "text", "nullable": false },
+        { "name": "parent_code", "type": "text", "nullable": true },
+        { "name": "level", "type": "integer", "nullable": false },
+        { "name": "is_active", "type": "boolean", "nullable": false, "default": "true" },
+        { "name": "normal_balance", "type": "text", "nullable": false },
+        { "name": "description", "type": "text", "nullable": true },
+        { "name": "taxonomy_reference", "type": "text", "nullable": true },
+        { "name": "grouping_code", "type": "text", "nullable": true },
+        { "name": "grouping_category", "type": "text", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "chart_of_accounts_code_idx", "columns": ["code"] },
+        { "name": "chart_of_accounts_account_type_idx", "columns": ["account_type"] }
+      ]
+    },
+    "journal_entries": {
+      "tableName": "journal_entries",
+      "description": "Accounting journal entries",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "entry_number", "type": "text", "nullable": false },
+        { "name": "entry_date", "type": "timestamp", "nullable": false },
+        { "name": "system_entry_date", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "fiscal_period", "type": "text", "nullable": false },
+        { "name": "description", "type": "text", "nullable": false },
+        { "name": "reference", "type": "text", "nullable": true },
+        { "name": "source_type", "type": "text", "nullable": false },
+        { "name": "source_id", "type": "uuid", "nullable": true },
+        { "name": "status", "type": "text", "nullable": false, "default": "'draft'" },
+        { "name": "base_currency", "type": "text", "nullable": false, "default": "'EUR'" },
+        { "name": "currency", "type": "text", "nullable": false, "default": "'EUR'" },
+        { "name": "exchange_rate", "type": "decimal(15,6)", "nullable": false, "default": "'1.0'" },
+        { "name": "total_debit", "type": "decimal(12,2)", "nullable": false },
+        { "name": "total_credit", "type": "decimal(12,2)", "nullable": false },
+        { "name": "base_currency_total_debit", "type": "decimal(12,2)", "nullable": true },
+        { "name": "base_currency_total_credit", "type": "decimal(12,2)", "nullable": true },
+        { "name": "doc_archival_number", "type": "text", "nullable": true },
+        { "name": "hash_control", "type": "text", "nullable": true },
+        { "name": "transaction_id", "type": "text", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": false, "foreignKey": { "table": "users", "column": "id" } },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "journal_entries_fiscal_period_idx", "columns": ["fiscal_period"] },
+        { "name": "journal_entries_source_type_idx", "columns": ["source_type"] },
+        { "name": "journal_entries_status_idx", "columns": ["status"] },
+        { "name": "journal_entries_entry_number_idx", "columns": ["entry_number"] }
+      ]
+    },
+    "journal_entry_lines": {
+      "tableName": "journal_entry_lines",
+      "description": "Individual lines within journal entries",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "entry_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "journal_entries", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "account_code", "type": "text", "nullable": false },
+        { "name": "description", "type": "text", "nullable": false },
+        { "name": "debit", "type": "decimal(12,2)", "nullable": false, "default": "'0'" },
+        { "name": "credit", "type": "decimal(12,2)", "nullable": false, "default": "'0'" },
+        { "name": "cost_center", "type": "text", "nullable": true },
+        { "name": "project_id", "type": "uuid", "nullable": true },
+        { "name": "currency", "type": "text", "nullable": false, "default": "'EUR'" },
+        { "name": "metadata", "type": "jsonb", "nullable": true }
+      ],
+      "indexes": [
+        { "name": "journal_entry_lines_entry_id_idx", "columns": ["entry_id"] },
+        { "name": "journal_entry_lines_account_code_idx", "columns": ["account_code"] }
+      ]
+    },
+    "fiscal_periods": {
+      "tableName": "fiscal_periods",
+      "description": "Accounting fiscal periods and their status",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "fiscal_year", "type": "integer", "nullable": false },
+        { "name": "period_type", "type": "text", "nullable": false },
+        { "name": "period_code", "type": "text", "nullable": false },
+        { "name": "start_date", "type": "timestamp", "nullable": false },
+        { "name": "end_date", "type": "timestamp", "nullable": false },
+        { "name": "status", "type": "text", "nullable": false, "default": "'open'" },
+        { "name": "closed_by", "type": "uuid", "nullable": true, "foreignKey": { "table": "users", "column": "id" } },
+        { "name": "closed_at", "type": "timestamp", "nullable": true }
+      ],
+      "indexes": [
+        { "name": "fiscal_periods_fiscal_year_idx", "columns": ["fiscal_year"] },
+        { "name": "fiscal_periods_period_code_idx", "columns": ["period_code"] },
+        { "name": "fiscal_periods_status_idx", "columns": ["status"] }
+      ]
+    },
+    "budgets": {
+      "tableName": "budgets",
+      "description": "Budget tracking and planning",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "name", "type": "text", "nullable": false },
+        { "name": "period", "type": "text", "nullable": false },
+        { "name": "category", "type": "text", "nullable": true },
+        { "name": "amount", "type": "decimal(12,2)", "nullable": false },
+        { "name": "spent", "type": "decimal(12,2)", "nullable": false, "default": "'0'" },
+        { "name": "created_by", "type": "uuid", "nullable": true, "foreignKey": { "table": "users", "column": "id" } },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "budgets_period_idx", "columns": ["period"] },
+        { "name": "budgets_category_idx", "columns": ["category"] }
+      ]
+    }
+  }
+}

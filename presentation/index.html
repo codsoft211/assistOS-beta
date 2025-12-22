@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AssistOS - Apresentação do Produto</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0A1628;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    
+    .slide {
+      min-height: 100vh;
+      padding: 60px 80px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    
+    .slide-number {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      font-size: 14px;
+      opacity: 0.5;
+    }
+    
+    .logo {
+      height: 40px;
+      margin-bottom: 40px;
+    }
+    
+    h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #3B82F6, #60A5FA);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    h2 {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 30px;
+      color: #60A5FA;
+    }
+    
+    h3 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #93C5FD;
+    }
+    
+    p {
+      font-size: 20px;
+      line-height: 1.6;
+      color: #94A3B8;
+      max-width: 800px;
+    }
+    
+    .subtitle {
+      font-size: 24px;
+      color: #64748B;
+      margin-bottom: 60px;
+    }
+    
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 40px;
+    }
+    
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-top: 40px;
+    }
+    
+    .card {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 16px;
+      padding: 30px;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(59, 130, 246, 0.5);
+    }
+    
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    
+    .screenshot {
+      background: #1E293B;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .screenshot img {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    
+    .screenshot-placeholder {
+      background: linear-gradient(135deg, #1E293B, #0F172A);
+      border: 2px dashed rgba(59, 130, 246, 0.3);
+      border-radius: 12px;
+      padding: 60px;
+      text-align: center;
+      color: #64748B;
+    }
+    
+    .chat-demo {
+      background: #1E293B;
+      border-radius: 16px;
+      padding: 24px;
+      margin: 20px 0;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+    
+    .chat-message {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .chat-message.user {
+      flex-direction: row-reverse;
+    }
+    
+    .chat-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #3B82F6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    
+    .chat-message.user .chat-avatar {
+      background: #6366F1;
+    }
+    
+    .chat-bubble {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 12px;
+      padding: 12px 16px;
+      max-width: 80%;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    
+    .chat-message.user .chat-bubble {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+    
+    .chat-bubble .action {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: #4ADE80;
+    }
+    
+    .chat-bubble .action-icon {
+      margin-right: 8px;
+    }
+    
+    .feature-list {
+      list-style: none;
+      margin-top: 20px;
+    }
+    
+    .feature-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .feature-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+    }
+    
+    .feature-item:last-child {
+      border-bottom: none;
+    }
+    
+    .feature-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
+      flex-shrink: 0;
+      font-size: 18px;
+      color: #CBD5E1;
+    }
+    
+    .feature-list li::before {
+      content: "✓";
+      color: #4ADE80;
+      font-weight: bold;
+    }
+    
+    .agent-badge {
+      display: inline-block;
+      padding: 6px 14px;
+      background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .agent-badge.build {
+      background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+    }
+    
+    .agent-badge.settings {
+      background: linear-gradient(135deg, #10B981, #059669);
+    }
+    
+    .stats {
+      display: flex;
+      gap: 60px;
+      margin: 40px 0;
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 56px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #3B82F6, #60A5FA);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .stat-label {
+      font-size: 16px;
+      color: #64748B;
+      margin-top: 8px;
+    }
+    
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+      margin: 60px 0;
+    }
+    
+    .nav {
+      position: fixed;
+      bottom: 30px;
+      right: 40px;
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+    }
+    
+    .nav button {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      background: rgba(30, 41, 59, 0.9);
+      color: #fff;
+      cursor: pointer;
+      font-size: 20px;
+      transition: all 0.3s;
+    }
+    
+    .nav button:hover {
+      background: #3B82F6;
+      border-color: #3B82F6;
+    }
+    
+    .tool-card {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(59, 130, 246, 0.15);
+      border-radius: 10px;
+      padding: 16px;
+      margin: 8px 0;
+      font-size: 14px;
+    }
+    
+    .tool-card code {
+      color: #60A5FA;
+      font-family: 'Fira Code', monospace;
+    }
+    
+    .integration-logo {
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Slide 1: Intro -->
+  <section class="slide" id="slide1">
+    <span class="slide-number">01 / 05</span>
+    <img src="../client/public/logo_dark.png" alt="AssistOS" class="logo">
+    
+    <h1>AssistOS</h1>
+    <p class="subtitle">Sistema Operativo Empresarial com IA Nativa</p>
+    
+    <p>Uma plataforma que substitui ERPs tradicionais por agentes de IA que automatizam operações, configuram módulos via conversa, e aprendem padrões do seu negócio.</p>
+    
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-number">75+</div>
+        <div class="stat-label">Ferramentas de IA</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Agentes Especializados</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Automação Contínua</div>
+      </div>
+    </div>
+    
+    <div class="grid-3" style="margin-top: auto;">
+      <div class="card">
+        <span class="agent-badge">AssistME</span>
+        <h3>Copiloto Operacional</h3>
+        <p style="font-size: 16px;">Executa tarefas do dia-a-dia: criar faturas, analisar documentos, gerir leads, projetos e muito mais.</p>
+      </div>
+      <div class="card">
+        <span class="agent-badge build">AssistBuild</span>
+        <h3>Configurador</h3>
+        <p style="font-size: 16px;">Configura módulos e campos personalizados através de conversa natural. Sem código.</p>
+      </div>
+      <div class="card">
+        <span class="agent-badge settings">AssistSettings</span>
+        <h3>Gestor de Preferências</h3>
+        <p style="font-size: 16px;">Personaliza notificações, integrações e preferências do utilizador.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 2: AssistME - Automações -->
+  <section class="slide" id="slide2">
+    <span class="slide-number">02 / 05</span>
+    <img src="../client/public/logo_dark.png" alt="AssistOS" class="logo">
+    
+    <h2><span class="agent-badge">AssistME</span> Automações em Ação</h2>
+    <p>O AssistME executa operações complexas através de linguagem natural.</p>
+    
+    <div class="grid-2">
+      <div>
+        <h3>🧾 Criar Fatura via Conversa</h3>
+        <div class="chat-demo">
+          <div class="chat-message user">
+            <div class="chat-avatar">U</div>
+            <div class="chat-bubble">Cria uma fatura para o cliente Empresa ABC, serviço de consultoria, 2500€</div>
+          </div>
+          <div class="chat-message">
+            <div class="chat-avatar">🤖</div>
+            <div class="chat-bubble">
+              Vou criar a fatura para a Empresa ABC.
+              <div class="action">
+                <span class="action-icon">✓</span> Fatura #2024-0089 criada com sucesso
+                <br>• Cliente: Empresa ABC
+                <br>• Valor: 2.500,00 €
+                <br>• Serviço: Consultoria
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h3>📄 Análise de Documento com OCR</h3>
+        <div class="chat-demo">
+          <div class="chat-message user">
+            <div class="chat-avatar">U</div>
+            <div class="chat-bubble">Analisa esta fatura que recebi [anexo: fatura.pdf]</div>
+          </div>
+          <div class="chat-message">
+            <div class="chat-avatar">🤖</div>
+            <div class="chat-bubble">
+              Analisei o documento com OCR (Document AI):
+              <div class="action">
+                <span class="action-icon">📊</span> Fatura Recebida (A Pagar)
+                <br>• Fornecedor: Tech Solutions Lda
+                <br>• NIF: 509123456
+                <br>• Valor: 1.850,00 € + IVA
+                <br>• Vencimento: 15/01/2025
+                <br><br>💡 Sugestão: Registar como despesa em Fornecedores
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <h3>📋 Gestão de Leads</h3>
+        <div class="chat-demo">
+          <div class="chat-message user">
+            <div class="chat-avatar">U</div>
+            <div class="chat-bubble">Cria um lead para João Silva, email joao@empresa.pt, interessado em catering para 50 pessoas</div>
+          </div>
+          <div class="chat-message">
+            <div class="chat-avatar">🤖</div>
+            <div class="chat-bubble">
+              Lead criado no módulo de Angariação:
+              <div class="action">
+                <span class="action-icon">✓</span> Lead #L-2024-0156
+                <br>• Nome: João Silva
+                <br>• Email: joao@empresa.pt
+                <br>• Evento: Catering (50 pax)
+                <br>• Status: Novo
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h3>📊 Relatórios Rápidos</h3>
+        <div class="chat-demo">
+          <div class="chat-message user">
+            <div class="chat-avatar">U</div>
+            <div class="chat-bubble">Qual o total de faturas pendentes este mês?</div>
+          </div>
+          <div class="chat-message">
+            <div class="chat-avatar">🤖</div>
+            <div class="chat-bubble">
+              <div class="action">
+                <span class="action-icon">📈</span> Resumo de Faturação - Dezembro 2024
+                <br>• Faturas pendentes: 12
+                <br>• Valor total: 45.320,00 €
+                <br>• Vencidas: 3 (8.500,00 €)
+                <br>• A vencer esta semana: 4
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 3: AssistBuild - Configuração -->
+  <section class="slide" id="slide3">
+    <span class="slide-number">03 / 05</span>
+    <img src="../client/public/logo_dark.png" alt="AssistOS" class="logo">
+    
+    <h2><span class="agent-badge build">AssistBuild</span> Configuração Conversacional</h2>
+    <p>Configure módulos, campos personalizados e templates através de linguagem natural. Sem programação.</p>
+    
+    <div class="grid-2">
+      <div>
+        <h3>⚙️ Criar Campo Personalizado</h3>
+        <div class="chat-demo">
+          <div class="chat-message user">
+            <div class="chat-avatar">U</div>
+            <div class="chat-bubble">Adiciona um campo "Preferência Alimentar" ao formulário de leads com opções: Normal, Vegetariano, Vegan</div>
+          </div>
+          <div class="chat-message">
+            <div class="chat-avatar">🔧</div>
+            <div class="chat-bubble">
+              Vou criar o campo personalizado no módulo de Leads:
+              <div class="action">
+                <span class="action-icon">✓</span> Campo criado em Sandbox
+                <br>• Nome: Preferência Alimentar
+                <br>• Tipo: Seleção única
+                <br>• Opções: Normal, Vegetariano, Vegan
+                <br><br>⚠️ Teste no ambiente Sandbox antes de promover para Produção
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h3>📝 Configurar Template de Email</h3>
+        <div class="chat-demo">
+          <div class="chat-message user">
+            <div class="chat-avatar">U</div>
+            <div class="chat-bubble">Cria um template de email para enviar orçamentos</div>
+          </div>
+          <div class="chat-message">
+            <div class="chat-avatar">🔧</div>
+            <div class="chat-bubble">
+              Template de email configurado:
+              <div class="action">
+                <span class="action-icon">✓</span> Template: Envio de Orçamento
+                <br>• Variáveis: {{cliente}}, {{valor}}, {{validade}}
+                <br>• Assunto: Orçamento {{empresa}} - {{referencia}}
+                <br>• Disponível em: Módulo Financeiro
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <h3>🔗 Ligar Campos Entre Módulos</h3>
+        <div class="chat-demo">
+          <div class="chat-message user">
+            <div class="chat-avatar">U</div>
+            <div class="chat-bubble">Liga o campo "Cliente" dos projetos ao módulo CRM</div>
+          </div>
+          <div class="chat-message">
+            <div class="chat-avatar">🔧</div>
+            <div class="chat-bubble">
+              Ligação configurada:
+              <div class="action">
+                <span class="action-icon">🔗</span> Link Criado
+                <br>• Origem: Projetos.Cliente
+                <br>• Destino: CRM.Clientes
+                <br>• Tipo: Referência (lookup)
+                <br>• Auto-preenchimento: Ativado
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h3>🏗️ Ativar Módulo</h3>
+        <div class="chat-demo">
+          <div class="chat-message user">
+            <div class="chat-avatar">U</div>
+            <div class="chat-bubble">Ativa o módulo de Logística para o meu tenant</div>
+          </div>
+          <div class="chat-message">
+            <div class="chat-avatar">🔧</div>
+            <div class="chat-bubble">
+              <div class="action">
+                <span class="action-icon">✓</span> Módulo Logística ativado
+                <br>• Inventário: Configurado
+                <br>• Armazéns: Prontos para uso
+                <br>• Movimentos: Tracking ativo
+                <br><br>📍 Aceda via menu lateral > Logística
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 4: Ferramentas e Módulos -->
+  <section class="slide" id="slide4">
+    <span class="slide-number">04 / 05</span>
+    <img src="../client/public/logo_dark.png" alt="AssistOS" class="logo">
+    
+    <h2>Módulos & Integrações</h2>
+    <p>Uma plataforma completa com módulos verticais e integrações nativas.</p>
+    
+    <div class="grid-2" style="margin-top: 40px;">
+      <div>
+        <h3>📦 Módulos Disponíveis</h3>
+        <ul class="feature-list">
+          <li><strong>Financeiro</strong> - Faturas, Orçamentos, Recebimentos, Reconciliação</li>
+          <li><strong>CRM</strong> - Clientes, Contratos, Histórico de interações</li>
+          <li><strong>Angariação</strong> - Leads, Campanhas, ROI Analytics</li>
+          <li><strong>Projetos</strong> - Gestão de projetos com campos personalizáveis</li>
+          <li><strong>Logística</strong> - Inventário, Armazéns, Movimentos</li>
+          <li><strong>Comunicações</strong> - Email, WhatsApp, Notificações</li>
+          <li><strong>Tarefas</strong> - Gestão de tarefas e workflows</li>
+          <li><strong>Documentos</strong> - OCR, Classificação automática, RBAC</li>
+        </ul>
+      </div>
+      
+      <div>
+        <h3>🔌 Integrações Nativas</h3>
+        <div class="grid-2" style="gap: 12px; margin-top: 20px;">
+          <div class="integration-logo">📧 Gmail OAuth</div>
+          <div class="integration-logo">💬 WhatsApp Business</div>
+          <div class="integration-logo">🧾 TOC Online</div>
+          <div class="integration-logo">📊 Moloni</div>
+          <div class="integration-logo">🏢 SAP Business One</div>
+          <div class="integration-logo">💼 Primavera ERP</div>
+          <div class="integration-logo">🏦 SIBS Open Banking</div>
+          <div class="integration-logo">📄 Google Document AI</div>
+        </div>
+        
+        <h3 style="margin-top: 30px;">🛡️ Segurança Enterprise</h3>
+        <ul class="feature-list">
+          <li>Multi-tenant com isolamento total</li>
+          <li>Ambiente Sandbox para testes seguros</li>
+          <li>Rollback automático de alterações</li>
+          <li>Encriptação AES-256-GCM</li>
+          <li>Quotas por tier de subscrição</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 5: Demo / CTA -->
+  <section class="slide" id="slide5">
+    <span class="slide-number">05 / 05</span>
+    <img src="../client/public/logo_dark.png" alt="AssistOS" class="logo">
+    
+    <h2>Interface do Produto</h2>
+    
+    <div class="grid-2">
+      <div>
+        <h3>🏠 Landing Page</h3>
+        <div class="screenshot">
+          <img src="screenshot_home.png" alt="AssistOS Homepage" />
+          <p style="font-size: 14px; margin-top: 10px; text-align: center;">Hero com chat demo, features e call-to-action</p>
+        </div>
+      </div>
+      <div>
+        <h3>🔐 Autenticação</h3>
+        <div class="screenshot">
+          <img src="screenshot_login.png" alt="AssistOS Login" />
+          <p style="font-size: 14px; margin-top: 10px; text-align: center;">Login seguro com suporte a Google OAuth</p>
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-top: 40px;">
+      <h3>💬 Chat com AssistME - Demo ao Vivo</h3>
+      <p style="margin-bottom: 20px;">O chat é o coração do AssistOS. Veja exemplos de interação real:</p>
+      <div class="grid-3">
+        <div class="chat-demo" style="padding: 16px;">
+          <div class="chat-message user" style="margin-bottom: 8px;">
+            <div class="chat-avatar" style="width: 28px; height: 28px; font-size: 12px;">U</div>
+            <div class="chat-bubble" style="font-size: 13px; padding: 8px 12px;">Cria fatura para ABC, 2500€</div>
+          </div>
+          <div class="chat-message">
+            <div class="chat-avatar" style="width: 28px; height: 28px; font-size: 12px;">🤖</div>
+            <div class="chat-bubble" style="font-size: 13px; padding: 8px 12px;">
+              <span style="color: #4ADE80;">✓</span> Fatura #2024-089 criada
+            </div>
+          </div>
+        </div>
+        <div class="chat-demo" style="padding: 16px;">
+          <div class="chat-message user" style="margin-bottom: 8px;">
+            <div class="chat-avatar" style="width: 28px; height: 28px; font-size: 12px;">U</div>
+            <div class="chat-bubble" style="font-size: 13px; padding: 8px 12px;">Analisa esta fatura [PDF]</div>
+          </div>
+          <div class="chat-message">
+            <div class="chat-avatar" style="width: 28px; height: 28px; font-size: 12px;">🤖</div>
+            <div class="chat-bubble" style="font-size: 13px; padding: 8px 12px;">
+              <span style="color: #60A5FA;">📄</span> OCR: Tech Lda, 1850€
+            </div>
+          </div>
+        </div>
+        <div class="chat-demo" style="padding: 16px;">
+          <div class="chat-message user" style="margin-bottom: 8px;">
+            <div class="chat-avatar" style="width: 28px; height: 28px; font-size: 12px;">U</div>
+            <div class="chat-bubble" style="font-size: 13px; padding: 8px 12px;">Adiciona campo "Dieta"</div>
+          </div>
+          <div class="chat-message">
+            <div class="chat-avatar" style="width: 28px; height: 28px; font-size: 12px;">🔧</div>
+            <div class="chat-bubble" style="font-size: 13px; padding: 8px 12px;">
+              <span style="color: #A78BFA;">⚙️</span> Campo criado em Sandbox
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </section>
+
+  <!-- Slide 6: Plataforma em Ação - Tailor Meal -->
+  <section class="slide" id="slide6">
+    <span class="slide-number">06</span>
+    <img src="../client/public/logo_dark.png" alt="AssistOS" class="logo">
+    
+    <h1>A Plataforma em Ação</h1>
+    <p class="subtitle">Exemplo real: Tailor Meal - Catering & Eventos</p>
+    
+    <div class="grid-2">
+      <div>
+        <div class="screenshot">
+          <img src="screenshot_chat.png" alt="AssistOS Chat Interface" />
+        </div>
+      </div>
+      <div>
+        <h3>Como Funciona</h3>
+        <div class="feature-list" style="margin-top: 20px;">
+          <div class="feature-item">
+            <div class="feature-icon">1</div>
+            <div>
+              <strong style="color: #93C5FD;">Sidebar Inteligente</strong>
+              <p style="font-size: 16px; margin-top: 4px;">Navegação por módulos: Finance, CRM, Compras, Logística. Cada módulo adapta-se ao negócio.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">2</div>
+            <div>
+              <strong style="color: #93C5FD;">Chat Central</strong>
+              <p style="font-size: 16px; margin-top: 4px;">O AssistME processa pedidos em linguagem natural. "Cria fatura", "Analisa documento", "Mostra vendas".</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">3</div>
+            <div>
+              <strong style="color: #93C5FD;">Ações Reais</strong>
+              <p style="font-size: 16px; margin-top: 4px;">Cada comando executa operações reais: cria registos, envia emails, gera PDFs, atualiza stocks.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">4</div>
+            <div>
+              <strong style="color: #93C5FD;">Multi-Tenant</strong>
+              <p style="font-size: 16px; margin-top: 4px;">Cada empresa tem dados isolados. A Tailor Meal não vê dados de outros clientes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-top: 30px; padding: 20px; background: rgba(59, 130, 246, 0.1); border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.3);">
+      <h3 style="margin-bottom: 12px;">🎯 Fluxo Típico de Utilização</h3>
+      <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 200px;">
+          <strong style="color: #4ADE80;">Manhã</strong>
+          <p style="font-size: 14px;">"Mostra eventos de hoje" → Lista completa com detalhes</p>
+        </div>
+        <div style="flex: 1; min-width: 200px;">
+          <strong style="color: #60A5FA;">Durante o dia</strong>
+          <p style="font-size: 14px;">"Regista compra de 50kg bacalhau" → Stock atualizado</p>
+        </div>
+        <div style="flex: 1; min-width: 200px;">
+          <strong style="color: #A78BFA;">Fim do dia</strong>
+          <p style="font-size: 14px;">"Fatura evento Casamento Silva" → PDF gerado e enviado</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 7: CTA Final -->
+  <section class="slide" id="slide7">
+    <span class="slide-number">07</span>
+    <img src="../client/public/logo_dark.png" alt="AssistOS" class="logo">
+    
+    <div style="text-align: center; margin-top: auto; margin-bottom: auto;">
+      <h1>Pronto para transformar a sua empresa?</h1>
+      <p style="max-width: 100%; text-align: center; margin: 20px auto;">
+        Agende uma demonstração e veja o AssistOS em ação.
+      </p>
+      <div class="stats" style="justify-content: center;">
+        <div class="stat">
+          <div class="stat-number">15min</div>
+          <div class="stat-label">Demo Rápida</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">0€</div>
+          <div class="stat-label">Setup Inicial</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">∞</div>
+          <div class="stat-label">Possibilidades</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <button onclick="scrollToPrev()">↑</button>
+    <button onclick="scrollToNext()">↓</button>
+  </nav>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+    
+    function scrollToSlide(index) {
+      if (index >= 0 && index < slides.length) {
+        currentSlide = index;
+        slides[index].scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    
+    function scrollToNext() {
+      scrollToSlide(currentSlide + 1);
+    }
+    
+    function scrollToPrev() {
+      scrollToSlide(currentSlide - 1);
+    }
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        scrollToNext();
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        e.preventDefault();
+        scrollToPrev();
+      }
+    });
+    
+    // Update current slide on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          currentSlide = Array.from(slides).indexOf(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    slides.forEach(slide => observer.observe(slide));
+  </script>
+</body>
+</html>

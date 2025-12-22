@@ -1,0 +1,506 @@
+{
+  "module": {
+    "name": "Financial",
+    "title": "Financial Management"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "accountsReceivable": "Accounts Receivable",
+    "accountsPayable": "Accounts Payable",
+    "treasury": "Treasury"
+  },
+  "dashboard": {
+    "title": "Financial",
+    "description": "Company financial overview",
+    "alert": {
+      "overdueInvoices": "Overdue Invoices",
+      "overdueMessage": "You have {{count}} overdue invoice(s) that require(s) immediate attention.",
+      "viewInvoices": "View invoices"
+    },
+    "kpis": {
+      "accountsReceivable": {
+        "title": "Accounts Receivable",
+        "description": "Total outstanding"
+      },
+      "overdueInvoices": {
+        "title": "Overdue Invoices",
+        "description": "Require attention"
+      },
+      "receivedThisMonth": {
+        "title": "Received This Month",
+        "description": "Confirmed payments"
+      },
+      "monthlyRevenue": {
+        "title": "Monthly Revenue",
+        "description": "Total invoiced"
+      },
+      "bankBalance": {
+        "title": "Bank Balance",
+        "description": "Total available"
+      },
+      "pendingInvoices": {
+        "title": "Pending Invoices",
+        "description": "Drafts to finalize"
+      }
+    },
+    "charts": {
+      "cashflow": {
+        "title": "Cash Flow",
+        "description": "Invoicing vs Receipts (last 6 months)",
+        "invoicing": "Invoicing",
+        "receipts": "Receipts"
+      },
+      "paymentMethods": {
+        "title": "Payment Methods",
+        "description": "Payment distribution",
+        "value": "Value"
+      }
+    },
+    "quickActions": {
+      "newInvoice": "New Invoice",
+      "receipts": "Receipts"
+    },
+    "recentInvoices": {
+      "title": "Recent Invoices",
+      "description": "Recently issued invoices",
+      "viewAll": "View all",
+      "table": {
+        "number": "No.",
+        "client": "Client",
+        "value": "Value",
+        "status": "Status"
+      },
+      "empty": "No invoices registered"
+    },
+    "topClients": {
+      "title": "Top Clients",
+      "description": "By invoicing volume",
+      "viewAll": "View all",
+      "table": {
+        "client": "Client",
+        "invoices": "Invoices",
+        "total": "Total"
+      },
+      "empty": "No clients registered"
+    },
+    "quickNavigation": {
+      "title": "Quick Navigation",
+      "description": "Direct access to main features",
+      "invoicing": "Invoicing",
+      "receipts": "Receipts",
+      "bankAccounts": "Bank Accounts",
+      "reconciliation": "Reconciliation"
+    },
+    "status": {
+      "paid": "Paid",
+      "overdue": "Overdue",
+      "sent": "Sent",
+      "draft": "Draft",
+      "partial": "Partial"
+    }
+  },
+  "ar": {
+    "title": "Accounts Receivable",
+    "description": "Invoice and receivables management",
+    "menu": {
+      "invoices": "Invoices",
+      "creditNotes": "Credit Notes",
+      "dunning": "Collections"
+    },
+    "invoices": {
+      "title": "Invoices",
+      "description": "Invoice management",
+      "new": "New Invoice",
+      "search": "Search by number or client...",
+      "filterStatus": "Filter by status",
+      "noInvoices": "No invoices found",
+      "tryAdjustFilters": "Try adjusting your search filters",
+      "createFirst": "Create your first invoice to get started",
+      "deleteSuccess": "Invoice deleted successfully",
+      "deleteDescription": "The invoice has been removed from the system.",
+      "deleteError": "Error deleting invoice",
+      "deleteConfirm": "Are you sure you want to delete invoice {{number}}?",
+      "loadError": "Error loading invoices. Please try again.",
+      "status": {
+        "all": "All",
+        "draft": "Draft",
+        "sent": "Sent",
+        "paid": "Paid",
+        "overdue": "Overdue",
+        "cancelled": "Cancelled",
+        "partial": "Partial"
+      },
+      "table": {
+        "number": "Number",
+        "client": "Client",
+        "issueDate": "Issue Date",
+        "dueDate": "Due Date",
+        "amount": "Amount",
+        "status": "Status",
+        "actions": "Actions",
+        "view": "View",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "detail": {
+        "backToInvoices": "Back to Invoices",
+        "invoice": "Invoice",
+        "information": "Invoice Information",
+        "client": "Client",
+        "issueDate": "Issue Date",
+        "dueDate": "Due Date",
+        "status": "Status",
+        "items": "Items",
+        "description": "Description",
+        "quantity": "Quantity",
+        "unitPrice": "Unit Price",
+        "total": "Total",
+        "subtotal": "Subtotal",
+        "tax": "Tax ({{rate}}%)",
+        "totalAmount": "Total Amount",
+        "payments": "Payments",
+        "date": "Date",
+        "amount": "Amount",
+        "paymentMethod": "Payment Method",
+        "reference": "Reference",
+        "noPayments": "No payments recorded",
+        "documents": "Documents",
+        "fileName": "File Name",
+        "type": "Type",
+        "uploadDate": "Upload Date",
+        "download": "Download",
+        "noDocuments": "No documents attached",
+        "dunningHistory": "Collections History",
+        "campaign": "Campaign",
+        "sentDate": "Sent Date",
+        "channel": "Channel",
+        "noDunning": "No collections sent"
+      }
+    },
+    "creditNotes": {
+      "title": "Credit Notes",
+      "description": "Credit note management for returns and corrections",
+      "new": "New Credit Note",
+      "create": "Create Credit Note",
+      "autoNegate": "Credit Note (negative amounts)",
+      "autoNegateHelp": "When enabled, amounts will be automatically negated",
+      "originalInvoice": "Original Invoice (optional)",
+      "selectInvoice": "Select the original invoice",
+      "client": "Client",
+      "clientName": "Client name",
+      "issueDate": "Issue Date",
+      "dueDate": "Due Date",
+      "reason": "Credit Note Reason",
+      "reasonPlaceholder": "Describe the reason for issuing this credit note...",
+      "items": "Items",
+      "addItem": "Add Item",
+      "description": "Description",
+      "quantity": "Quantity",
+      "unitPrice": "Unit Price",
+      "total": "Total",
+      "subtotal": "Subtotal",
+      "tax": "Tax ({{rate}}%)",
+      "totalAmount": "Total Amount",
+      "itemDescription": "Item description",
+      "cancel": "Cancel",
+      "save": "Save Credit Note",
+      "creating": "Creating...",
+      "createSuccess": "Credit note created successfully",
+      "createError": "Error creating credit note",
+      "search": "Search by number or client...",
+      "filterStatus": "Filter by status",
+      "noCreditNotes": "No credit notes found",
+      "tryAdjustFilters": "Try adjusting your search filters",
+      "createFirst": "Create your first credit note to get started",
+      "loadError": "Error loading credit notes. Please try again.",
+      "table": {
+        "number": "Number",
+        "client": "Client",
+        "issueDate": "Issue Date",
+        "amount": "Amount",
+        "status": "Status",
+        "actions": "Actions",
+        "view": "View",
+        "edit": "Edit",
+        "delete": "Delete"
+      }
+    },
+    "dunning": {
+      "title": "Collections Management",
+      "description": "Automated dunning campaigns",
+      "new": "New Campaign",
+      "search": "Search campaigns...",
+      "filterStatus": "Filter by status",
+      "noCampaigns": "No campaigns found",
+      "tryAdjustFilters": "Try adjusting your search filters",
+      "createFirst": "Create your first dunning campaign to get started",
+      "loadError": "Error loading campaigns. Please try again.",
+      "table": {
+        "campaign": "Campaign",
+        "invoice": "Invoice",
+        "client": "Client",
+        "daysOverdue": "Days Overdue",
+        "amount": "Amount",
+        "status": "Status",
+        "actions": "Actions",
+        "send": "Send",
+        "view": "View"
+      },
+      "status": {
+        "all": "All",
+        "pending": "Pending",
+        "sent": "Sent",
+        "paid": "Paid"
+      },
+      "sendSuccess": "Dunning reminder sent successfully",
+      "sendError": "Error sending dunning reminder"
+    }
+  },
+  "ap": {
+    "title": "Accounts Payable",
+    "description": "Vendor and payment management",
+    "menu": {
+      "vendorBills": "Vendor Bills",
+      "threeWayMatching": "3-Way Matching",
+      "approvals": "Approvals"
+    },
+    "vendorBills": {
+      "title": "Vendor Bills",
+      "description": "Purchase invoice management",
+      "new": "New Bill",
+      "newDialog": "New Vendor Bill",
+      "search": "Search by number...",
+      "filterStatus": "Filter by status",
+      "noBills": "No bills found",
+      "createSuccess": "Vendor bill created successfully",
+      "createError": "Error creating vendor bill",
+      "deleteSuccess": "Bill deleted",
+      "deleteError": "Error deleting bill",
+      "creating": "Creating...",
+      "create": "Create Bill",
+      "cancel": "Cancel",
+      "status": {
+        "all": "All",
+        "draft": "Draft",
+        "pending_approval": "Awaiting Approval",
+        "approved": "Approved",
+        "paid": "Paid",
+        "rejected": "Rejected"
+      },
+      "form": {
+        "supplier": "Supplier",
+        "selectSupplier": "Select supplier",
+        "invoiceNumber": "Invoice Number (optional)",
+        "invoiceNumberPlaceholder": "Leave blank to auto-generate",
+        "invoiceDate": "Invoice Date",
+        "dueDate": "Due Date (optional)",
+        "lines": "Invoice Lines",
+        "addLine": "Add Line",
+        "description": "Description",
+        "descriptionPlaceholder": "Description",
+        "quantity": "Qty",
+        "price": "Price",
+        "taxRate": "VAT %",
+        "subtotal": "Subtotal",
+        "tax": "VAT",
+        "total": "Total",
+        "notes": "Notes",
+        "notesPlaceholder": "Additional notes"
+      },
+      "table": {
+        "number": "Number",
+        "supplier": "Supplier",
+        "date": "Date",
+        "dueDate": "Due Date",
+        "total": "Total",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "validation": {
+        "descriptionRequired": "Description required",
+        "quantityMin": "Quantity must be greater than 0",
+        "priceMin": "Price must be positive",
+        "supplierRequired": "Supplier required",
+        "invoiceDateRequired": "Invoice date required",
+        "linesMin": "Add at least one line"
+      }
+    },
+    "threeWayMatching": {
+      "title": "3-Way Matching",
+      "description": "Automatic validation: PO → Invoice → Receipt",
+      "search": "Search by PO, invoice or receipt...",
+      "loadError": "Error loading matches",
+      "noMatches": "No pending matches",
+      "approveSuccess": "Match approved",
+      "approveSuccessDesc": "The match was approved successfully.",
+      "approveError": "Error approving",
+      "approveErrorDesc": "Could not approve the match.",
+      "rejectSuccess": "Match rejected",
+      "rejectSuccessDesc": "The match was marked as rejected.",
+      "rejectError": "Error rejecting",
+      "rejectErrorDesc": "Could not reject the match.",
+      "confirmApprove": "Approve match for PO {{poNumber}}?",
+      "confirmReject": "Reject and mark match for PO {{poNumber}}?",
+      "approve": "Approve",
+      "reject": "Reject",
+      "status": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "review_required": "Requires Review"
+      },
+      "table": {
+        "po": "PO",
+        "invoice": "Invoice",
+        "receipt": "Receipt",
+        "poAmount": "PO Amount",
+        "invoiceAmount": "Invoice Amount",
+        "variance": "Variance",
+        "confidence": "Confidence",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
+    "approvals": {
+      "title": "AP Approvals",
+      "description": "Vendor bill approval workflow management",
+      "value": "Amount:",
+      "requester": "Requester:",
+      "days": "days",
+      "approve": "Approve",
+      "reject": "Reject",
+      "confirmApprove": "Approve bill {{billNumber}}?",
+      "confirmReject": "Reject bill {{billNumber}}?",
+      "approveSuccess": "Approval confirmed",
+      "approveSuccessDesc": "The bill was approved successfully.",
+      "approveError": "Error approving",
+      "approveErrorDesc": "Could not approve the bill.",
+      "rejectSuccess": "Bill rejected",
+      "rejectSuccessDesc": "The bill was rejected.",
+      "rejectError": "Error rejecting",
+      "rejectErrorDesc": "Could not reject the bill.",
+      "status": {
+        "pending": "Pending",
+        "in_review": "In Review",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "columns": {
+        "pending": "Pending",
+        "in_review": "In Review",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "empty": {
+        "pending": "No pending approvals",
+        "in_review": "None in review",
+        "approved": "None approved",
+        "rejected": "None rejected"
+      }
+    }
+  },
+  "treasury": {
+    "title": "Treasury",
+    "description": "Cashflow and bank reconciliation management",
+    "menu": {
+      "bankAccounts": "Bank Accounts",
+      "cashflowForecast": "Cashflow Forecast",
+      "reconciliation": "Bank Reconciliation"
+    },
+    "bankAccounts": {
+      "title": "Bank Accounts",
+      "description": "Tenant bank account management",
+      "empty": "No bank account configured",
+      "emptySubtext": "Coming soon: add your bank accounts here"
+    },
+    "cashflowForecast": {
+      "title": "Cashflow Forecast",
+      "description": "Projected inflows and outflows for the next 30 days",
+      "refresh": "Refresh Forecast",
+      "refreshSuccess": "Forecast updated",
+      "refreshSuccessDesc": "Cashflow data has been recalculated.",
+      "refreshError": "Error updating",
+      "refreshErrorDesc": "Unable to update the forecast.",
+      "loadError": "Error loading cashflow forecast",
+      "summary": {
+        "inflowsExpected": "Expected Inflows",
+        "outflowsExpected": "Expected Outflows",
+        "netPosition": "Net Position"
+      },
+      "chart": {
+        "title": "Daily Evolution (30 days)",
+        "inflows": "Inflows",
+        "outflows": "Outflows",
+        "netBalance": "Net Balance"
+      },
+      "weeklyBreakdown": {
+        "title": "Weekly Summary",
+        "week": "Week",
+        "inflows": "Inflows",
+        "outflows": "Outflows",
+        "netBalance": "Net Balance",
+        "noData": "No data available"
+      }
+    },
+    "reconciliation": {
+      "title": "Bank Reconciliation",
+      "description": "Payment reconciliation management",
+      "alert": {
+        "title": "Attention",
+        "description": "Automatic discrepancy detection and bank statement import feature coming soon."
+      },
+      "stats": {
+        "pending": "Pending",
+        "reconciled": "Reconciled",
+        "rate": "Reconciliation Rate",
+        "rateDesc": "of total payments"
+      },
+      "unreconciled": {
+        "title": "Unreconciled Payments",
+        "selectToReconcile": "Select payments to reconcile",
+        "selectedCount": "{{count}} selected",
+        "reconcile": "Reconcile ({{count}})",
+        "reconciling": "Reconciling...",
+        "emptyTitle": "All payments reconciled!",
+        "emptyDesc": "There are no pending payments to reconcile."
+      },
+      "history": {
+        "title": "Reconciliation History",
+        "description": "Latest approved reconciliations",
+        "paymentDate": "Payment Date",
+        "reconciliationDate": "Reconciliation Date",
+        "invoice": "Invoice",
+        "amount": "Amount"
+      },
+      "table": {
+        "date": "Date",
+        "invoice": "Invoice",
+        "method": "Method",
+        "reference": "Reference",
+        "amount": "Amount",
+        "status": "Status"
+      },
+      "status": {
+        "pending": "Pending"
+      },
+      "paymentMethod": {
+        "MB": "Multibanco",
+        "Transferência": "Bank Transfer",
+        "Cheque": "Check",
+        "Dinheiro": "Cash",
+        "MB Way": "MB Way",
+        "cash": "Cash",
+        "bank_transfer": "Transfer",
+        "credit_card": "Credit Card",
+        "debit_card": "Debit Card",
+        "check": "Check",
+        "other": "Other"
+      },
+      "reconcileSuccess": "Reconciliation completed",
+      "reconcileSuccessDesc": "{{count}} payment(s) reconciled successfully.",
+      "reconcileError": "Reconciliation error",
+      "noSelection": "No payment selected",
+      "noSelectionDesc": "Select at least one payment to reconcile."
+    }
+  }
+}

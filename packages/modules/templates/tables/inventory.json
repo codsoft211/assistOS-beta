@@ -1,0 +1,310 @@
+{
+  "moduleId": "inventory",
+  "displayName": "Inventory",
+  "tables": {
+    "products": {
+      "tableName": "products",
+      "description": "Central product/item catalog - master data for sales, purchasing, and operations",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "code", "type": "text", "nullable": false },
+        { "name": "sku", "type": "text", "nullable": true },
+        { "name": "barcode", "type": "text", "nullable": true },
+        { "name": "name", "type": "text", "nullable": false },
+        { "name": "description", "type": "text", "nullable": true },
+        { "name": "item_type", "type": "text", "nullable": false, "default": "'SALE'" },
+        { "name": "is_sellable", "type": "boolean", "nullable": false, "default": "true" },
+        { "name": "is_purchasable", "type": "boolean", "nullable": false, "default": "false" },
+        { "name": "category_id", "type": "uuid", "nullable": true },
+        { "name": "subcategory", "type": "text", "nullable": true },
+        { "name": "default_uom_id", "type": "uuid", "nullable": true },
+        { "name": "storage_uom_id", "type": "uuid", "nullable": true },
+        { "name": "cost_price", "type": "decimal(12,4)", "nullable": true, "default": "'0'::numeric" },
+        { "name": "sale_price", "type": "decimal(12,4)", "nullable": true },
+        { "name": "calculated_cost", "type": "decimal(12,4)", "nullable": true },
+        { "name": "tax_rate", "type": "decimal(5,2)", "nullable": true, "default": "'23'::numeric" },
+        { "name": "stock", "type": "decimal(15,4)", "nullable": true, "default": "'0'::numeric" },
+        { "name": "min_stock_level", "type": "decimal(15,4)", "nullable": true },
+        { "name": "max_stock_level", "type": "decimal(15,4)", "nullable": true },
+        { "name": "reorder_point", "type": "decimal(15,4)", "nullable": true },
+        { "name": "tracking_type", "type": "text", "nullable": true, "default": "'NONE'" },
+        { "name": "track_inventory", "type": "boolean", "nullable": false, "default": "true" },
+        { "name": "is_active", "type": "boolean", "nullable": false, "default": "true" },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "products_code_idx", "columns": ["code"] },
+        { "name": "products_sku_idx", "columns": ["sku"] },
+        { "name": "products_item_type_idx", "columns": ["item_type"] },
+        { "name": "products_category_idx", "columns": ["category_id"] }
+      ]
+    },
+    "item_categories": {
+      "tableName": "item_categories",
+      "description": "Product categories and subcategories hierarchy",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "name", "type": "text", "nullable": false },
+        { "name": "description", "type": "text", "nullable": true },
+        { "name": "parent_id", "type": "uuid", "nullable": true, "foreignKey": { "table": "item_categories", "column": "id", "onDelete": "SET NULL" } },
+        { "name": "sort_order", "type": "integer", "nullable": true, "default": "0" },
+        { "name": "is_active", "type": "boolean", "nullable": false, "default": "true" },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "item_categories_parent_idx", "columns": ["parent_id"] },
+        { "name": "item_categories_name_idx", "columns": ["name"] }
+      ]
+    },
+    "uoms": {
+      "tableName": "uoms",
+      "description": "Units of measure (kg, L, un, etc.)",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "name", "type": "text", "nullable": false },
+        { "name": "symbol", "type": "text", "nullable": false },
+        { "name": "category", "type": "text", "nullable": false, "default": "'units'" },
+        { "name": "is_base", "type": "boolean", "nullable": false, "default": "false" },
+        { "name": "is_active", "type": "boolean", "nullable": false, "default": "true" },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "uoms_symbol_idx", "columns": ["symbol"] },
+        { "name": "uoms_category_idx", "columns": ["category"] }
+      ]
+    },
+    "uom_conversions": {
+      "tableName": "uom_conversions",
+      "description": "Unit of measure conversion factors",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "from_uom_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "uoms", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "to_uom_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "uoms", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "conversion_factor", "type": "decimal(18,8)", "nullable": false },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "uom_conversions_from_idx", "columns": ["from_uom_id"] },
+        { "name": "uom_conversions_to_idx", "columns": ["to_uom_id"] }
+      ]
+    },
+    "recipes": {
+      "tableName": "recipes",
+      "description": "Bill of materials / recipes for product production",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "product_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "products", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "name", "type": "text", "nullable": false },
+        { "name": "version", "type": "integer", "nullable": false, "default": "1" },
+        { "name": "yield_quantity", "type": "decimal(15,4)", "nullable": true, "default": "'1'::numeric" },
+        { "name": "yield_uom_id", "type": "uuid", "nullable": true, "foreignKey": { "table": "uoms", "column": "id" } },
+        { "name": "loss_factor", "type": "decimal(5,4)", "nullable": true, "default": "'0'::numeric" },
+        { "name": "calculated_cost", "type": "decimal(12,4)", "nullable": true },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "is_active", "type": "boolean", "nullable": false, "default": "true" },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "recipes_product_idx", "columns": ["product_id"] },
+        { "name": "recipes_active_idx", "columns": ["is_active"] }
+      ]
+    },
+    "recipe_ingredients": {
+      "tableName": "recipe_ingredients",
+      "description": "Ingredients/components in a recipe/BOM",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "recipe_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "recipes", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "ingredient_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "products", "column": "id", "onDelete": "RESTRICT" } },
+        { "name": "quantity", "type": "decimal(15,4)", "nullable": false },
+        { "name": "uom_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "uoms", "column": "id" } },
+        { "name": "loss_factor", "type": "decimal(5,4)", "nullable": true, "default": "'0'::numeric" },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "sort_order", "type": "integer", "nullable": true, "default": "0" },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "recipe_ingredients_recipe_idx", "columns": ["recipe_id"] },
+        { "name": "recipe_ingredients_ingredient_idx", "columns": ["ingredient_id"] }
+      ]
+    },
+    "item_suppliers": {
+      "tableName": "item_suppliers",
+      "description": "Product-supplier relationships with pricing and lead times",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "product_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "products", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "supplier_id", "type": "uuid", "nullable": false },
+        { "name": "supplier_product_code", "type": "text", "nullable": true },
+        { "name": "supplier_product_name", "type": "text", "nullable": true },
+        { "name": "purchase_uom_id", "type": "uuid", "nullable": true, "foreignKey": { "table": "uoms", "column": "id" } },
+        { "name": "last_purchase_price", "type": "decimal(12,4)", "nullable": true },
+        { "name": "min_order_quantity", "type": "decimal(15,4)", "nullable": true },
+        { "name": "lead_time_days", "type": "integer", "nullable": true },
+        { "name": "is_preferred", "type": "boolean", "nullable": false, "default": "false" },
+        { "name": "is_active", "type": "boolean", "nullable": false, "default": "true" },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "item_suppliers_product_idx", "columns": ["product_id"] },
+        { "name": "item_suppliers_supplier_idx", "columns": ["supplier_id"] }
+      ]
+    },
+    "warehouses": {
+      "tableName": "warehouses",
+      "description": "Warehouse and storage locations",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "code", "type": "text", "nullable": false },
+        { "name": "name", "type": "text", "nullable": false },
+        { "name": "address", "type": "text", "nullable": true },
+        { "name": "city", "type": "text", "nullable": true },
+        { "name": "country", "type": "text", "nullable": true },
+        { "name": "warehouse_type", "type": "text", "nullable": false, "default": "'standard'" },
+        { "name": "is_active", "type": "boolean", "nullable": false, "default": "true" },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "warehouses_code_idx", "columns": ["code"] }
+      ]
+    },
+    "inventory_levels": {
+      "tableName": "inventory_levels",
+      "description": "Current inventory levels by location",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "product_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "products", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "warehouse_id", "type": "uuid", "nullable": true, "foreignKey": { "table": "warehouses", "column": "id", "onDelete": "SET NULL" } },
+        { "name": "location", "type": "text", "nullable": true },
+        { "name": "quantity_on_hand", "type": "decimal(15,4)", "nullable": false, "default": "'0'::numeric" },
+        { "name": "quantity_reserved", "type": "decimal(15,4)", "nullable": false, "default": "'0'::numeric" },
+        { "name": "quantity_available", "type": "decimal(15,4)", "nullable": false, "default": "'0'::numeric" },
+        { "name": "batch_number", "type": "text", "nullable": true },
+        { "name": "lot_number", "type": "text", "nullable": true },
+        { "name": "expiry_date", "type": "date", "nullable": true },
+        { "name": "last_count_date", "type": "timestamp", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "inventory_levels_product_idx", "columns": ["product_id"] },
+        { "name": "inventory_levels_warehouse_idx", "columns": ["warehouse_id"] },
+        { "name": "inventory_levels_batch_idx", "columns": ["batch_number"] }
+      ]
+    },
+    "inventory_transactions": {
+      "tableName": "inventory_transactions",
+      "description": "Inventory movement history (in/out/transfers/adjustments)",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "product_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "products", "column": "id", "onDelete": "RESTRICT" } },
+        { "name": "warehouse_id", "type": "uuid", "nullable": true, "foreignKey": { "table": "warehouses", "column": "id" } },
+        { "name": "transaction_type", "type": "text", "nullable": false },
+        { "name": "quantity", "type": "decimal(15,4)", "nullable": false },
+        { "name": "uom_id", "type": "uuid", "nullable": true, "foreignKey": { "table": "uoms", "column": "id" } },
+        { "name": "unit_cost", "type": "decimal(12,4)", "nullable": true },
+        { "name": "reference_type", "type": "text", "nullable": true },
+        { "name": "reference_id", "type": "uuid", "nullable": true },
+        { "name": "batch_number", "type": "text", "nullable": true },
+        { "name": "lot_number", "type": "text", "nullable": true },
+        { "name": "from_warehouse_id", "type": "uuid", "nullable": true },
+        { "name": "to_warehouse_id", "type": "uuid", "nullable": true },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "inventory_tx_product_idx", "columns": ["product_id"] },
+        { "name": "inventory_tx_type_idx", "columns": ["transaction_type"] },
+        { "name": "inventory_tx_warehouse_idx", "columns": ["warehouse_id"] },
+        { "name": "inventory_tx_date_idx", "columns": ["created_at"] }
+      ]
+    },
+    "stock_alerts": {
+      "tableName": "stock_alerts",
+      "description": "Stock level alerts (low stock, overstock, expiry)",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "product_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "products", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "warehouse_id", "type": "uuid", "nullable": true, "foreignKey": { "table": "warehouses", "column": "id" } },
+        { "name": "alert_type", "type": "text", "nullable": false },
+        { "name": "threshold", "type": "decimal(15,4)", "nullable": false },
+        { "name": "current_level", "type": "decimal(15,4)", "nullable": false },
+        { "name": "status", "type": "text", "nullable": false, "default": "'active'" },
+        { "name": "priority", "type": "text", "nullable": true, "default": "'normal'" },
+        { "name": "acknowledged_by", "type": "uuid", "nullable": true },
+        { "name": "acknowledged_at", "type": "timestamp", "nullable": true },
+        { "name": "resolved_at", "type": "timestamp", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "stock_alerts_product_idx", "columns": ["product_id"] },
+        { "name": "stock_alerts_status_idx", "columns": ["status"] },
+        { "name": "stock_alerts_type_idx", "columns": ["alert_type"] }
+      ]
+    },
+    "inventory_counts": {
+      "tableName": "inventory_counts",
+      "description": "Physical inventory count sessions",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "count_number", "type": "text", "nullable": false },
+        { "name": "warehouse_id", "type": "uuid", "nullable": true, "foreignKey": { "table": "warehouses", "column": "id" } },
+        { "name": "count_date", "type": "date", "nullable": false },
+        { "name": "status", "type": "text", "nullable": false, "default": "'draft'" },
+        { "name": "count_type", "type": "text", "nullable": false, "default": "'full'" },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "completed_by", "type": "uuid", "nullable": true },
+        { "name": "completed_at", "type": "timestamp", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "inventory_counts_status_idx", "columns": ["status"] },
+        { "name": "inventory_counts_warehouse_idx", "columns": ["warehouse_id"] }
+      ]
+    },
+    "inventory_count_items": {
+      "tableName": "inventory_count_items",
+      "description": "Individual items counted in an inventory count",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "count_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "inventory_counts", "column": "id", "onDelete": "CASCADE" } },
+        { "name": "product_id", "type": "uuid", "nullable": false, "foreignKey": { "table": "products", "column": "id" } },
+        { "name": "expected_quantity", "type": "decimal(15,4)", "nullable": true },
+        { "name": "counted_quantity", "type": "decimal(15,4)", "nullable": true },
+        { "name": "variance", "type": "decimal(15,4)", "nullable": true },
+        { "name": "batch_number", "type": "text", "nullable": true },
+        { "name": "location", "type": "text", "nullable": true },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "counted_by", "type": "uuid", "nullable": true },
+        { "name": "counted_at", "type": "timestamp", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "inventory_count_items_count_idx", "columns": ["count_id"] },
+        { "name": "inventory_count_items_product_idx", "columns": ["product_id"] }
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+onlyBuiltDependencies:
+  - '@sentry-internal/node-cpu-profiler'
+  - bcrypt
+  - bufferutil
+  - canvas
+  - esbuild
+  - msgpackr-extract
+  - protobufjs
+  - puppeteer
+  - sharp

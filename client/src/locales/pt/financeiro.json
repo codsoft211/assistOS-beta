@@ -1,0 +1,506 @@
+{
+  "module": {
+    "name": "Financeiro",
+    "title": "Gestão Financeira"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "accountsReceivable": "Contas a Receber",
+    "accountsPayable": "Contas a Pagar",
+    "treasury": "Tesouraria"
+  },
+  "dashboard": {
+    "title": "Financeiro",
+    "description": "Visão geral da situação financeira da empresa",
+    "alert": {
+      "overdueInvoices": "Faturas Vencidas",
+      "overdueMessage": "Tem {{count}} fatura(s) vencida(s) que requer(em) atenção imediata.",
+      "viewInvoices": "Ver faturas"
+    },
+    "kpis": {
+      "accountsReceivable": {
+        "title": "A Receber",
+        "description": "Total em aberto"
+      },
+      "overdueInvoices": {
+        "title": "Faturas Vencidas",
+        "description": "Requerem atenção"
+      },
+      "receivedThisMonth": {
+        "title": "Recebido Este Mês",
+        "description": "Pagamentos confirmados"
+      },
+      "monthlyRevenue": {
+        "title": "Faturação Mensal",
+        "description": "Total faturado"
+      },
+      "bankBalance": {
+        "title": "Saldo em Contas",
+        "description": "Total disponível"
+      },
+      "pendingInvoices": {
+        "title": "Faturas Pendentes",
+        "description": "Rascunhos por finalizar"
+      }
+    },
+    "charts": {
+      "cashflow": {
+        "title": "Cash Flow",
+        "description": "Faturação vs Recebimentos (últimos 6 meses)",
+        "invoicing": "Faturação",
+        "receipts": "Recebimentos"
+      },
+      "paymentMethods": {
+        "title": "Métodos de Pagamento",
+        "description": "Distribuição de recebimentos",
+        "value": "Valor"
+      }
+    },
+    "quickActions": {
+      "newInvoice": "Nova Fatura",
+      "receipts": "Recebimentos"
+    },
+    "recentInvoices": {
+      "title": "Últimas Faturas",
+      "description": "Faturas emitidas recentemente",
+      "viewAll": "Ver todas",
+      "table": {
+        "number": "Nº",
+        "client": "Cliente",
+        "value": "Valor",
+        "status": "Estado"
+      },
+      "empty": "Sem faturas registadas"
+    },
+    "topClients": {
+      "title": "Top Clientes",
+      "description": "Por volume de faturação",
+      "viewAll": "Ver todos",
+      "table": {
+        "client": "Cliente",
+        "invoices": "Faturas",
+        "total": "Total"
+      },
+      "empty": "Sem clientes registados"
+    },
+    "quickNavigation": {
+      "title": "Navegação Rápida",
+      "description": "Acesso direto às funcionalidades principais",
+      "invoicing": "Faturação",
+      "receipts": "Recebimentos",
+      "bankAccounts": "Contas Bancárias",
+      "reconciliation": "Reconciliação"
+    },
+    "status": {
+      "paid": "Paga",
+      "overdue": "Vencida",
+      "sent": "Enviada",
+      "draft": "Rascunho",
+      "partial": "Parcial"
+    }
+  },
+  "ar": {
+    "title": "Contas a Receber",
+    "description": "Gestão de faturação e recebimentos",
+    "menu": {
+      "invoices": "Faturas",
+      "creditNotes": "Notas de Crédito",
+      "dunning": "Cobranças"
+    },
+    "invoices": {
+      "title": "Faturas",
+      "description": "Gestão de faturação",
+      "new": "Nova Fatura",
+      "search": "Pesquisar por número ou cliente...",
+      "filterStatus": "Filtrar por status",
+      "noInvoices": "Nenhuma fatura encontrada",
+      "tryAdjustFilters": "Tente ajustar seus filtros de pesquisa",
+      "createFirst": "Crie sua primeira fatura para começar",
+      "deleteSuccess": "Fatura apagada com sucesso",
+      "deleteDescription": "A fatura foi removida do sistema.",
+      "deleteError": "Erro ao apagar fatura",
+      "deleteConfirm": "Tem certeza que deseja apagar a fatura {{number}}?",
+      "loadError": "Erro ao carregar faturas. Por favor, tente novamente.",
+      "status": {
+        "all": "Todos",
+        "draft": "Rascunho",
+        "sent": "Enviada",
+        "paid": "Paga",
+        "overdue": "Vencida",
+        "cancelled": "Cancelada",
+        "partial": "Parcial"
+      },
+      "table": {
+        "number": "Número",
+        "client": "Cliente",
+        "issueDate": "Data de Emissão",
+        "dueDate": "Data de Vencimento",
+        "amount": "Valor",
+        "status": "Estado",
+        "actions": "Ações",
+        "view": "Ver",
+        "edit": "Editar",
+        "delete": "Apagar"
+      },
+      "detail": {
+        "backToInvoices": "Voltar para Faturas",
+        "invoice": "Fatura",
+        "information": "Informações da Fatura",
+        "client": "Cliente",
+        "issueDate": "Data de Emissão",
+        "dueDate": "Data de Vencimento",
+        "status": "Estado",
+        "items": "Itens",
+        "description": "Descrição",
+        "quantity": "Quantidade",
+        "unitPrice": "Preço Unitário",
+        "total": "Total",
+        "subtotal": "Subtotal",
+        "tax": "Imposto ({{rate}}%)",
+        "totalAmount": "Valor Total",
+        "payments": "Pagamentos",
+        "date": "Data",
+        "amount": "Valor",
+        "paymentMethod": "Método de Pagamento",
+        "reference": "Referência",
+        "noPayments": "Nenhum pagamento registado",
+        "documents": "Documentos",
+        "fileName": "Nome do Ficheiro",
+        "type": "Tipo",
+        "uploadDate": "Data de Upload",
+        "download": "Descarregar",
+        "noDocuments": "Nenhum documento anexado",
+        "dunningHistory": "Histórico de Cobranças",
+        "campaign": "Campanha",
+        "sentDate": "Data de Envio",
+        "channel": "Canal",
+        "noDunning": "Nenhuma cobrança enviada"
+      }
+    },
+    "creditNotes": {
+      "title": "Notas de Crédito",
+      "description": "Gestão de notas de crédito para devoluções e correções",
+      "new": "Nova Nota de Crédito",
+      "create": "Criar Nota de Crédito",
+      "autoNegate": "Nota de Crédito (valores negativos)",
+      "autoNegateHelp": "Quando ativado, os valores serão automaticamente negativados",
+      "originalInvoice": "Fatura Original (opcional)",
+      "selectInvoice": "Selecione a fatura original",
+      "client": "Cliente",
+      "clientName": "Nome do cliente",
+      "issueDate": "Data de Emissão",
+      "dueDate": "Data de Vencimento",
+      "reason": "Motivo da Nota de Crédito",
+      "reasonPlaceholder": "Descreva o motivo da emissão desta nota de crédito...",
+      "items": "Itens",
+      "addItem": "Adicionar Item",
+      "description": "Descrição",
+      "quantity": "Quantidade",
+      "unitPrice": "Preço Unitário",
+      "total": "Total",
+      "subtotal": "Subtotal",
+      "tax": "Imposto ({{rate}}%)",
+      "totalAmount": "Valor Total",
+      "itemDescription": "Descrição do item",
+      "cancel": "Cancelar",
+      "save": "Guardar Nota de Crédito",
+      "creating": "A criar...",
+      "createSuccess": "Nota de crédito criada com sucesso",
+      "createError": "Erro ao criar nota de crédito",
+      "search": "Pesquisar por número ou cliente...",
+      "filterStatus": "Filtrar por status",
+      "noCreditNotes": "Nenhuma nota de crédito encontrada",
+      "tryAdjustFilters": "Tente ajustar seus filtros de pesquisa",
+      "createFirst": "Crie sua primeira nota de crédito para começar",
+      "loadError": "Erro ao carregar notas de crédito. Por favor, tente novamente.",
+      "table": {
+        "number": "Número",
+        "client": "Cliente",
+        "issueDate": "Data de Emissão",
+        "amount": "Valor",
+        "status": "Estado",
+        "actions": "Ações",
+        "view": "Ver",
+        "edit": "Editar",
+        "delete": "Apagar"
+      }
+    },
+    "dunning": {
+      "title": "Gestão de Cobranças",
+      "description": "Campanhas automatizadas de cobrança",
+      "new": "Nova Campanha",
+      "search": "Pesquisar campanhas...",
+      "filterStatus": "Filtrar por status",
+      "noCampaigns": "Nenhuma campanha encontrada",
+      "tryAdjustFilters": "Tente ajustar seus filtros de pesquisa",
+      "createFirst": "Crie sua primeira campanha de cobrança para começar",
+      "loadError": "Erro ao carregar campanhas. Por favor, tente novamente.",
+      "table": {
+        "campaign": "Campanha",
+        "invoice": "Fatura",
+        "client": "Cliente",
+        "daysOverdue": "Dias de Atraso",
+        "amount": "Valor",
+        "status": "Estado",
+        "actions": "Ações",
+        "send": "Enviar",
+        "view": "Ver"
+      },
+      "status": {
+        "all": "Todos",
+        "pending": "Pendente",
+        "sent": "Enviado",
+        "paid": "Pago"
+      },
+      "sendSuccess": "Lembrete de cobrança enviado com sucesso",
+      "sendError": "Erro ao enviar lembrete de cobrança"
+    }
+  },
+  "ap": {
+    "title": "Contas a Pagar",
+    "description": "Gestão de fornecedores e pagamentos",
+    "menu": {
+      "vendorBills": "Faturas de Fornecedores",
+      "threeWayMatching": "Conferência Tripla",
+      "approvals": "Aprovações"
+    },
+    "vendorBills": {
+      "title": "Faturas de Fornecedor",
+      "description": "Gestão de faturas de compras",
+      "new": "Nova Fatura",
+      "newDialog": "Nova Fatura de Fornecedor",
+      "search": "Pesquisar por número...",
+      "filterStatus": "Filtrar por status",
+      "noBills": "Nenhuma fatura encontrada",
+      "createSuccess": "Fatura de fornecedor criada com sucesso",
+      "createError": "Erro ao criar fatura de fornecedor",
+      "deleteSuccess": "Fatura eliminada",
+      "deleteError": "Erro ao eliminar fatura",
+      "creating": "Criando...",
+      "create": "Criar Fatura",
+      "cancel": "Cancelar",
+      "status": {
+        "all": "Todos",
+        "draft": "Rascunho",
+        "pending_approval": "Aguarda Aprovação",
+        "approved": "Aprovado",
+        "paid": "Pago",
+        "rejected": "Rejeitado"
+      },
+      "form": {
+        "supplier": "Fornecedor",
+        "selectSupplier": "Selecione o fornecedor",
+        "invoiceNumber": "Número da Fatura (opcional)",
+        "invoiceNumberPlaceholder": "Deixe em branco para gerar automaticamente",
+        "invoiceDate": "Data da Fatura",
+        "dueDate": "Data de Vencimento (opcional)",
+        "lines": "Linhas da Fatura",
+        "addLine": "Adicionar Linha",
+        "description": "Descrição",
+        "descriptionPlaceholder": "Descrição",
+        "quantity": "Qtd",
+        "price": "Preço",
+        "taxRate": "IVA %",
+        "subtotal": "Subtotal",
+        "tax": "IVA",
+        "total": "Total",
+        "notes": "Notas",
+        "notesPlaceholder": "Notas adicionais"
+      },
+      "table": {
+        "number": "Número",
+        "supplier": "Fornecedor",
+        "date": "Data",
+        "dueDate": "Vencimento",
+        "total": "Total",
+        "status": "Status",
+        "actions": "Ações"
+      },
+      "validation": {
+        "descriptionRequired": "Descrição obrigatória",
+        "quantityMin": "Quantidade deve ser maior que 0",
+        "priceMin": "Preço deve ser positivo",
+        "supplierRequired": "Fornecedor obrigatório",
+        "invoiceDateRequired": "Data da fatura obrigatória",
+        "linesMin": "Adicione pelo menos uma linha"
+      }
+    },
+    "threeWayMatching": {
+      "title": "Correspondência de 3 Vias",
+      "description": "Validação automática: PO → Fatura → Recepção",
+      "search": "Pesquisar por PO, fatura ou recepção...",
+      "loadError": "Erro ao carregar correspondências",
+      "noMatches": "Nenhuma correspondência pendente",
+      "approveSuccess": "Correspondência aprovada",
+      "approveSuccessDesc": "A correspondência foi aprovada com sucesso.",
+      "approveError": "Erro ao aprovar",
+      "approveErrorDesc": "Não foi possível aprovar a correspondência.",
+      "rejectSuccess": "Correspondência rejeitada",
+      "rejectSuccessDesc": "A correspondência foi marcada como rejeitada.",
+      "rejectError": "Erro ao rejeitar",
+      "rejectErrorDesc": "Não foi possível rejeitar a correspondência.",
+      "confirmApprove": "Aprovar correspondência para PO {{poNumber}}?",
+      "confirmReject": "Rejeitar e marcar correspondência para PO {{poNumber}}?",
+      "approve": "Aprovar",
+      "reject": "Rejeitar",
+      "status": {
+        "pending": "Pendente",
+        "approved": "Aprovado",
+        "rejected": "Rejeitado",
+        "review_required": "Requer Revisão"
+      },
+      "table": {
+        "po": "PO",
+        "invoice": "Fatura",
+        "receipt": "Recepção",
+        "poAmount": "Valor PO",
+        "invoiceAmount": "Valor Fatura",
+        "variance": "Variância",
+        "confidence": "Confiança",
+        "status": "Status",
+        "actions": "Ações"
+      }
+    },
+    "approvals": {
+      "title": "Aprovações AP",
+      "description": "Gestão de fluxo de aprovação de faturas de fornecedor",
+      "value": "Valor:",
+      "requester": "Solicitante:",
+      "days": "dias",
+      "approve": "Aprovar",
+      "reject": "Rejeitar",
+      "confirmApprove": "Aprovar fatura {{billNumber}}?",
+      "confirmReject": "Rejeitar fatura {{billNumber}}?",
+      "approveSuccess": "Aprovação confirmada",
+      "approveSuccessDesc": "A fatura foi aprovada com sucesso.",
+      "approveError": "Erro ao aprovar",
+      "approveErrorDesc": "Não foi possível aprovar a fatura.",
+      "rejectSuccess": "Fatura rejeitada",
+      "rejectSuccessDesc": "A fatura foi rejeitada.",
+      "rejectError": "Erro ao rejeitar",
+      "rejectErrorDesc": "Não foi possível rejeitar a fatura.",
+      "status": {
+        "pending": "Pendente",
+        "in_review": "Em Revisão",
+        "approved": "Aprovado",
+        "rejected": "Rejeitado"
+      },
+      "columns": {
+        "pending": "Pendente",
+        "in_review": "Em Revisão",
+        "approved": "Aprovado",
+        "rejected": "Rejeitado"
+      },
+      "empty": {
+        "pending": "Nenhuma aprovação pendente",
+        "in_review": "Nenhuma em revisão",
+        "approved": "Nenhuma aprovada",
+        "rejected": "Nenhuma rejeitada"
+      }
+    }
+  },
+  "treasury": {
+    "title": "Tesouraria",
+    "description": "Gestão de cashflow e reconciliação bancária",
+    "menu": {
+      "bankAccounts": "Contas Bancárias",
+      "cashflowForecast": "Previsão de Cashflow",
+      "reconciliation": "Reconciliação Bancária"
+    },
+    "bankAccounts": {
+      "title": "Contas Bancárias",
+      "description": "Gestão de contas bancárias do tenant",
+      "empty": "Nenhuma conta bancária configurada",
+      "emptySubtext": "Em breve: adicione suas contas bancárias aqui"
+    },
+    "cashflowForecast": {
+      "title": "Previsão de Fluxo de Caixa",
+      "description": "Projeção de entradas e saídas para os próximos 30 dias",
+      "refresh": "Atualizar Previsão",
+      "refreshSuccess": "Previsão atualizada",
+      "refreshSuccessDesc": "Os dados de cashflow foram recalculados.",
+      "refreshError": "Erro ao atualizar",
+      "refreshErrorDesc": "Não foi possível atualizar a previsão.",
+      "loadError": "Erro ao carregar previsão de cashflow",
+      "summary": {
+        "inflowsExpected": "Entradas Previstas",
+        "outflowsExpected": "Saídas Previstas",
+        "netPosition": "Posição Líquida"
+      },
+      "chart": {
+        "title": "Evolução Diária (30 dias)",
+        "inflows": "Entradas",
+        "outflows": "Saídas",
+        "netBalance": "Saldo Líquido"
+      },
+      "weeklyBreakdown": {
+        "title": "Resumo Semanal",
+        "week": "Semana",
+        "inflows": "Entradas",
+        "outflows": "Saídas",
+        "netBalance": "Saldo Líquido",
+        "noData": "Nenhum dado disponível"
+      }
+    },
+    "reconciliation": {
+      "title": "Reconciliação Bancária",
+      "description": "Gestão de reconciliação de pagamentos",
+      "alert": {
+        "title": "Atenção",
+        "description": "Feature de detecção automática de discrepâncias e importação de extrato bancário será implementada em breve."
+      },
+      "stats": {
+        "pending": "Pendentes",
+        "reconciled": "Reconciliados",
+        "rate": "Taxa de Reconciliação",
+        "rateDesc": "do total de pagamentos"
+      },
+      "unreconciled": {
+        "title": "Pagamentos Não Reconciliados",
+        "selectToReconcile": "Selecione pagamentos para reconciliar",
+        "selectedCount": "{{count}} selecionado(s)",
+        "reconcile": "Reconciliar ({{count}})",
+        "reconciling": "Reconciliando...",
+        "emptyTitle": "Todos os pagamentos reconciliados!",
+        "emptyDesc": "Não há pagamentos pendentes de reconciliação."
+      },
+      "history": {
+        "title": "Histórico de Reconciliações",
+        "description": "Últimas reconciliações aprovadas",
+        "paymentDate": "Data do Pagamento",
+        "reconciliationDate": "Data da Reconciliação",
+        "invoice": "Fatura",
+        "amount": "Valor"
+      },
+      "table": {
+        "date": "Data",
+        "invoice": "Fatura",
+        "method": "Método",
+        "reference": "Referência",
+        "amount": "Valor",
+        "status": "Status"
+      },
+      "status": {
+        "pending": "Pendente"
+      },
+      "paymentMethod": {
+        "MB": "Multibanco",
+        "Transferência": "Transferência Bancária",
+        "Cheque": "Cheque",
+        "Dinheiro": "Dinheiro",
+        "MB Way": "MB Way",
+        "cash": "Dinheiro",
+        "bank_transfer": "Transferência",
+        "credit_card": "Cartão Crédito",
+        "debit_card": "Cartão Débito",
+        "check": "Cheque",
+        "other": "Outro"
+      },
+      "reconcileSuccess": "Reconciliação concluída",
+      "reconcileSuccessDesc": "{{count}} pagamento(s) reconciliado(s) com sucesso.",
+      "reconcileError": "Erro na reconciliação",
+      "noSelection": "Nenhum pagamento selecionado",
+      "noSelectionDesc": "Selecione pelo menos um pagamento para reconciliar."
+    }
+  }
+}

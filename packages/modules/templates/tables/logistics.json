@@ -1,0 +1,149 @@
+{
+  "moduleId": "logistics",
+  "displayName": "Logistics",
+  "tables": {
+    "deliveries": {
+      "tableName": "deliveries",
+      "description": "Delivery records",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "delivery_number", "type": "text", "nullable": false },
+        { "name": "order_id", "type": "uuid", "nullable": true },
+        { "name": "client_id", "type": "uuid", "nullable": true },
+        { "name": "delivery_type", "type": "text", "nullable": false, "default": "'standard'" },
+        { "name": "status", "type": "text", "nullable": false, "default": "'pending'" },
+        { "name": "scheduled_date", "type": "timestamp", "nullable": true },
+        { "name": "actual_date", "type": "timestamp", "nullable": true },
+        { "name": "origin_address", "type": "text", "nullable": true },
+        { "name": "destination_address", "type": "text", "nullable": true },
+        { "name": "destination_city", "type": "text", "nullable": true },
+        { "name": "destination_postal_code", "type": "text", "nullable": true },
+        { "name": "destination_country", "type": "text", "nullable": true },
+        { "name": "contact_name", "type": "text", "nullable": true },
+        { "name": "contact_phone", "type": "text", "nullable": true },
+        { "name": "driver_id", "type": "uuid", "nullable": true },
+        { "name": "vehicle_id", "type": "uuid", "nullable": true },
+        { "name": "route_id", "type": "uuid", "nullable": true },
+        { "name": "tracking_number", "type": "text", "nullable": true },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "signature_url", "type": "text", "nullable": true },
+        { "name": "proof_of_delivery_url", "type": "text", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_by", "type": "uuid", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "deliveries_status_idx", "columns": ["status"] },
+        { "name": "deliveries_date_idx", "columns": ["scheduled_date"] },
+        { "name": "deliveries_driver_idx", "columns": ["driver_id"] }
+      ]
+    },
+    "delivery_routes": {
+      "tableName": "delivery_routes",
+      "description": "Delivery route planning",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "route_number", "type": "text", "nullable": false },
+        { "name": "name", "type": "text", "nullable": true },
+        { "name": "date", "type": "date", "nullable": false },
+        { "name": "status", "type": "text", "nullable": false, "default": "'planned'" },
+        { "name": "driver_id", "type": "uuid", "nullable": true },
+        { "name": "vehicle_id", "type": "uuid", "nullable": true },
+        { "name": "start_location", "type": "text", "nullable": true },
+        { "name": "end_location", "type": "text", "nullable": true },
+        { "name": "estimated_distance_km", "type": "decimal(10,2)", "nullable": true },
+        { "name": "actual_distance_km", "type": "decimal(10,2)", "nullable": true },
+        { "name": "estimated_duration_min", "type": "integer", "nullable": true },
+        { "name": "actual_duration_min", "type": "integer", "nullable": true },
+        { "name": "start_time", "type": "timestamp", "nullable": true },
+        { "name": "end_time", "type": "timestamp", "nullable": true },
+        { "name": "stops_order", "type": "jsonb", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "routes_date_idx", "columns": ["date"] },
+        { "name": "routes_driver_idx", "columns": ["driver_id"] }
+      ]
+    },
+    "vehicles": {
+      "tableName": "vehicles",
+      "description": "Fleet vehicles",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "registration", "type": "text", "nullable": false },
+        { "name": "name", "type": "text", "nullable": true },
+        { "name": "vehicle_type", "type": "text", "nullable": false },
+        { "name": "brand", "type": "text", "nullable": true },
+        { "name": "model", "type": "text", "nullable": true },
+        { "name": "year", "type": "integer", "nullable": true },
+        { "name": "capacity_kg", "type": "decimal(10,2)", "nullable": true },
+        { "name": "capacity_m3", "type": "decimal(10,2)", "nullable": true },
+        { "name": "fuel_type", "type": "text", "nullable": true },
+        { "name": "status", "type": "text", "nullable": false, "default": "'available'" },
+        { "name": "current_km", "type": "integer", "nullable": true },
+        { "name": "next_maintenance_km", "type": "integer", "nullable": true },
+        { "name": "next_maintenance_date", "type": "date", "nullable": true },
+        { "name": "insurance_expiry", "type": "date", "nullable": true },
+        { "name": "inspection_expiry", "type": "date", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "vehicles_registration_idx", "columns": ["registration"] },
+        { "name": "vehicles_status_idx", "columns": ["status"] }
+      ]
+    },
+    "drivers": {
+      "tableName": "drivers",
+      "description": "Driver records",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "user_id", "type": "uuid", "nullable": true },
+        { "name": "driver_number", "type": "text", "nullable": true },
+        { "name": "name", "type": "text", "nullable": false },
+        { "name": "email", "type": "text", "nullable": true },
+        { "name": "phone", "type": "text", "nullable": true },
+        { "name": "license_number", "type": "text", "nullable": true },
+        { "name": "license_type", "type": "text", "nullable": true },
+        { "name": "license_expiry", "type": "date", "nullable": true },
+        { "name": "status", "type": "text", "nullable": false, "default": "'available'" },
+        { "name": "default_vehicle_id", "type": "uuid", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "drivers_status_idx", "columns": ["status"] }
+      ]
+    },
+    "shipments": {
+      "tableName": "shipments",
+      "description": "Shipment tracking",
+      "columns": [
+        { "name": "id", "type": "uuid", "nullable": false, "primaryKey": true, "default": "gen_random_uuid()" },
+        { "name": "shipment_number", "type": "text", "nullable": false },
+        { "name": "carrier", "type": "text", "nullable": true },
+        { "name": "tracking_number", "type": "text", "nullable": true },
+        { "name": "status", "type": "text", "nullable": false, "default": "'pending'" },
+        { "name": "origin", "type": "text", "nullable": true },
+        { "name": "destination", "type": "text", "nullable": true },
+        { "name": "weight_kg", "type": "decimal(10,2)", "nullable": true },
+        { "name": "dimensions", "type": "jsonb", "nullable": true },
+        { "name": "cost", "type": "decimal(12,2)", "nullable": true },
+        { "name": "shipped_at", "type": "timestamp", "nullable": true },
+        { "name": "delivered_at", "type": "timestamp", "nullable": true },
+        { "name": "metadata", "type": "jsonb", "nullable": true },
+        { "name": "created_at", "type": "timestamp", "nullable": false, "default": "now()" },
+        { "name": "updated_at", "type": "timestamp", "nullable": false, "default": "now()" }
+      ],
+      "indexes": [
+        { "name": "shipments_tracking_idx", "columns": ["tracking_number"] },
+        { "name": "shipments_status_idx", "columns": ["status"] }
+      ]
+    }
+  }
+}

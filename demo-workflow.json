@@ -1,0 +1,49 @@
+{
+  "name": "Demo Customer Creation Workflow",
+  "description": "Simple workflow to create a customer record",
+  "definition": {
+    "nodes": [
+      {
+        "id": "manual_trigger-1",
+        "type": "manual_trigger",
+        "position": { "x": 100, "y": 100 },
+        "data": {
+          "label": "Start Customer Creation",
+          "config": {
+            "label": "Start Customer Creation"
+          }
+        }
+      },
+      {
+        "id": "crud_record-1", 
+        "type": "crud_record",
+        "position": { "x": 400, "y": 100 },
+        "data": {
+          "label": "Create Customer",
+          "config": {
+            "operation": "create",
+            "entity": "users",
+            "moduleId": "users",
+            "data": {
+              "firstName": "{{trigger.firstName}}",
+              "lastName": "{{trigger.lastName}}",
+              "email": "{{trigger.email}}",
+              "phone": "{{trigger.phone}}"
+            }
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge-1",
+        "source": "manual_trigger-1",
+        "target": "crud_record-1",
+        "sourceHandle": "trigger",
+        "targetHandle": "data"
+      }
+    ]
+  },
+  "environment": "sandbox",
+  "status": "draft"
+}
