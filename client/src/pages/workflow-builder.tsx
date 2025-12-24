@@ -14,12 +14,13 @@ import {
 import { useWorkflowStore } from '@/lib/workflow/store/workflowStore';
 import { nodeRegistry } from '@/lib/workflow/registry/NodeRegistry';
 import { validateWorkflow } from '@/lib/workflow/validation/workflowValidator';
-import { Beaker, Rocket, Loader2, ArrowLeft, Save, Play } from "lucide-react";
+import { Beaker, Rocket, Loader2, ArrowLeft, Save, Play, GitBranch, Bot } from "lucide-react";
 import '@/lib/workflow/registry/registerNodes'; // Register all nodes
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { apiRequest, queryClient } from '@/lib/queryClient';
+import { AIPanel } from '@/components/workflow/panels/AIPanel';
 
 export function WorkflowBuilderPage() {
   const { id } = useParams();
@@ -29,11 +30,14 @@ export function WorkflowBuilderPage() {
   const [environment, setEnvironment] = useState<'sandbox' | 'production'>('sandbox');
   const [currentExecutionId, setCurrentExecutionId] = useState<string | null>(null);
   const [currentWorkflowId, setCurrentWorkflowId] = useState<string | undefined>(id);
+  const [isAIPanelOpen, setIsAIPanelOpen] = useState(false);
 
   const {
     addNode,
     workflowName,
     setWorkflowName,
+    workflowStatus,
+    setWorkflowStatus,
     serialize,
     deserialize,
     reset,
@@ -103,33 +107,63 @@ export function WorkflowBuilderPage() {
     event.dataTransfer.dropEffect = 'move';
   }, []);
 
+  // Autosave for Sandbox
+  useEffect(() => {
+    if (environment !== 'sandbox' || workflowStatus === 'published') return;
+
+    const interval = setInterval(() => {
+      const { isDirty } = useWorkflowStore.getState();
+      if (isDirty && !isSaving) {
+        handleSave('draft');
+      }
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(interval);
+  }, [environment, workflowStatus, isSaving]);
+
   const handleSave = async (status: 'draft' | 'published' = 'draft') => {
     if (isSaving) return null;
+
+    // Block direct saves to published workflows
+    if (workflowStatus === 'published' && status !== 'published') {
+      toast.error('Cannot update a published workflow. Create a new version instead.');
+      return null;
+    }
 
     setIsSaving(true);
     try {
       const workflowData = serialize();
 
-      if (workflowData.definition.nodes.length === 0) {
-        toast.error('Workflow must have at least one node to save');
-        return null;
+      // For Production Publish: Enforce strict validation
+      if (status === 'published') {
+        if (workflowData.definition.nodes.length === 0) {
+          toast.error('Workflow must have at least one node to publish');
+          return null;
+        }
       }
+
+      // For Sandbox Drafts: Allow saving even empty or invalid workflows
+      // We only block if there's absolutely no data structure, but serialize guarantees structure.
 
       let response;
       if (currentWorkflowId && currentWorkflowId !== 'new') {
         response = await apiRequest('PUT', `/api/assistbuild/workflows/${currentWorkflowId}`, {
           ...workflowData,
           environment: 'sandbox',
-          status
+          status: 'draft' // Always force draft status on update unless publishing via specific route
         });
-        toast.success('Workflow updated successfully!');
+
+        // Only show toast for manual saves, not autosaves (unless silent option added later)
+        // For now, satisfied with global toast or we can skip it.
+        // Let's keep toast for now to confirm it works, user can request silence.
+        toast.success('Workflow saved (Draft)');
       } else {
         response = await apiRequest('POST', '/api/assistbuild/workflows', {
           ...workflowData,
           environment: 'sandbox',
-          status
+          status: 'draft'
         });
-        toast.success('Workflow created successfully!');
+        toast.success('Workflow created (Draft)');
       }
 
       const savedWorkflow = await response.json();
@@ -140,6 +174,9 @@ export function WorkflowBuilderPage() {
           navigate(`/workflows/builder/${savedWorkflow.id}`, { replace: true });
         }
       }
+
+      // Reset dirty flag
+      useWorkflowStore.getState().setDirty(false);
 
       queryClient.invalidateQueries({ queryKey: ['/api/assistbuild/workflows'] });
       return savedWorkflow;
@@ -155,16 +192,22 @@ export function WorkflowBuilderPage() {
   };
 
   const handlePublish = async () => {
+    const { nodes, edges } = useWorkflowStore.getState();
+
+    // Strict pre-publish validation
+    const { valid, errors } = validateWorkflow(nodes as any, edges as any);
+    if (!valid) {
+      toast.error(`Cannot publish: ${errors[0].message}`);
+      useWorkflowStore.setState({ validationErrors: errors });
+      return null;
+    }
+
+    useWorkflowStore.setState({ validationErrors: [] });
+
     if (currentWorkflowId && currentWorkflowId !== 'new') {
-      try {
-        const response = await apiRequest('GET', `/api/assistbuild/workflows/${currentWorkflowId}`);
-        const data = await response.json();
-        if (data.status === 'published') {
-          toast.error('Cannot update a published workflow. Please duplicate it to make changes.');
-          return;
-        }
-      } catch (error) {
-        console.error('Failed to check workflow status:', error);
+      if (workflowStatus === 'published') {
+        toast.error('Workflow is already published.');
+        return;
       }
     }
 
@@ -176,6 +219,27 @@ export function WorkflowBuilderPage() {
       toast.success('Workflow published successfully!');
     }
     return result;
+  };
+
+  const handleCreateNewVersion = async () => {
+    if (!currentWorkflowId || currentWorkflowId === 'new') return;
+
+    setIsSaving(true);
+    try {
+      toast.info('Creating new draft version...');
+      const response = await apiRequest('POST', `/api/assistbuild/workflows/${currentWorkflowId}/duplicate`);
+      const duplicate = await response.json();
+
+      toast.success('New version created (Draft)');
+      navigate(`/workflows/builder/${duplicate.id}`);
+    } catch (error: any) {
+      console.error('Failed to create new version:', error);
+      toast.error('Failed to create new version', {
+        description: error.message || 'Unknown error'
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleExecute = async () => {
@@ -317,17 +381,27 @@ export function WorkflowBuilderPage() {
               Back
             </Button>
 
-            <div className="flex-1 max-w-md">
+            <div className="flex-1 max-w-md flex items-center gap-2">
               <Input
                 value={workflowName}
                 onChange={(e) => setWorkflowName(e.target.value)}
                 placeholder="Workflow name"
                 className="font-semibold"
+                disabled={workflowStatus === 'published'}
               />
+              {workflowStatus === 'published' ? (
+                <div className="px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-[10px] font-bold uppercase tracking-wider border border-green-200">
+                  Published
+                </div>
+              ) : (
+                <div className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold uppercase tracking-wider border border-amber-200">
+                  Draft
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 px-4">
             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Env:</span>
             <Select
               value={environment}
@@ -359,21 +433,35 @@ export function WorkflowBuilderPage() {
               size="sm"
               onClick={() => handleSave('draft')}
               className="h-8"
-              disabled={isSaving || isExecuting}
+              disabled={isSaving || isExecuting || workflowStatus === 'published'}
             >
               <Save className="w-4 h-4 mr-2" />
               {isSaving ? 'Saving...' : 'Save Draft'}
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handlePublish()}
-              disabled={isSaving || isExecuting}
-              className="h-8"
-            >
-              <Rocket className="w-4 h-4 mr-2" />
-              Publish
-            </Button>
+
+            {workflowStatus === 'published' ? (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleCreateNewVersion}
+                disabled={isSaving || isExecuting}
+                className="h-8 border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100"
+              >
+                <GitBranch className="w-4 h-4 mr-2" />
+                Create New Version
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePublish()}
+                disabled={isSaving || isExecuting}
+                className="h-8"
+              >
+                <Rocket className="w-4 h-4 mr-2" />
+                Publish
+              </Button>
+            )}
             <Button
               size="sm"
               onClick={handleExecute}
@@ -392,17 +480,29 @@ export function WorkflowBuilderPage() {
                 </>
               )}
             </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsAIPanelOpen(true)}
+              className="h-8 gap-2 bg-primary/5 hover:bg-primary/10 border-primary/20 text-primary"
+            >
+              <Bot className="w-4 h-4" />
+              AI Assistant
+            </Button>
           </div>
         </div>
       </header>
 
       {/* Environment Warning */}
-      {environment === 'sandbox' && (
-        <div className="bg-blue-50 border-b border-blue-100 px-4 py-1.5 flex items-center justify-center gap-2 text-[11px] text-blue-700 font-medium">
-          <Beaker className="w-3 h-3" />
-          <span>Running in <strong>Sandbox Mode</strong>. External integrations (Emails, WhatsApp, etc.) will be simulated and not actually sent.</span>
-        </div>
-      )}
+      {
+        environment === 'sandbox' && (
+          <div className="bg-blue-50 border-b border-blue-100 px-4 py-1.5 flex items-center justify-center gap-2 text-[11px] text-blue-700 font-medium">
+            <Beaker className="w-3 h-3" />
+            <span>Running in <strong>Sandbox Mode</strong>. External integrations (Emails, WhatsApp, etc.) will be simulated and not actually sent.</span>
+          </div>
+        )
+      }
 
       {/* Main content */}
       <div className="flex-1 flex overflow-hidden">
@@ -424,8 +524,15 @@ export function WorkflowBuilderPage() {
 
         {/* Properties Panel - Sheet (overlay) */}
         <PropertiesPanel />
+
+        {/* AI Assistant Panel */}
+        <AIPanel
+          isOpen={isAIPanelOpen}
+          onOpenChange={setIsAIPanelOpen}
+          workflowId={currentWorkflowId || 'new'}
+        />
       </div>
-    </div>
+    </div >
   );
 }
 

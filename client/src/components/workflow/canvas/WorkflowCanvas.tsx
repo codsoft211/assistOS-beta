@@ -22,10 +22,10 @@ export function WorkflowCanvas() {
     onConnect,
     selectNode,
   } = useWorkflowStore();
-  
+
   console.log('WorkflowCanvas - nodes:', nodes);
   console.log('WorkflowCanvas - edges:', edges);
-  
+
   // Build node types from registry
   const nodeTypes: NodeTypes = useMemo(() => {
     const types: Record<string, React.ComponentType<any>> = {};
@@ -35,15 +35,15 @@ export function WorkflowCanvas() {
     console.log('WorkflowCanvas - nodeTypes:', types);
     return types;
   }, []);
-  
+
   const onNodeClick = useCallback((_, node: any) => {
     selectNode(node.id);
   }, [selectNode]);
-  
+
   const onPaneClick = useCallback(() => {
     selectNode(null);
   }, [selectNode]);
-  
+
   return (
     <div className="w-full h-full relative">
       <ReactFlow
@@ -61,22 +61,12 @@ export function WorkflowCanvas() {
       >
         <Background gap={16} size={1} />
         <Controls />
-        <MiniMap 
+        <MiniMap
           className="!bg-background"
           maskColor="rgba(0, 0, 0, 0.1)"
         />
-        
+
         {/* Top toolbar */}
-        <Panel position="top-right" className="flex gap-2">
-          <Button size="sm" variant="outline">
-            <Save className="w-4 h-4 mr-2" />
-            Save
-          </Button>
-          <Button size="sm">
-            <Play className="w-4 h-4 mr-2" />
-            Execute
-          </Button>
-        </Panel>
       </ReactFlow>
     </div>
   );

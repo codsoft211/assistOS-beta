@@ -132,7 +132,6 @@ router.post('/workflows', async (req, res) => {
       ...parsed.data,
       tenantId,
       createdBy: userId,
-      status: parsed.data.status || 'draft',
     });
 
     logger.info(
@@ -159,73 +158,18 @@ router.post('/workflows', async (req, res) => {
 router.put('/workflows/:id', async (req, res) => {
   try {
     const tenantId = (req as any).tenantId;
-    const userId = (req as any).userId;
     const { id } = req.params;
-
-    if (!tenantId || !userId) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
 
     const parsed = updateWorkflowSchema.safeParse(req.body);
     if (!parsed.success) {
-      return res.status(400).json({
-        error: 'Invalid request',
-        details: parsed.error.errors,
-      });
+      return res.status(400).json({ error: 'Invalid request', details: parsed.error.errors });
     }
 
-    let workflow;
-    try {
-      workflow = await WorkflowService.update(id, tenantId, parsed.data);
-    } catch (serviceError: any) {
-      logger.error({
-        serviceError: {
-          message: serviceError?.message,
-          stack: serviceError?.stack,
-          name: serviceError?.name,
-          code: serviceError?.code,
-          detail: serviceError?.detail,
-          constraint: serviceError?.constraint,
-          toString: serviceError?.toString(),
-          fullError: serviceError
-        },
-        workflowId: id,
-        tenantId,
-        parsedData: parsed.data
-      }, '[Workflow Routes] WorkflowService.update failed');
-      throw serviceError;
-    }
-
-    if (!workflow) {
-      return res.status(404).json({ error: 'Workflow not found' });
-    }
-
-    logger.info(
-      { workflowId: id, tenantId, userId },
-      '[Workflow Routes] Updated workflow'
-    );
-
+    const workflow = await WorkflowService.update(id, tenantId, parsed.data);
     res.json(workflow);
   } catch (error: any) {
-    logger.error({
-      error: {
-        message: error?.message,
-        stack: error?.stack,
-        name: error?.name,
-        code: error?.code,
-        detail: error?.detail,
-        constraint: error?.constraint,
-        fullError: error
-      },
-      workflowId: req.params.id,
-      requestBody: req.body
-    }, '[Workflow Routes] Failed to update workflow');
-
-    if (error.message?.includes('validation')) {
-      return res.status(400).json({ error: error.message });
-    }
-
-    res.status(500).json({ error: error.message || 'Failed to update workflow' });
+    logger.error({ error, workflowId: req.params.id }, '[Workflow Routes] Failed to update workflow');
+    res.status(403).json({ error: error.message || 'Failed to update workflow' });
   }
 });
 
@@ -268,33 +212,29 @@ router.delete('/workflows/:id', async (req, res) => {
 router.post('/workflows/:id/publish', async (req, res) => {
   try {
     const tenantId = (req as any).tenantId;
-    const userId = (req as any).userId;
     const { id } = req.params;
-
-    if (!tenantId || !userId) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
-
     const workflow = await WorkflowService.publish(id, tenantId);
-
-    if (!workflow) {
-      return res.status(404).json({ error: 'Workflow not found' });
-    }
-
-    logger.info(
-      { workflowId: id, tenantId, userId },
-      '[Workflow Routes] Published workflow'
-    );
-
     res.json(workflow);
   } catch (error: any) {
-    logger.error({ error }, '[Workflow Routes] Failed to publish workflow');
+    logger.error({ error, id: req.params.id }, '[Workflow Routes] Failed to publish workflow');
+    res.status(400).json({ error: error.message });
+  }
+});
 
-    if (error.message?.includes('validation')) {
-      return res.status(400).json({ error: error.message });
-    }
-
-    res.status(500).json({ error: 'Failed to publish workflow' });
+/**
+ * POST /api/assistbuild/workflows/:id/versions
+ * Create a new sandbox iteration from another version
+ */
+router.post('/workflows/:id/versions', async (req, res) => {
+  try {
+    const tenantId = (req as any).tenantId;
+    const userId = (req as any).userId;
+    const { id } = req.params;
+    const workflow = await WorkflowService.createNextVersion(id, tenantId, userId);
+    res.status(201).json(workflow);
+  } catch (error: any) {
+    logger.error({ error, id: req.params.id }, '[Workflow Routes] Failed to create new version');
+    res.status(400).json({ error: error.message });
   }
 });
 

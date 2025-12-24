@@ -15,6 +15,8 @@ import { CreateWorkflowTool } from './create-workflow';
 import { SetupNotificationRulesTool } from './setup-notification-rules';
 import { ConfigureCustomFieldTool } from './configure-custom-field';
 import { AnalyzeConfigureImportEntitiesTool } from './analyze-configure-import-entities';
+import { GetAssistbuildWorkflowTool } from './get-assistbuild-workflow';
+import { UpdateAssistbuildWorkflowTool } from './update-assistbuild-workflow';
 // Schema management tools
 import { PreviewModuleTablesTool } from './preview-module-tables';
 import { CreateCustomTableTool } from './create-custom-table';
@@ -42,6 +44,8 @@ export const configurationTools = [
   new CreateAutomationTool(),
   new UpdateAutomationTool(),
   new CreateWorkflowTool(),
+  new GetAssistbuildWorkflowTool(),
+  new UpdateAssistbuildWorkflowTool(),
   new SetupNotificationRulesTool(),
   new ConfigureCustomFieldTool(),
   new AnalyzeConfigureImportEntitiesTool(),
@@ -75,6 +79,8 @@ export * from './validate-tenant-configuration';
 export * from './create-automation';
 export * from './update-automation';
 export * from './create-workflow';
+export * from './get-assistbuild-workflow';
+export * from './update-assistbuild-workflow';
 export * from './setup-notification-rules';
 export * from './configure-custom-field';
 export * from './analyze-configure-import-entities';

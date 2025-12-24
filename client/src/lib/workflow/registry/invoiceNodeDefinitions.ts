@@ -14,7 +14,13 @@ export const scheduleTriggerDefinition: INodeDefinition = {
   category: 'trigger',
   icon: Calendar,
   color: 'bg-indigo-600',
-  
+
+  requiresCredentials: false,
+  metadata: {
+    categoryGroup: 'Scheduling',
+    searchableKeywords: ['schedule', 'time', 'interval', 'cron']
+  },
+
   defaultConfig: {
     scheduleType: 'interval',
     interval: '1h',
@@ -22,7 +28,7 @@ export const scheduleTriggerDefinition: INodeDefinition = {
     timezone: 'UTC',
     label: 'Scheduled Start'
   },
-  
+
   configSchema: z.object({
     scheduleType: z.enum(['interval', 'cron', 'once']),
     interval: z.string().optional(), // 1h, 30m, 1d
@@ -31,38 +37,38 @@ export const scheduleTriggerDefinition: INodeDefinition = {
     timezone: z.string().default('UTC'),
     label: z.string().min(1, 'Label required')
   }),
-  
+
   component: BaseNode,
-  
+
   inputs: [],
   outputs: [
     { id: 'trigger', label: 'Schedule Data', type: 'any' }
   ],
-  
+
   validate: (data) => {
     const errors = [];
-    
+
     if (!data.config?.scheduleType) {
       errors.push({
         field: 'scheduleType',
         message: 'Schedule type is required'
       });
     }
-    
+
     if (data.config?.scheduleType === 'interval' && !data.config?.interval) {
       errors.push({
         field: 'interval',
         message: 'Interval is required (e.g., 1h, 30m, 1d)'
       });
     }
-    
+
     if (data.config?.scheduleType === 'cron' && !data.config?.cronExpression) {
       errors.push({
         field: 'cronExpression',
         message: 'Cron expression is required (e.g., 0 9 * * *)'
       });
     }
-    
+
     return errors;
   }
 };
@@ -78,13 +84,19 @@ export const fetchInvoiceDefinition: INodeDefinition = {
   category: 'action',
   icon: FileSearch,
   color: 'bg-cyan-600',
-  
+
+  requiresCredentials: false,
+  metadata: {
+    categoryGroup: 'Database',
+    searchableKeywords: ['invoice', 'fetch', 'find', 'query']
+  },
+
   defaultConfig: {
     status: 'overdue',
     dueDateRange: 'past',
     limit: 100
   },
-  
+
   configSchema: z.object({
     status: z.enum(['pending', 'sent', 'paid', 'overdue', 'cancelled', 'any']).default('overdue'),
     dueDateRange: z.enum(['past', 'today', 'this_week', 'this_month', 'custom']).default('past'),
@@ -94,9 +106,9 @@ export const fetchInvoiceDefinition: INodeDefinition = {
     maxAmount: z.number().optional(),
     limit: z.number().min(1).max(1000).default(100)
   }),
-  
+
   component: BaseNode,
-  
+
   inputs: [
     { id: 'trigger', label: 'Trigger', type: 'any' }
   ],
@@ -105,10 +117,10 @@ export const fetchInvoiceDefinition: INodeDefinition = {
     { id: 'count', label: 'Count', type: 'number' },
     { id: 'error', label: 'Error', type: 'error' }
   ],
-  
+
   validate: (data) => {
     const errors = [];
-    
+
     if (data.config?.dueDateRange === 'custom') {
       if (!data.config?.dueDateFrom && !data.config?.dueDateTo) {
         errors.push({
@@ -117,7 +129,7 @@ export const fetchInvoiceDefinition: INodeDefinition = {
         });
       }
     }
-    
+
     return errors;
   }
 };
@@ -133,7 +145,14 @@ export const sendEmailDefinition: INodeDefinition = {
   category: 'action',
   icon: Mail,
   color: 'bg-rose-600',
-  
+
+  requiresCredentials: true,
+  credentialType: 'smtp',
+  metadata: {
+    categoryGroup: 'Communication',
+    searchableKeywords: ['email', 'mail', 'notification', 'smtp']
+  },
+
   defaultConfig: {
     mode: 'batch', // batch = send to all invoices, single = one email
     toField: '{{customer_email}}',
@@ -142,7 +161,7 @@ export const sendEmailDefinition: INodeDefinition = {
     fromName: 'Accounts Team',
     replyTo: ''
   },
-  
+
   configSchema: z.object({
     mode: z.enum(['batch', 'single']).default('batch'),
     toField: z.string().min(1, 'Recipient field required'),
@@ -152,9 +171,9 @@ export const sendEmailDefinition: INodeDefinition = {
     fromName: z.string().optional(),
     replyTo: z.string().email().optional().or(z.literal(''))
   }),
-  
+
   component: BaseNode,
-  
+
   inputs: [
     { id: 'data', label: 'Invoice Data', type: 'array' }
   ],
@@ -163,31 +182,31 @@ export const sendEmailDefinition: INodeDefinition = {
     { id: 'failed', label: 'Failed Count', type: 'number' },
     { id: 'results', label: 'Results', type: 'array' }
   ],
-  
+
   validate: (data) => {
     const errors = [];
-    
+
     if (!data.config?.toField) {
       errors.push({
         field: 'toField',
         message: 'Recipient email field is required'
       });
     }
-    
+
     if (!data.config?.subject) {
       errors.push({
         field: 'subject',
         message: 'Email subject is required'
       });
     }
-    
+
     if (!data.config?.bodyTemplate) {
       errors.push({
         field: 'bodyTemplate',
         message: 'Email body template is required'
       });
     }
-    
+
     return errors;
   }
 };

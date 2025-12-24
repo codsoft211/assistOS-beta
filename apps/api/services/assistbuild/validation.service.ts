@@ -14,8 +14,10 @@ import type {
 export class ValidationService {
   /**
    * Validate complete workflow definition
+   * @param definition The workflow to validate
+   * @param strict If true, enforces strict production rules (trigger required, no orphans, etc.)
    */
-  static validateWorkflow(definition: WorkflowDefinition): ValidationResult {
+  static validateWorkflow(definition: WorkflowDefinition, strict: boolean = true): ValidationResult {
     const errors: string[] = [];
     const warnings: string[] = [];
 
@@ -25,44 +27,40 @@ export class ValidationService {
       return { valid: false, errors, warnings };
     }
 
-    // 2. Must have a trigger node (manual_trigger or schedule_trigger)
-    const hasTrigger = definition.nodes.some(n => n.type === 'manual_trigger' || n.type === 'schedule_trigger');
-    if (!hasTrigger) {
-      errors.push('Workflow must have a trigger node (manual_trigger or schedule_trigger)');
+    // 2. Trigger Check (Strict only)
+    const hasTrigger = definition.nodes.some(n =>
+      n.type === 'manual_trigger' ||
+      n.type === 'schedule_trigger' ||
+      n.type === 'webhook_trigger'
+    );
+
+    if (strict && !hasTrigger) {
+      errors.push('Production workflows must have at least one trigger node (Manual, Schedule, or Webhook)');
+    } else if (!hasTrigger) {
+      warnings.push('Draft currently lacks a trigger node');
     }
 
-    // 3. All edges must reference existing nodes
-    const nodeIds = new Set(definition.nodes.map(n => n.id));
-    for (const edge of definition.edges || []) {
-      if (!nodeIds.has(edge.source)) {
-        errors.push(`Edge references non-existent source node: ${edge.source}`);
-      }
-      if (!nodeIds.has(edge.target)) {
-        errors.push(`Edge references non-existent target node: ${edge.target}`);
-      }
-    }
-
-    // 4. No cycles (for Phase 1 - simple linear flows)
-    if (this.hasCycles(definition)) {
-      errors.push('Workflow contains cycles (not supported in Phase 1)');
-    }
-
-    // 5. All nodes must be reachable from trigger
+    // 3. Connectivity Check (Strict only)
     const reachable = this.getReachableNodes(definition);
     const unreachable = definition.nodes.filter(n => !reachable.has(n.id));
-    if (unreachable.length > 0) {
-      warnings.push(`Unreachable nodes: ${unreachable.map(n => n.name).join(', ')}`);
+
+    if (strict && unreachable.length > 0) {
+      errors.push(`Workflow contains orphaned nodes that are unreachable from the trigger: ${unreachable.map(n => n.name || n.id).join(', ')}`);
+    } else if (unreachable.length > 0) {
+      warnings.push(`Some nodes are unreachable: ${unreachable.map(n => n.name || n.id).join(', ')}`);
     }
 
-    // 6. Validate individual node configs
+    // 4. Edge Validation
+    const nodeIds = new Set(definition.nodes.map(n => n.id));
+    for (const edge of definition.edges || []) {
+      if (!nodeIds.has(edge.source)) errors.push(`Edge references non-existent source node: ${edge.source}`);
+      if (!nodeIds.has(edge.target)) errors.push(`Edge references non-existent target node: ${edge.target}`);
+    }
+
+    // 5. Node Config Validation
     const nodeErrors = this.validateNodes(definition.nodes);
     for (const nodeError of nodeErrors) {
       errors.push(...nodeError.errors.map(e => `Node "${nodeError.nodeName}": ${e}`));
-    }
-
-    // 7. Check for isolated nodes (no connections)
-    if (definition.edges && definition.edges.length === 0 && definition.nodes.length > 1) {
-      warnings.push('Workflow has multiple nodes but no connections');
     }
 
     return {
@@ -246,15 +244,15 @@ export class ValidationService {
 
     const checkValue = (value: any, path: string = '') => {
       if (typeof value === 'string') {
-        const matches = value.matchAll(varPattern);
+        const matches = Array.from(value.matchAll(varPattern));
         for (const match of matches) {
           const varName = match[1].trim();
           // Basic variable names (trigger.*, loop.*, node_*.output.*)
           const baseVar = varName.split('.')[0];
-          
-          if (!['trigger', 'loop', 'now'].includes(baseVar) && 
-              !baseVar.startsWith('node_') &&
-              !availableVariables.includes(baseVar)) {
+
+          if (!['trigger', 'loop', 'now'].includes(baseVar) &&
+            !baseVar.startsWith('node_') &&
+            !availableVariables.includes(baseVar)) {
             errors.push(`Invalid variable reference at ${path}: {{${varName}}}`);
           }
         }

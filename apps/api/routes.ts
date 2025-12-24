@@ -108,6 +108,7 @@ import assistbuildJobsRoutes from "./routes/assistbuild-jobs";
 import assistbuildRoutes from "./routes/assistbuild";
 import assistbuildConversationsRoutes from "./routes/assistbuild-conversations";
 import assistbuildWorkflowsRoutes from "./routes/assistbuild-workflows";
+import assistbuildCredentialsRoutes from "./routes/assistbuild-credentials";
 import scheduledWorkflowsRoutes from "./routes/scheduled-workflows";
 import assistsettingsConversationsRoutes from "./routes/assistsettings-conversations";
 
@@ -150,31 +151,31 @@ export function registerRoutes(app: Express) {
   // CRITICAL: Register health routes FIRST - no auth, no tenant middleware
   // Used by load balancers, monitoring systems, and K8s probes
   app.use("/api/health", healthRoutes);
-  
+
   // ==================== PUBLIC CONFIGURATION ====================
   // Public config (no auth required) - must be before auth middleware
   app.use("/api/config", configRoutes);
-  
+
   // ==================== AUTHENTICATION ====================
   // Auth routes include: register, login, logout, me, switch-tenant, Google OAuth
   app.use("/api/auth", authRoutes);
-  
+
   // ==================== TENANTS ====================
   // Tenant management: list, create, switch
   app.use("/api/tenants", tenantsRoutes);
-  
+
   // ==================== USERS ====================
   // User management: CRUD, invitations, preferences
   app.use("/api/users", usersRoutes);
-  
+
   // ==================== PERMISSIONS ====================
   // Permission management: role assignment, permission checking
   app.use("/api/permissions", permissionsRoutes);
-  
+
   // ==================== CONTEXT ====================
   // Tenant context: session, profile, business info
   app.use("/api/context", contextRoutes);
-  
+
   // ==================== TOC ONLINE OAUTH (Phase 4.5) ====================
   // TOC Online OAuth 2.0 flow (Portuguese accounting platform)
   // CRITICAL: Must be registered BEFORE generic /api/oauth to prevent catch-all
@@ -186,81 +187,81 @@ export function registerRoutes(app: Express) {
   // OAuth routes temporarily disabled - awaiting tenant-storage migration
   // NOTE: This catch-all must come AFTER specific OAuth routes (toc-online, gmail)
   app.use("/api/oauth", oauthRoutes);
-  
+
   // ==================== UPLOADS & FILES (Phase 4.2) ====================
   // File upload with presigned URLs and Object Storage
   app.use("/api/uploads", requireAuth, tenantMiddleware, uploadRateLimiter, uploadsRoutes);
-  
+
   // Multer-based file operations (TODO: multer middleware not yet migrated)
   app.use("/api/files", requireAuth, tenantMiddleware, uploadRateLimiter, filesRoutes);
-  
+
   // ==================== SECRETS (Phase 4.2) ====================
   // Secret management for integrations (TODO: agent-sdk not yet migrated)
   app.use("/api/secrets", requireAuth, tenantMiddleware, secretsRoutes);
-  
+
   // ==================== ENVIRONMENT (Phase 4.2) ====================
   // Sandbox ↔ Production environment switching
   app.use("/api/environment", requireAuth, environmentRoutes);
-  
+
   // ==================== QUOTAS (Gap #5) ====================
   // Resource quotas monitoring and enforcement
   app.use("/api/quotas", quotasRoutes);
-  
+
   // ==================== CREDITS (Usage Analytics & Billing) ====================
   // Credit balance, analytics, usage breakdown, transaction history
   app.use("/api/credits", requireAuth, tenantMiddleware, uxRateLimiter, creditsRoutes);
-  
+
   // ==================== PLATFORM SETTINGS ====================
   // Platform-wide configuration management (admin only)
   // Configurable margins, prices, and system parameters
   app.use("/api/platform-settings", requireAuth, uxRateLimiter, platformSettingsRoutes);
-  
+
   // ==================== BILLING (Subscriptions, Seats, Packages) ====================
   // NOTE: Stripe webhook is registered in server/index.ts BEFORE body parser
   // Subscription management: plans, upgrade, downgrade
   app.use("/api/billing/subscription", requireAuth, tenantMiddleware, uxRateLimiter, subscriptionRoutes);
-  
+
   // Payment methods: list, add, set default
   app.use("/api/billing/payment-methods", requireAuth, tenantMiddleware, uxRateLimiter, paymentMethodsRoutes);
-  
+
   // Seat management: list users, mark/unmark paying seats
   app.use("/api/billing/seats", requireAuth, tenantMiddleware, uxRateLimiter, seatsRoutes);
-  
+
   // Credit packages: list packages, purchase packages
   app.use("/api/billing/packages", requireAuth, tenantMiddleware, uxRateLimiter, packagesRoutes);
-  
+
   // ==================== NOTIFICATIONS (Phase 4.2) ====================
   // Notification CRUD, mark as read, preferences
   app.use("/api/notifications", requireAuth, tenantMiddleware, uxRateLimiter, notificationsRoutes);
-  
+
   // ==================== AI STATUS (Phase 4.3) ====================
   // AI availability check - no auth required for status check
   app.use("/api/ai", aiStatusRoutes);
-  
+
   // ==================== CONVERSATIONS (Phase 4.3) ====================
   // Main chat routes - Assist Me, Assist Settings
   // Includes SSE streaming, file uploads, smart tool filtering
   app.use("/api/conversations", requireAuth, tenantMiddleware, chatRateLimiter, conversationsRoutes);
-  
+
   // ==================== PROACTIVE INTELLIGENCE (Phase 8) ====================
   // Proactive insights - deadline alerts, overdue detection, anomalies
   app.use("/api/proactive", requireAuth, tenantMiddleware, uxRateLimiter, proactiveRoutes);
-  
+
   // ==================== ONBOARDING (Phase 4.3) ====================
   // Onboarding conversation (Assist Start)
   // SPECIAL: Works WITHOUT authentication (session-based only)
   app.use("/api/onboarding", chatRateLimiter, onboardingRoutes);
-  
+
   // ==================== REALTIME (Phase 4.3) ====================
   // SSE (Server-Sent Events) for real-time updates
   // Includes SSE stream + delta API fallback
   app.use("/api/realtime", requireAuth, tenantMiddleware, realtimeRoutes);
-  
+
   // ==================== CONFIGURATION STUDIO V2 (Phase 4.3) ====================
   // AI-powered code generation - Blueprint intelligence, RuntimeOrchestrator
   // TODO: Many services still need migration (see studio-v2.ts TODO comments)
   app.use("/api/studio/v2", requireAuth, tenantMiddleware, chatRateLimiter, studioV2Routes);
-  
+
   // ==================== CONFIGURATION STUDIO MINIMAL (Phase 4.3) ====================
   // Non-AI entity/module management operations
   // TODO: ConfigurationStudioAgent class not yet migrated (see studio-minimal.ts TODO comments)
@@ -285,7 +286,7 @@ export function registerRoutes(app: Express) {
   // ==================== CRM (Phase 4.4) ====================
   // CRM: clients, opportunities, quotes, and orders
   app.use("/api/crm", requireAuth, tenantMiddleware, uxRateLimiter, crmRoutes);
-  
+
   // CRM: Contract submissions with OCR
   app.use("/api/crm/contract-submissions", requireAuth, tenantMiddleware, uxRateLimiter, contractSubmissionsRoutes);
 
@@ -327,13 +328,13 @@ export function registerRoutes(app: Express) {
   // Connector management (OAuth, API integrations)
   // LEGACY: Backward compatibility shim
   app.use("/api/connectors", requireAuth, tenantMiddleware, uxRateLimiter, connectorsRoutes);
-  
+
   // NEW: Tenant-level connector configuration (Admin/AssistBuild only)
   app.use("/api/admin/connectors", requireAuth, tenantMiddleware, uxRateLimiter, adminConnectorsRoutes);
-  
+
   // NEW: User-level connector credentials (self-service Settings)
   app.use("/api/user/connectors", requireAuth, tenantMiddleware, uxRateLimiter, userConnectorsRoutes);
-  
+
   // NEW: Connector data imports (OAuth post-connection import)
   app.use("/api/connector-imports", requireAuth, tenantMiddleware, uxRateLimiter, connectorImportsRoutes);
 
@@ -351,7 +352,7 @@ export function registerRoutes(app: Express) {
   app.use("/api/gmail/oauth", gmailOAuthRoutes);
   app.use("/api/gmail/accounts", requireAuth, tenantMiddleware, uxRateLimiter, gmailAccountsRoutes);
   app.use("/api/gmail/messages", requireAuth, tenantMiddleware, uxRateLimiter, gmailMessagesRoutes);
-  
+
   // ==================== GMAIL SETTINGS (FASE 3) ====================
   // Gmail sync configuration (autoSync, interval, filter period)
   // Permission: owner/admin only for POST/RESET, all authenticated users for GET
@@ -366,22 +367,22 @@ export function registerRoutes(app: Express) {
   // WhatsApp webhook (no auth - called by Meta)
   // Note: Auth middleware NOT applied to webhook endpoints for Meta callbacks
   app.use("/api/whatsapp", whatsappRoutes);
-  
+
   // WhatsApp account management (authenticated)
   app.use("/api/whatsapp/accounts", requireAuth, tenantMiddleware, uxRateLimiter, whatsappAccountsRoutes);
-  
+
   // WhatsApp conversations and message management (authenticated)
   app.use("/api/whatsapp", requireAuth, tenantMiddleware, uxRateLimiter, whatsappConversationsRoutes);
-  
+
   // WhatsApp media download/upload with GCS integration (authenticated)
   app.use("/api/whatsapp", requireAuth, tenantMiddleware, uxRateLimiter, whatsappMediaRoutes);
-  
+
   // WhatsApp template management and synchronization (authenticated)
   app.use("/api/whatsapp/templates", requireAuth, tenantMiddleware, uxRateLimiter, whatsappTemplatesRoutes);
-  
+
   // WhatsApp Web connector (user-level, web-connector type)
   app.use("/api/user/whatsapp-web", requireAuth, tenantMiddleware, uxRateLimiter, whatsappWebRoutes);
-  
+
   // WhatsApp automation configuration (authenticated)
   app.use("/api/whatsapp/automation", requireAuth, tenantMiddleware, uxRateLimiter, whatsappAutomationRoutes);
 
@@ -419,7 +420,7 @@ export function registerRoutes(app: Express) {
   // Module management: catalog, tenant modules, sidebar, preferences
   // Auth and tenant middleware applied inside router for granular control
   app.use("/api/modules", uxRateLimiter, modulesRoutes);
-  
+
   // Module pages: hierarchical page structure for modules
   // Auth and tenant middleware applied inside router
   app.use("/api/module-pages", uxRateLimiter, modulePagesRoutes);
@@ -449,11 +450,11 @@ export function registerRoutes(app: Express) {
   // ==================== TEAM (Phase 4.6) ====================
   // Team management (members, roles, activity)
   app.use("/api/team", requireAuth, tenantMiddleware, uxRateLimiter, teamRoutes);
-  
+
   // ==================== ORGANIZATION STRUCTURE ====================
   // Departments and teams hierarchy management
   app.use("/api/org-structure", requireAuth, tenantMiddleware, uxRateLimiter, orgStructureRoutes);
-  
+
   // Invitation management: accept, decline, revoke (public + authenticated)
   app.use("/api/invitations", uxRateLimiter, invitationsRoutes);
 
@@ -468,10 +469,13 @@ export function registerRoutes(app: Express) {
   // IMPORTANT: Must be FIRST to avoid conflicts with other /api/assistbuild routes
   app.use("/api/assistbuild", requireAuth, tenantMiddleware, assistbuildConversationsRoutes);
 
-  // ==================== ASSISTBUILD WORKFLOWS (Phase 1: Visual Workflow Builder) ====================
-  // Workflow automation system with visual builder (MVP: 2 nodes)
   // Routes: CRUD /workflows, POST /workflows/:id/execute, GET /executions
   app.use("/api/assistbuild", requireAuth, tenantMiddleware, assistbuildWorkflowsRoutes);
+
+  // ==================== ASSISTBUILD CREDENTIALS ====================
+  // Secure credential management for workflow nodes
+  // Routes: GET /credentials, POST /credentials, DELETE /credentials/:id
+  app.use("/api/assistbuild", requireAuth, tenantMiddleware, assistbuildCredentialsRoutes);
 
   // ==================== SCHEDULED WORKFLOWS (Invoice Email Demo) ====================
   // Scheduled workflow management for demo: Schedule → Fetch Invoice → Send Email
@@ -481,7 +485,7 @@ export function registerRoutes(app: Express) {
   // ==================== ASSISTBUILD JOBS (Phase 5) ====================
   // Background job management for AssistBuild operations
   app.use("/api/assistbuild", requireAuth, tenantMiddleware, assistbuildJobsRoutes);
-  
+
   // ==================== ASSISTBUILD APPROVAL WORKFLOW (FASE 4) ====================
   // Code generation approval, rejection, and deployment workflow
   // Routes: POST /code/:id/approve, /code/:id/reject, /code/:id/deploy, GET /code/pending
@@ -492,48 +496,48 @@ export function registerRoutes(app: Express) {
   // Routes: GET/POST/PATCH/DELETE /conversations, POST /conversations/:id/messages
   // Scope: USER-SCOPED ONLY (profile, preferences, notifications, account)
   app.use("/api/assistsettings", chatRateLimiter, assistsettingsConversationsRoutes);
-  
+
   // ==================== SCHEMA EVOLUTION (Gap #3) ====================
   // Schema evolution operations: snapshot, diff, migrate, rollback
   // Routes: POST /snapshot, /diff, /migrations, /migrations/:id/apply, /rollback
   // GET /migrations, /migrations/:id
   app.use("/api/schema", requireAuth, tenantMiddleware, schemaRoutes);
-  
+
   // ==================== PLATFORM SERVICES ====================
   // Financial Grid: Centralized budgeting, forecasting, and financial planning
   app.use("/api/financial-grid", financialGridRoutes);
-  
+
   // Universal Search: Cross-module semantic and textual search
   app.use("/api/universal-search", universalSearchRoutes);
-  
+
   // ==================== ROLLBACK SYSTEM (GAP #6) ====================
   // Rollback point management and execution
   // Routes: GET /history, /points/:id, /executions/:id
   //         POST /create-snapshot, /execute
   //         DELETE /points/:id
   app.use("/api/rollback", rollbackRoutes);
-  
+
   // ==================== EXECUTIONS (Phase 8) ====================
   // Execution Engine monitoring - automations, workflows, agents
   app.use("/api/executions", requireAuth, tenantMiddleware, uxRateLimiter, executionsRoutes);
-  
+
   // ==================== ACTIONS (Phase 9.1) ====================
   // User action tracking for pattern detection and AI learning
   app.use("/api/actions", requireAuth, tenantMiddleware, uxRateLimiter, actionsRoutes);
-  
+
   // ==================== PATTERNS (Phase 9.3) ====================
   // Pattern suggestions and workflow automation
   app.use("/api/patterns", requireAuth, tenantMiddleware, uxRateLimiter, patternsRoutes);
-  
+
   // ==================== PROJECTS MODULE ====================
   // Cross-module linking, project templates, and configuration
   // Routes: GET/POST /entities, /linkable-entities, /records, /templates
   app.use("/api/modules/projects", requireAuth, tenantMiddleware, uxRateLimiter, projetosRoutes);
-  
+
   // ==================== CACHE METRICS ====================
   // Cache performance monitoring for platform resources (NO AUTH for internal monitoring)
   app.use("/api/cache", cacheMetricsRoutes);
-  
+
   console.log('[Routes] ✅ All routes registered - Phases 4.1 to 9.3 COMPLETE');
   console.log('[Routes] ✅ Phase 4.1: Auth, tenants, users, permissions, context');
   console.log('[Routes] ✅ Phase 4.2: Uploads, files, secrets, environment, notifications');

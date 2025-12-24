@@ -13,6 +13,10 @@ interface WorkflowState {
   isExecuting: boolean;
   workflowName: string;
   workflowDescription: string;
+  workflowStatus: 'draft' | 'published';
+  environment: 'sandbox' | 'production';
+  versionNumber: number;
+  isDirty: boolean;
 
   // Node/Edge operations
   setNodes: (nodes: Node[]) => void;
@@ -36,6 +40,10 @@ interface WorkflowState {
   // Workflow metadata
   setWorkflowName: (name: string) => void;
   setWorkflowDescription: (description: string) => void;
+  setWorkflowStatus: (status: 'draft' | 'published') => void;
+  setEnvironment: (env: 'sandbox' | 'production') => void;
+  setVersionNumber: (version: number) => void;
+  setDirty: (isDirty: boolean) => void;
 
   // Validation
   setValidationErrors: (errors: ValidationError[]) => void;
@@ -59,6 +67,10 @@ const initialState = {
   isExecuting: false,
   workflowName: 'New Workflow',
   workflowDescription: '',
+  workflowStatus: 'draft' as const,
+  environment: 'sandbox' as const,
+  versionNumber: 1,
+  isDirty: false,
 };
 
 export const useWorkflowStore = create<WorkflowState>((set, get) => ({
@@ -135,8 +147,13 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   selectNode: (id) => set({ selectedNodeId: id }),
 
   // Workflow metadata
-  setWorkflowName: (name) => set({ workflowName: name }),
-  setWorkflowDescription: (description) => set({ workflowDescription: description }),
+  // Workflow metadata
+  setWorkflowName: (name) => set({ workflowName: name, isDirty: true }),
+  setWorkflowDescription: (description) => set({ workflowDescription: description, isDirty: true }),
+  setWorkflowStatus: (status) => set({ workflowStatus: status }),
+  setEnvironment: (env) => set({ environment: env }),
+  setVersionNumber: (version) => set({ versionNumber: version }),
+  setDirty: (isDirty) => set({ isDirty }),
 
   // Validation
   setValidationErrors: (errors) => set({ validationErrors: errors }),
@@ -211,6 +228,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
     return {
       name: state.workflowName,
       description: state.workflowDescription,
+      status: state.workflowStatus,
       definition: {
         nodes: serializableNodes,
         edges: state.edges.map(edge => ({
@@ -257,6 +275,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
     set({
       workflowName: data.name || 'Untitled Workflow',
       workflowDescription: data.description || '',
+      workflowStatus: data.status || 'draft',
       nodes,
       edges,
       selectedNodeId: null,

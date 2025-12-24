@@ -8,6 +8,7 @@
 import { db } from '../../apps/api/db';
 import { workflowExecutions } from '../../shared/schema';
 import { eq } from 'drizzle-orm';
+import { CredentialService } from '../../apps/api/services/assistbuild/credential.service.js';
 import type {
   ExecutionContext,
   WorkflowDefinition,
@@ -15,7 +16,7 @@ import type {
   WorkflowStep
 } from './types';
 import { actionRegistry, ActionResult } from './ActionRegistry';
-import { interpolateConfig } from './interpolation';
+import { interpolateConfig, hasUnresolvedExpressions } from './interpolation';
 import { evaluateCondition } from './conditionEvaluator';
 
 /**
@@ -137,6 +138,34 @@ export class WorkflowExecutor {
   private async executeStep(step: WorkflowStep, context: ExecutionContext): Promise<ExecutionResult> {
     // Interpolate config variables
     const interpolatedConfig = interpolateConfig(step.config, context);
+
+    // Strict Validation: Ensure no unresolved expressions remain
+    const unresolved = hasUnresolvedExpressions(interpolatedConfig);
+    if (unresolved) {
+      throw new Error(`Execution failed: Expression '${unresolved}' in configuration for step '${step.name}' could not be resolved.`);
+    }
+
+    console.log(`[WorkflowExecutor] Step '${step.name}' (${step.id}) resolved config:`, JSON.stringify(interpolatedConfig, null, 2));
+
+    // Credential Injection
+    const action = actionRegistry.get(step.action);
+    if (action?.requiresCredentials) {
+      const credentialId = step.config.credentialId;
+      if (!credentialId) {
+        throw new Error(`Action '${step.action}' requires a credential, but none was provided (credentialId is missing in config).`);
+      }
+
+      // We need to import CredentialService dynamically or at the top
+      // For now, I'll assume it's imported at the top
+      const decryptedCredential = await CredentialService.getDecrypted(credentialId, context.tenantId);
+      if (!decryptedCredential) {
+        throw new Error(`Required credential ('${credentialId}') for action '${step.action}' was not found or is inaccessible.`);
+      }
+
+      // Inject decrypted fields (api_key, password, etc.) into the interpolated config
+      // This happens ONLY in memory during execution
+      Object.assign(interpolatedConfig, decryptedCredential.data);
+    }
 
     // Execute action via registry
     const actionResult: ActionResult = await actionRegistry.execute(

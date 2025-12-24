@@ -53,13 +53,23 @@ export interface ActionExecutor {
    * Used to reference the action in workflow definitions
    */
   readonly name: string;
-  
+
   /**
    * Human-readable description of what this action does
    * Used for documentation and UI purposes
    */
   readonly description: string;
-  
+
+  /**
+   * Whether this action requires a credential to execute
+   */
+  readonly requiresCredentials?: boolean;
+
+  /**
+   * The type of credential required (e.g., 'smtp', 'openai')
+   */
+  readonly credentialType?: string;
+
   /**
    * Execute the action with the given configuration and context
    * 
@@ -72,7 +82,7 @@ export interface ActionExecutor {
     context: ExecutionContext,
     schema?: string  // Add schema parameter
   ): Promise<ActionResult>;
-  
+
   /**
    * Optional validation method for configuration
    * 

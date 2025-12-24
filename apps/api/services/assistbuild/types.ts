@@ -3,14 +3,14 @@
  * Type definitions for the visual workflow builder system
  */
 
-import type { 
+import type {
   SelectAssistbuildWorkflow,
   SelectAssistbuildExecution,
   SelectAssistbuildExecutionLog,
   InsertAssistbuildWorkflow,
   InsertAssistbuildExecution,
   InsertAssistbuildExecutionLog,
-} from '../../../shared/schema.js';
+} from '../../../../shared/schema.js';
 
 // Re-export schema types
 export type AssistBuildWorkflow = SelectAssistbuildWorkflow;
@@ -23,7 +23,7 @@ export type CreateLogInput = InsertAssistbuildExecutionLog;
 
 // ==================== Node Types ====================
 
-export type NodeType = 'manual_trigger' | 'crud_record' | 'schedule_trigger' | 'fetch_invoice' | 'send_email';
+export type NodeType = 'manual_trigger' | 'crud_record' | 'schedule_trigger' | 'fetch_invoice' | 'send_email' | 'webhook_trigger';
 
 export type CrudOperation = 'create' | 'read' | 'update' | 'delete';
 

@@ -32,6 +32,7 @@ export interface NodeData {
   executionStatus?: 'idle' | 'running' | 'completed' | 'failed';
   executionOutput?: any;
   executionError?: string;
+  [key: string]: unknown; // Fix for XYFlow compatibility
 }
 
 // Edge types
@@ -61,21 +62,29 @@ export interface INodeDefinition {
   type: string;
   label: string;
   description: string;
-  category: 'trigger' | 'action' | 'condition' | 'integration';
+  category: 'trigger' | 'action' | 'condition' | 'integration' | 'data' | 'ai' | 'communication' | 'utility';
   icon: LucideIcon;
   color: string;
-  
+
+  // Enterprise metadata
+  requiresCredentials: boolean;
+  credentialType?: string;
+  metadata?: {
+    categoryGroup?: string;
+    searchableKeywords?: string[];
+  };
+
   // Configuration
   defaultConfig: Record<string, any>;
   configSchema: z.ZodSchema;
   configComponent?: React.ComponentType<NodeConfigProps>;
-  
+
   // Rendering
   component: React.ComponentType<any>;
-  
+
   // Validation
   validate?: (data: NodeData, workflow: Workflow) => ValidationError[];
-  
+
   // Metadata
   inputs: NodeInput[];
   outputs: NodeOutput[];
